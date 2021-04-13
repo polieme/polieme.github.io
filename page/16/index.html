@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -21,18 +21,20 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
+<meta name="description" content="生死看淡，不服就干">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/page/16/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Daniel&#39;s Blog技术存放">
+<meta property="og:url" content="http://xydcom.cn/page/16/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:description" content="生死看淡，不服就干">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Daniel">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/page/16/">
+<link rel="canonical" href="http://xydcom.cn/page/16/">
 
 
 <script class="page-configurations">
@@ -41,10 +43,10 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
-<title>Hexo</title>
+<title>Daniel's Blog技术存放</title>
   
 
   <script>
@@ -103,7 +105,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -114,9 +116,10 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
       <i class="logo-line"></i>
     </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
   </div>
 
   <div class="site-nav-right">
@@ -130,7 +133,7 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
         <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
         <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
@@ -147,12 +150,12 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">210</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">174</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">174</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
       </li>
   </ul>
@@ -167,7 +170,7 @@
   </span>
   <div class="search-input-container">
     <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
+           placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
   <span class="popup-btn-close" role="button">
@@ -197,10 +200,10 @@
     <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -215,7 +218,7 @@
     <img class="site-author-image" itemprop="image" alt="Daniel"
       src="/images/head/head_pic.jpg#/images/avatar.gif">
   <p class="site-author-name" itemprop="name">Daniel</p>
-  <div class="site-description" itemprop="description"></div>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
@@ -223,20 +226,20 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">174</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
         <span class="site-state-item-count">99</span>
-        <span class="site-state-item-name">categories</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
         <span class="site-state-item-count">210</span>
-        <span class="site-state-item-name">tags</span></a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -261,7 +264,7 @@
     </header>
 
     
-  <div class="back-to-top" role="button" aria-label="Back to top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -285,16 +288,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/JS%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C%E6%89%8B%E6%9C%BA%E5%8F%B7%E3%80%81%E9%82%AE%E7%AE%B1%E3%80%81%E7%BD%91%E5%9D%80%E3%80%81%E6%97%A5%E6%9C%9F%E3%80%81%E8%BA%AB%E4%BB%BD%E8%AF%81/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/JS%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C%E6%89%8B%E6%9C%BA%E5%8F%B7%E3%80%81%E9%82%AE%E7%AE%B1%E3%80%81%E7%BD%91%E5%9D%80%E3%80%81%E6%97%A5%E6%9C%9F%E3%80%81%E8%BA%AB%E4%BB%BD%E8%AF%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -307,30 +310,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:28:42" itemprop="dateCreated datePublished" datetime="2019-01-25T21:28:42+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:28:42" itemprop="dateCreated datePublished" datetime="2019-01-25T21:28:42+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">前端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
         </span>
@@ -350,7 +353,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/JS%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C%E6%89%8B%E6%9C%BA%E5%8F%B7%E3%80%81%E9%82%AE%E7%AE%B1%E3%80%81%E7%BD%91%E5%9D%80%E3%80%81%E6%97%A5%E6%9C%9F%E3%80%81%E8%BA%AB%E4%BB%BD%E8%AF%81/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -380,16 +383,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/Url%E4%B8%AD%E4%BC%A0%E9%80%92JSONObject%E3%80%81JSONArray%E5%AF%B9%E8%B1%A1/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/Url%E4%B8%AD%E4%BC%A0%E9%80%92JSONObject%E3%80%81JSONArray%E5%AF%B9%E8%B1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -402,30 +405,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:26:43" itemprop="dateCreated datePublished" datetime="2019-01-25T21:26:43+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:26:43" itemprop="dateCreated datePublished" datetime="2019-01-25T21:26:43+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">前端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
         </span>
@@ -445,7 +448,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/Url%E4%B8%AD%E4%BC%A0%E9%80%92JSONObject%E3%80%81JSONArray%E5%AF%B9%E8%B1%A1/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -475,16 +478,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/JS-setInterval-%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/JS-setInterval-%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -497,30 +500,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:24:40" itemprop="dateCreated datePublished" datetime="2019-01-25T21:24:40+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:24:40" itemprop="dateCreated datePublished" datetime="2019-01-25T21:24:40+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">前端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
         </span>
@@ -540,7 +543,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/JS-setInterval-%E6%96%B9%E6%B3%95/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -570,16 +573,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACJSON%E5%AF%B9%E8%B1%A1/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACJSON%E5%AF%B9%E8%B1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -592,30 +595,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:22:33" itemprop="dateCreated datePublished" datetime="2019-01-25T21:22:33+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:22:33" itemprop="dateCreated datePublished" datetime="2019-01-25T21:22:33+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">前端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
         </span>
@@ -635,7 +638,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACJSON%E5%AF%B9%E8%B1%A1/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -665,16 +668,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/js%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BAa%E6%A0%87%E7%AD%BE%E5%B9%B6%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/js%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BAa%E6%A0%87%E7%AD%BE%E5%B9%B6%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -687,30 +690,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:18:16" itemprop="dateCreated datePublished" datetime="2019-01-25T21:18:16+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:18:16" itemprop="dateCreated datePublished" datetime="2019-01-25T21:18:16+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">前端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/Javascript%E5%AE%9E%E4%BE%8B/" itemprop="url" rel="index"><span itemprop="name">Javascript实例</span></a>
         </span>
@@ -730,7 +733,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/js%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BAa%E6%A0%87%E7%AD%BE%E5%B9%B6%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -760,16 +763,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/webuploader%E5%90%8C%E4%B8%80%E9%A1%B5%E9%9D%A2%E5%A4%9A%E5%AE%9E%E4%BE%8B%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8F%8A%E5%9B%9E%E6%98%BE/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/webuploader%E5%90%8C%E4%B8%80%E9%A1%B5%E9%9D%A2%E5%A4%9A%E5%AE%9E%E4%BE%8B%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8F%8A%E5%9B%9E%E6%98%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -782,26 +785,26 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:11:01" itemprop="dateCreated datePublished" datetime="2019-01-25T21:11:01+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:11:01" itemprop="dateCreated datePublished" datetime="2019-01-25T21:11:01+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">前端插件</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/Webuploader/" itemprop="url" rel="index"><span itemprop="name">Webuploader</span></a>
         </span>
@@ -821,7 +824,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/webuploader%E5%90%8C%E4%B8%80%E9%A1%B5%E9%9D%A2%E5%A4%9A%E5%AE%9E%E4%BE%8B%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8F%8A%E5%9B%9E%E6%98%BE/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -851,16 +854,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/Webuploader%E5%A4%9A%E5%9B%BE%E4%B8%8A%E4%BC%A0%E5%8F%8A%E5%9B%9E%E6%98%BE/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/Webuploader%E5%A4%9A%E5%9B%BE%E4%B8%8A%E4%BC%A0%E5%8F%8A%E5%9B%9E%E6%98%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -873,26 +876,26 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 21:05:26" itemprop="dateCreated datePublished" datetime="2019-01-25T21:05:26+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 21:05:26" itemprop="dateCreated datePublished" datetime="2019-01-25T21:05:26+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">前端插件</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/Webuploader/" itemprop="url" rel="index"><span itemprop="name">Webuploader</span></a>
         </span>
@@ -912,7 +915,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/Webuploader%E5%A4%9A%E5%9B%BE%E4%B8%8A%E4%BC%A0%E5%8F%8A%E5%9B%9E%E6%98%BE/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -942,16 +945,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/HTML%E4%B8%AD%E6%98%BE%E7%A4%BAMarkDown%EF%BC%8C%E5%B9%B6%E4%B8%94%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/HTML%E4%B8%AD%E6%98%BE%E7%A4%BAMarkDown%EF%BC%8C%E5%B9%B6%E4%B8%94%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -964,26 +967,26 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 20:59:02" itemprop="dateCreated datePublished" datetime="2019-01-25T20:59:02+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 20:59:02" itemprop="dateCreated datePublished" datetime="2019-01-25T20:59:02+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">前端插件</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/showdown-highlight/" itemprop="url" rel="index"><span itemprop="name">showdown&highlight</span></a>
         </span>
@@ -1003,7 +1006,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/HTML%E4%B8%AD%E6%98%BE%E7%A4%BAMarkDown%EF%BC%8C%E5%B9%B6%E4%B8%94%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -1033,16 +1036,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/ImageView%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%8F%8A%E4%BB%A3%E7%A0%81/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/ImageView%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%8F%8A%E4%BB%A3%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1055,26 +1058,26 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 20:54:55" itemprop="dateCreated datePublished" datetime="2019-01-25T20:54:55+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 20:54:55" itemprop="dateCreated datePublished" datetime="2019-01-25T20:54:55+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:01" itemprop="dateModified" datetime="2021-04-11T16:43:01+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">前端插件</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/imageview/" itemprop="url" rel="index"><span itemprop="name">imageview</span></a>
         </span>
@@ -1094,7 +1097,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/ImageView%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%8F%8A%E4%BB%A3%E7%A0%81/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -1124,16 +1127,16 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/01/25/%E4%B8%8D%E9%87%8D%E5%A4%8D%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E4%BA%A7%E7%94%9F/">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/25/%E4%B8%8D%E9%87%8D%E5%A4%8D%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E4%BA%A7%E7%94%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
       <meta itemprop="name" content="Daniel">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="生死看淡，不服就干">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1146,30 +1149,30 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2019-01-25 08:58:31" itemprop="dateCreated datePublished" datetime="2019-01-25T08:58:31+08:00">2019-01-25</time>
+      <time title="创建时间：2019-01-25 08:58:31" itemprop="dateCreated datePublished" datetime="2019-01-25T08:58:31+08:00">2019-01-25</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-11 16:43:02" itemprop="dateModified" datetime="2021-04-11T16:43:02+08:00">2021-04-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">In</span>
+      <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">后端开发语言</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
         </span>
-          , 
+          ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
         </span>
@@ -1189,7 +1192,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/25/%E4%B8%8D%E9%87%8D%E5%A4%8D%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E4%BA%A7%E7%94%9F/">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -1212,7 +1215,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
