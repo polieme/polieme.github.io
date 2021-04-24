@@ -3174,3 +3174,10 @@ mark.search-keyword {
     padding: 10px 12px;
   }
 }
+img {
+  border-radius: 15px;
+  box-shadow: 10px 10px 5px #888;
+}
+.posts-expand .post-header {
+  margin-bottom: 10px;
+}
