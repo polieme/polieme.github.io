@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_16.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_3.png">
 <meta property="article:published_time" content="2019-01-26T05:23:06.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.939Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +158,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -231,7 +234,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +247,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -358,19 +361,19 @@
 <p>废话不说，直接上干货</p>
 </blockquote>
 <h3 id="引入Jar包"><a href="#引入Jar包" class="headerlink" title="引入Jar包"></a>引入Jar包</h3><p>第一步，首当其冲是引jar包，当然目前我还没把项目弄成maven的，所以也就只能自己copy个jar包到自己的lib包下面</p>
-
+<a href="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/quartz-2.2.1.jar" title="下载quartz-2.2.1.jar">下载quartz-2.2.1.jar</a>
 
 <h3 id="新建spring-quartz-xml"><a href="#新建spring-quartz-xml" class="headerlink" title="新建spring-quartz.xml"></a>新建spring-quartz.xml</h3><p>第二步,新建一个spring-quartz.xml文件，文件的位置放在和spingMVC的配置文件同级目录即可，spring-quartz.xml可以配置多个任务，列如quartzJobA、quartzJobB，并配置对应的方法和时间表达式（什么时间执行），具体的任务怎么定时，怎么执行都在此文件中</p>
+<a href="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/spring-quartz.xml" title="spring-quartz.xml下载链接">spring-quartz.xml下载链接</a>
 
-
-
+<img src="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_1.png" class="">
 
 <h3 id="修改web-xml"><a href="#修改web-xml" class="headerlink" title="修改web.xml"></a>修改web.xml</h3><p>第三步，将spring-quartz.xml添加到配置中，配置文件中只需要启动的时候加载上面提到spring-quartz.xml文件</p>
-
+<img src="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_2.png" class="">
 
 <h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><p>第四步，具体在Java中的使用方法</p>
-
-
+<a href="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/StatisticsTimer.java" title="下载StatisticsTimer">下载StatisticsTimer</a>
+<img src="/2019/01/26/Quartz%E9%9B%86%E6%88%90springMVC-%E7%9A%84%E6%96%B9%E6%A1%88/screenshot_3.png" class="">
 
 <p>注：<br>cronExpression值有几种如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;0 0 12 * * ?&quot;</span> 每天中午<span class="number">12</span>点触发</span><br><span class="line"><span class="string">&quot;0 15 10 ? * *&quot;</span> 每天上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 * * ?&quot;</span> 每天上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 * * ? *&quot;</span> 每天上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 * * ? 2005&quot;</span> <span class="number">2005</span>年的每天上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 * 14 * * ?&quot;</span> 在每天下午<span class="number">2</span>点到下午<span class="number">2</span>:<span class="number">59</span>期间的每<span class="number">1</span>分钟触发</span><br><span class="line"><span class="string">&quot;0 0/5 14 * * ?&quot;</span> 在每天下午<span class="number">2</span>点到下午<span class="number">2</span>:<span class="number">55</span>期间的每<span class="number">5</span>分钟触发</span><br><span class="line"><span class="string">&quot;0 0/5 14,18 * * ?&quot;</span> 在每天下午<span class="number">2</span>点到<span class="number">2</span>:<span class="number">55</span>期间和下午<span class="number">6</span>点到<span class="number">6</span>:<span class="number">55</span>期间的每<span class="number">5</span>分钟触发</span><br><span class="line"><span class="string">&quot;0 0-5 14 * * ?&quot;</span> 在每天下午<span class="number">2</span>点到下午<span class="number">2</span>:<span class="number">05</span>期间的每<span class="number">1</span>分钟触发</span><br><span class="line"><span class="string">&quot;0 10,44 14 ? 3 WED&quot;</span> 每年三月的星期三的下午<span class="number">2</span>:<span class="number">10</span>和<span class="number">2</span>:<span class="number">44</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 ? * MON-FRI&quot;</span> 周一至周五的上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 15 * ?&quot;</span> 每月<span class="number">15</span>日上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 L * ?&quot;</span> 每月最后一日的上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 ? * 6L&quot;</span> 每月的最后一个星期五上午<span class="number">10</span>:<span class="number">15</span>触发</span><br><span class="line"><span class="string">&quot;0 15 10 ? * 6L 2002-2005&quot;</span> <span class="number">2002</span>年至<span class="number">2005</span>年的每月的最后一个星期五上午<span class="number">10</span>:<span class="number">15</span>触发</span><br></pre></td></tr></table></figure>

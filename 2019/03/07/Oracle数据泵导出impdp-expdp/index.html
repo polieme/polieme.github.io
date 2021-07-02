@@ -29,6 +29,7 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_45.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/03/07/Oracle%E6%95%B0%E6%8D%AE%E6%B3%B5%E5%AF%BC%E5%87%BAimpdp-expdp/screenshot_1.png">
 <meta property="article:published_time" content="2019-03-07T06:32:45.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.936Z">
 <meta property="article:author" content="Daniel">
@@ -156,9 +157,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -232,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -245,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -360,7 +361,7 @@
 </blockquote>
 <p>数据泵是服务器提供的功能，因此从客户机不能使用数据泵导入导出操作，不知道这个观点对不对，没有尝试过</p>
 <h2 id="逻辑目录"><a href="#逻辑目录" class="headerlink" title="逻辑目录"></a>逻辑目录</h2><ul>
-<li>常规查看逻辑路径的方式<br>常规情况下，一般数据库会有默认的，可以打开PLSQL，在左侧<code>Objects</code>栏中可以看到默认的数据泵导入导出路径目录，具体如下图所示</li>
+<li>常规查看逻辑路径的方式<br>常规情况下，一般数据库会有默认的，可以打开PLSQL，在左侧<code>Objects</code>栏中可以看到默认的数据泵导入导出路径目录，具体如下图所示<img src="/2019/03/07/Oracle%E6%95%B0%E6%8D%AE%E6%B3%B5%E5%AF%BC%E5%87%BAimpdp-expdp/screenshot_1.png" class=""></li>
 <li>命令方式查看逻辑路径方式<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[oracle<span class="variable">@MCDB</span> <span class="operator">~</span>]$ sqlplus <span class="operator">/</span>nolog</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">*</span>Plus: <span class="keyword">Release</span> <span class="number">11.2</span><span class="number">.0</span><span class="number">.4</span><span class="number">.0</span> Production <span class="keyword">on</span> Thu Mar <span class="number">7</span> <span class="number">14</span>:<span class="number">59</span>:<span class="number">54</span> <span class="number">2019</span></span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">1982</span>, <span class="number">2013</span>, Oracle.  <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> conn jnmcbusi<span class="operator">/</span><span class="number">123456</span>;</span><br><span class="line">Connected.</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> dba_directories;</span><br><span class="line"></span><br><span class="line">OWNER		 DIRECTORY_NAME         DIRECTORY_PATH</span><br><span class="line"><span class="comment">------------------------------ ------------------------------</span></span><br><span class="line">SYS		DUMP_DIR               <span class="operator">/</span>home<span class="operator">/</span>mgplat_bak<span class="operator">/</span>dump_dir</span><br><span class="line"></span><br><span class="line">SYS		XMLDIR                 <span class="operator">/</span>home<span class="operator">/</span>oracle<span class="operator">/</span>app<span class="operator">/</span>oracle<span class="operator">/</span>product<span class="operator">/</span><span class="number">11.2</span><span class="number">.0</span><span class="operator">/</span>dbhome_1<span class="operator">/</span>rdbms<span class="operator">/</span>xml</span><br><span class="line"></span><br><span class="line">SYS		ORACLE_OCM_CONFIG_DIR  <span class="operator">/</span>home<span class="operator">/</span>oracle<span class="operator">/</span>app<span class="operator">/</span>oracle<span class="operator">/</span>product<span class="operator">/</span><span class="number">11.2</span><span class="number">.0</span><span class="operator">/</span>dbhome_1<span class="operator">/</span>ccr<span class="operator">/</span>hosts<span class="operator">/</span>MCDB<span class="operator">/</span>state</span><br><span class="line"></span><br><span class="line">SYS		DATA_PUMP_DIR          <span class="operator">/</span>home<span class="operator">/</span>oracle<span class="operator">/</span>app<span class="operator">/</span>admin<span class="operator">/</span>jnmcdb<span class="operator">/</span>dpdump<span class="operator">/</span></span><br><span class="line"></span><br><span class="line">SYS		ORACLE_OCM_CONFIG_DIR2 <span class="operator">/</span>home<span class="operator">/</span>oracle<span class="operator">/</span>app<span class="operator">/</span>oracle<span class="operator">/</span>product<span class="operator">/</span><span class="number">11.2</span><span class="number">.0</span><span class="operator">/</span>dbhome_1<span class="operator">/</span>ccr<span class="operator">/</span>state</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="创建逻辑目录"><a href="#创建逻辑目录" class="headerlink" title="创建逻辑目录"></a>创建逻辑目录</h3><p>如果没有逻辑目录，可以进行创建，创建目前知道的有两种方法，<font color='red'>创建的时候一定要记得，保证服务器上有这个目录，如果没有，先手动创建，因为Oracle不会创建物理路径</font></p>

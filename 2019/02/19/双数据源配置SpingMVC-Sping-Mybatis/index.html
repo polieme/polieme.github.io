@@ -29,6 +29,11 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_21.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_5.png">
 <meta property="article:published_time" content="2019-02-19T03:19:29.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.117Z">
 <meta property="article:author" content="Daniel">
@@ -156,9 +161,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -231,7 +236,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +249,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -354,14 +359,14 @@
 <p>最近下载了一个SSM的框架，然后项目上要用到双数据源的情况，因此在这方面查资料查了很久，最终完成了，具体过程如下，有误之处麻烦各位大神指出，及时更新</p>
 </blockquote>
 <ol>
-<li>首当其冲第一步就是修改数据库配置文件，我这里叫dbconfig.properties，修改的时候，只需要把原来的数据库的配置文件复制一套，然后在前面加上对应数据库的标识就行了</li>
-<li>修改Sping的配置文件<code>ApplicationContext.xml</code>，复制一套<code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>对应的<code>bean</code>，修改对应的<code>name</code>值为<code>transactionManager2</code>，然后复制一套数据库连接的配置，改为数据源2的数据信息
-</li>
-<li>再就是DAO层面的修改了，只需要修改两个地方，一个地方是<code>sqlSessionTemplate2</code>对应到上面<code>Spring</code>配置文件中的<code>sqlSessionTemplate2</code>，在一个就是<code>DaoSupport</code>的声明了吧</li>
-<li>下面就可以直接使用了</li>
+<li>首当其冲第一步就是修改数据库配置文件，我这里叫dbconfig.properties，修改的时候，只需要把原来的数据库的配置文件复制一套，然后在前面加上对应数据库的标识就行了<img src="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_1.png" class=""></li>
+<li>修改Sping的配置文件<code>ApplicationContext.xml</code>，复制一套<code>org.springframework.jdbc.datasource.DataSourceTransactionManager</code>对应的<code>bean</code>，修改对应的<code>name</code>值为<code>transactionManager2</code>，然后复制一套数据库连接的配置，改为数据源2的数据信息<img src="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_2.png" class="">
+<img src="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_3.png" class=""></li>
+<li>再就是DAO层面的修改了，只需要修改两个地方，一个地方是<code>sqlSessionTemplate2</code>对应到上面<code>Spring</code>配置文件中的<code>sqlSessionTemplate2</code>，在一个就是<code>DaoSupport</code>的声明了吧<img src="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_4.png" class=""></li>
+<li>下面就可以直接使用了<img src="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/screenshot_5.png" class=""></li>
 </ol>
 <p><font color='red'> <strong>附件源码：</strong></font></p>
-
+<a href="/2019/02/19/%E5%8F%8C%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AESpingMVC-Sping-Mybatis/double_datareources_code.rar" title="双数据源配置代码下载">双数据源配置代码下载</a>
 
     </div>
 

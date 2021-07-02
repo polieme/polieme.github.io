@@ -29,6 +29,14 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_80.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_5.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_6.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_7.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_8.png">
 <meta property="article:published_time" content="2020-04-17T04:47:18.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.884Z">
 <meta property="article:author" content="Daniel">
@@ -153,9 +161,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -229,7 +237,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,7 +250,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -360,7 +368,7 @@
 <h2 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">编辑环境变量文件</span><br><span class="line"><span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="comment"># export PATH=&quot;$PATH:/usr/local/htop/bin&quot;</span></span><br><span class="line"><span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="界面解析"><a href="#界面解析" class="headerlink" title="界面解析"></a>界面解析</h2><p>首先执行下htop命令看下是否安装成功</p>
-
+<img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_1.png" class="">
 <p>上图主要分为四个区域：</p>
 <ul>
 <li>左上角：显示CPU、物理内存、交换分区信息</li>
@@ -385,21 +393,21 @@
 <li>COMMAND：启动该进程使用的命令名称</li>
 </ul>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>底部区域那是有F1-F10功能键的，通过这些功能键是能实现一个功能的，具体的功能描述如下</p>
-<h3 id="F1-显示帮助信息"><a href="#F1-显示帮助信息" class="headerlink" title="F1:显示帮助信息"></a>F1:显示帮助信息</h3>
+<h3 id="F1-显示帮助信息"><a href="#F1-显示帮助信息" class="headerlink" title="F1:显示帮助信息"></a>F1:显示帮助信息</h3><img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_2.png" class="">
 
-<h3 id="F2-配置界面中的显示信息"><a href="#F2-配置界面中的显示信息" class="headerlink" title="F2:配置界面中的显示信息"></a>F2:配置界面中的显示信息</h3>
+<h3 id="F2-配置界面中的显示信息"><a href="#F2-配置界面中的显示信息" class="headerlink" title="F2:配置界面中的显示信息"></a>F2:配置界面中的显示信息</h3><img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_3.png" class="">
+<img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_4.png" class="">
 
-
-<h3 id="F3-进程搜索"><a href="#F3-进程搜索" class="headerlink" title="F3:进程搜索"></a>F3:进程搜索</h3>
+<h3 id="F3-进程搜索"><a href="#F3-进程搜索" class="headerlink" title="F3:进程搜索"></a>F3:进程搜索</h3><img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_5.png" class="">
 
 <h3 id="F4-过滤进程"><a href="#F4-过滤进程" class="headerlink" title="F4:过滤进程"></a>F4:过滤进程</h3><p>从下图可以清楚的看到，搜索和过滤的区别，搜索是光标定位到对应的进程上，但是过滤是只显示符合的进程</p>
-
+<img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_6.png" class="">
 
 <h3 id="F5-以进程树的形式进行展示"><a href="#F5-以进程树的形式进行展示" class="headerlink" title="F5:以进程树的形式进行展示"></a>F5:以进程树的形式进行展示</h3><p>效果和F3和F4的一样，就是进程按照树的形式进行展示</p>
-<h3 id="F6-排序"><a href="#F6-排序" class="headerlink" title="F6:排序"></a>F6:排序</h3>
+<h3 id="F6-排序"><a href="#F6-排序" class="headerlink" title="F6:排序"></a>F6:排序</h3><img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_7.png" class="">
 
 <h3 id="F7-F8-修改进程Nice值（进程的优先级）"><a href="#F7-F8-修改进程Nice值（进程的优先级）" class="headerlink" title="F7/F8:修改进程Nice值（进程的优先级）"></a>F7/F8:修改进程Nice值（进程的优先级）</h3><p>F7是降低进程的优先级，F8是提升进程的优先级</p>
-<h3 id="F9：杀掉指定的进程"><a href="#F9：杀掉指定的进程" class="headerlink" title="F9：杀掉指定的进程"></a>F9：杀掉指定的进程</h3>
+<h3 id="F9：杀掉指定的进程"><a href="#F9：杀掉指定的进程" class="headerlink" title="F9：杀掉指定的进程"></a>F9：杀掉指定的进程</h3><img src="/2020/04/17/Linux%E4%B8%8B%E5%AE%89%E8%A3%85htop%E5%8F%8Ahtop%E7%9A%84%E4%BD%BF%E7%94%A8/screenshot_8.png" class="">
 
 <h3 id="F10-退出htop。"><a href="#F10-退出htop。" class="headerlink" title="F10:退出htop。"></a>F10:退出htop。</h3><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
 <li>空格键：用于标记选中的进程，用于实现对多个进程的同时操作</li>

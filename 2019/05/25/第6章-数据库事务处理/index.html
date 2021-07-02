@@ -29,6 +29,8 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_52.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/05/25/%E7%AC%AC6%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/05/25/%E7%AC%AC6%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/screenshot_2.png">
 <meta property="article:published_time" content="2019-05-24T16:55:06.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.359Z">
 <meta property="article:author" content="Daniel">
@@ -153,9 +155,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -229,7 +231,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,7 +244,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -359,7 +361,7 @@
 
 <h2 id="Spring-声明式事务的使用"><a href="#Spring-声明式事务的使用" class="headerlink" title="Spring 声明式事务的使用"></a>Spring 声明式事务的使用</h2><p>第4章中看到Spring AOP约定，它会把我们的代码织入约定的流程中。同样的，使用AOP思维，执行SQL的代码就可以织入Spring约定的数据库事务的流程中。</p>
 <h3 id="Spring声明式数据库事务约定"><a href="#Spring声明式数据库事务约定" class="headerlink" title="Spring声明式数据库事务约定"></a>Spring声明式数据库事务约定</h3><p>声明事务是使用<code>@Transactional</code>进行标注。这个注解可以标注在类（类中所有非静态方法都将开启事务）或者方法上。在<code>@Transactional</code>中，还允许配置事务的隔离等级和传播行为。如异常类型，从而确定方法发生什么异常下回滚或者发生什么异常下不回滚等。这些配置内容，是在Spring IoC容器在加载时就会将这些配置信息解析出来，然后把这些信息存储到事务订一起中，并且记录哪些类或者方法需要启动事务功能，采取什么策略去执行事务。事务的处理流程如下：</p>
-
+<img src="/2019/05/25/%E7%AC%AC6%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/screenshot_1.png" class="">
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserDao userDao;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">insertUser</span><span class="params">(User user)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userDao.insertUser(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>@Transactional注解，标识insertUser方法需要启动事务机制，那么Spring就会织入约定的流程中，这样对于数据库连接关闭事务提交都不需要编写任何代码。</p>
 <h3 id="Transactional的配置项"><a href="#Transactional的配置项" class="headerlink" title="@Transactional的配置项"></a>@Transactional的配置项</h3><ul>
@@ -514,7 +516,7 @@
 <li>在springboot的配置文件中配置<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dbcp2数据库连接池默认隔离级别</span></span><br><span class="line"><span class="meta">spring.datasource.dbcp2.default-transaction-isolation</span>=<span class="string">2</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <h2 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h2><p>绝大部分的情况下，数据库事务要么全程共，要么全失败。但实际情况中允许一个批量程序中会处理很多交易，绝大部分交易是可以顺利完成的，但是极少数的交易因为特殊情况不能完成发生异常，这时不能全部回滚，使得那些本完成的交易编程了不能完成，这种情况下当一些交易发生异常，知识回滚那些出现异常的交易，而不是整批量任务</p>
-
+<img src="/2019/05/25/%E7%AC%AC6%E7%AB%A0-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/screenshot_2.png" class="">
 <p>在Spring中，当一个方法调用另一个方法时，可以让事务猜去不同的策略工作，如新建事务或者挂起当前事务等，这边是事务的<font color='red'><b>传播行为</b></font>，上图中批量任务称之为当前事务，当调用单个交易时，称为单个交易的字方法，当前方法调用子方法的时候，让每一个子方法不在当前事务中执行，创建一个新的事务去执行子方法，我们就说当前方法调用子方法的传播行为为新建事务，此外，还可以让子方法在无事务、独立事务中执行，这些取决于业务需求</p>
 <h3 id="传播行为定义"><a href="#传播行为定义" class="headerlink" title="传播行为定义"></a>传播行为定义</h3><p>在Spring事务机制中对数据存在7种传播行为，它是通过枚举类Propagation定义的，下面加粗的是常用的几种传播行为</p>
 <ul>

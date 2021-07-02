@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_59.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_3.png">
 <meta property="article:published_time" content="2019-08-11T06:38:38.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.826Z">
 <meta property="article:author" content="Daniel">
@@ -154,9 +157,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -230,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -358,13 +361,13 @@
     <div class="post-body" itemprop="articleBody">
         <p><img src="/images/banner/banner_59.jpg"><br>最近项目中使用Redis，需要对象进行序列化才能进行保存，看书上提供的entity对象中都会有一个serialVersionUID，查了下这是继承Serializable之后，需要生成一个，否则在反序列化的时候会出现无法反序列化的情况</p>
 <h2 id="未配置情况下，在IDEA中的效果是如下的"><a href="#未配置情况下，在IDEA中的效果是如下的" class="headerlink" title="未配置情况下，在IDEA中的效果是如下的"></a>未配置情况下，在IDEA中的效果是如下的</h2><p>未配置的时候，<code>Alt+Enter</code>会不显示自动生成SerialVersionUID的功能</p>
-
+<img src="/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_1.png" class="">
 
 <h2 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h2><p>在IDEA中找到Fiel-&gt;Settings-&gt;搜索框输入inspect-&gt; 点击Inspections-&gt;输入serialV，找到下图中的两个选项勾上</p>
-
+<img src="/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_2.png" class="">
 
 <h2 id="配置完成后效果"><a href="#配置完成后效果" class="headerlink" title="配置完成后效果"></a>配置完成后效果</h2><p>在实体类上<code>Alt+Enter</code>，可以看到有了自动生成SerialVersionSID的功能，点击即可自动添加上</p>
-
+<img src="/2019/08/11/IDEA%E4%B8%AD%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90serialVersionUID/screenshot_3.png" class="">
 
     </div>
 

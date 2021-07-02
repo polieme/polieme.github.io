@@ -31,6 +31,22 @@
 <meta property="og:description" content="最近项目上有个服务器的磁盘快要满了，需要进行扩容，接到建议是使用LVM进行扩容，在此记录下，希望以后不会走太多坑，也加深一下个人的印象">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_98.jpg">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screen_shot_1.jpg">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_5.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_6.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_7.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_8.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_9.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_10.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_11.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_12.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_13.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_14.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_15.png">
+<meta property="og:image" content="http://xydcom.cn/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_16.png">
 <meta property="article:published_time" content="2021-03-21T07:24:31.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.624Z">
 <meta property="article:author" content="Daniel">
@@ -157,9 +173,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -233,7 +249,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -246,7 +262,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -360,31 +376,31 @@
 <p>引自<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013408061/article/details/98945155">《CentOS7 LVM添加硬盘及扩容》</a><br>引自<a target="_blank" rel="noopener" href="https://blog.csdn.net/littlehaes/article/details/103032658">《Linux扩容/home目录》</a><br>引自不是简简单单的拷贝，是要实践、吸收并转化</p>
 </blockquote>
 <h2 id="LVM简介"><a href="#LVM简介" class="headerlink" title="LVM简介"></a>LVM简介</h2><p>LVM是Logical Volume Manager（逻辑卷管理）的简写，他是Linux环境下对磁盘分区进行管理的一种机制。LVM将一个或多个磁盘分区（PV）虚拟为一个卷组（VG），相当于一个大的硬盘，我们可以在上面划分一些逻辑卷（LV）。当卷组的空间不足的时候，可以讲新的磁盘分区加入进来。我们还可以从卷组的剩余空间上划分一些空间给空间不足的逻辑卷使用。</p>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screen_shot_1.jpg" class="">
 
 <h2 id="LVM添加硬盘和扩容"><a href="#LVM添加硬盘和扩容" class="headerlink" title="LVM添加硬盘和扩容"></a>LVM添加硬盘和扩容</h2><p>环境：CentOS7 64位（KVM虚拟主机）<br>新建虚拟机这里就不再赘述，直接从添加硬盘开始</p>
 <ol>
 <li><p>添加一块硬盘到系统中</p>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_2.png" class="">
 <p>使用<code>fdisk -l</code>查看这块新盘为<code>/dev/sdb</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_3.png" class=""></li>
 <li><p>对新盘分区<br>使用fdisk命令对新盘进行分区，这里建立一个主分区<code>/dev/sdb</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk /dev/sdb</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_4.png" class="">
 <p>最后使用<code>partprobe</code>命令重新读取分区列表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># partprobe</span></span><br></pre></td></tr></table></figure></li>
 <li><p>创建物理卷（PV）<br>使用<code>pvcreate</code>创建物理卷，<code>pvdisplay</code>查看物理卷信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># pvcreate /dev/sdb1</span></span><br><span class="line">[root@localhost ~]<span class="comment"># pvdisplay</span></span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_5.png" class=""></li>
 <li><p>将PV加入卷组（VG）<br>使用<code>vgdisplay</code>查看卷组信息，下图卷组名为<code>centos</code>，空闲大小为0</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgdisplay</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_6.png" class="">
 <p>使用<code>vgextend</code>命令把<code>/dev/sdb1</code>物理卷加入到<code>centos</code>卷组中</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vgextend centos /dev/sdb1</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_7.png" class="">
 <p>使用命令<code>vgdisplay</code>重新查看下卷组信息</p>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_8.png" class=""></li>
 </ol>
 <blockquote>
 <p>接下来有两种方案</p>
@@ -396,26 +412,26 @@
 <ol start="5">
 <li><p>创建逻辑卷（LV）<br>使用<code>lvcreate</code>命令从卷组中划分一个新的逻辑卷，这里创建名称为<code>newlv</code>，大小为5GB的逻辑卷分区；使用<code>lvdisplay</code>查看逻辑卷信息：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lvcreate -L 5G -n newlv centos</span></span><br><span class="line">[root@localhost ~]<span class="comment"># lvdisplay</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_9.png" class="">
 <p>再查看下卷组的信息，这时卷组被上面的操作分出去了5GB的内容，应该就只剩下5GB的空间了</p>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_10.png" class=""></li>
 <li><p>格式化逻辑卷并挂载<br>新逻辑卷经过格式化就可以挂载到系统中的存储数据了。使用mkfs.xfs格式化为CentOS7的xfs文件系统：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mkfs.xfs /dev/centos/newlv</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_11.png" class="">
 <p>在/mnt目录下（可以挂载到自己需要的目录下），挂载后查看容量大小为5GB</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># mkdir /mnt/newlv</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># mount -t xfs /dev/centos/newlv /mnt/newlv</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># df -Th</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_12.png" class="">
 <p>设置开机自动挂载，编辑<code>/etc/fstab</code>文件，加入最后一行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dev/centos/newlv     /mnt/newlv              xfs         default         1   2</span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_13.png" class=""></li>
 <li><p>逻辑卷扩容<br>使用<code>lvextend</code>命令进行逻辑卷扩容。这里把剩余的空间分配给<code>/dev/centos/root</code>。增加5GB</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># lvextend -l +100%FREE /dev/centos/root</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_14.png" class="">
 <p>自动扩展xfs文件系统到最大的可用大小</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># xfs_growfs /dev/centos/root</span></span><br></pre></td></tr></table></figure>
-
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_15.png" class="">
 <p>最后使用命令<code>df -Th</code>查看是否动态扩容成功</p>
-</li>
+<img src="/2021/03/21/CentOS7-LVM%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98%E5%8F%8A%E6%89%A9%E5%AE%B9/screenshot_16.png" class=""></li>
 </ol>
 
     </div>

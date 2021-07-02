@@ -29,6 +29,13 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_35.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_5.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_6.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_7.png">
 <meta property="article:published_time" content="2019-02-19T07:59:57.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.705Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +162,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -231,7 +238,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +251,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,13 +362,13 @@
     <div class="post-body" itemprop="articleBody">
         <p><img src="/images/banner/banner_35.jpg"></p>
 <h2 id="安装SVN"><a href="#安装SVN" class="headerlink" title="安装SVN"></a>安装SVN</h2><ol>
-<li>通过 yum install subversion来安装</li>
-<li>提示已经安装。查看svn版本使用:  <code>svnserve –-version</code></li>
-<li>使用命令: <code>svnadmin create svn/repo</code></li>
-<li>进入版本库中的配置目录<code>conf</code>，此目录有三个文件： <code>svn</code>服务综合配置文件、 用户名口令文件、权限配置文件</li>
-<li>配置权限配置文件authz<br>说明：两个站点为bbs,blog,所以分为三个组超级管理组admin、bbs管理组bbsadmin、blog管理组blogadmin。超级管理组admin可以读写所有站点内容，而bbsadmin对bbs站点可以读写，而只能读blog站点。以及blogadmin对blog站点可以读写,对bbs站点只读。</li>
-<li>配置用户口令文件passwd,添加组用户以及密码</li>
-<li>配置 svn服务综合配置文件<code>svnserve.conf</code>，取消以下项目的注释，其中一定要注意<code>anon-access=none</code>，因为这个是要看历史版本用的
+<li>通过 yum install subversion来安装<img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_1.png" class=""></li>
+<li>提示已经安装。查看svn版本使用:  <code>svnserve –-version</code><img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_2.png" class=""></li>
+<li>使用命令: <code>svnadmin create svn/repo</code><img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_3.png" class=""></li>
+<li>进入版本库中的配置目录<code>conf</code>，此目录有三个文件： <code>svn</code>服务综合配置文件、 用户名口令文件、权限配置文件<img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_4.png" class=""></li>
+<li>配置权限配置文件authz<br>说明：两个站点为bbs,blog,所以分为三个组超级管理组admin、bbs管理组bbsadmin、blog管理组blogadmin。超级管理组admin可以读写所有站点内容，而bbsadmin对bbs站点可以读写，而只能读blog站点。以及blogadmin对blog站点可以读写,对bbs站点只读。<img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_5.png" class=""></li>
+<li>配置用户口令文件passwd,添加组用户以及密码<img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_6.png" class=""></li>
+<li>配置 svn服务综合配置文件<code>svnserve.conf</code>，取消以下项目的注释，其中一定要注意<code>anon-access=none</code>，因为这个是要看历史版本用的<img src="/2019/02/19/CentOS7%E5%AE%89%E8%A3%85SVN/screenshot_7.png" class="">
 <h2 id="启用-关闭svn"><a href="#启用-关闭svn" class="headerlink" title="启用/关闭svn"></a>启用/关闭svn</h2></li>
 <li>启动SVN<br><code>svnserve -d -r /home/svn/project/</code></li>
 <li>关闭svn<br>通过<code>ps -aux|grep svn</code> 查看到的<code>svn</code>进程<code>id</code>来进行关闭</li>

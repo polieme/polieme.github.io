@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_4.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_3.png">
 <meta property="article:published_time" content="2019-02-18T07:40:08.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.694Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +158,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -230,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -353,12 +356,12 @@
 <p>服务器一般是需要修改成静态的IP地址的，否则在非DHCP下，有可能会出现IP地址变动，远程不到服务器的情况，具体修改的方法如下</p>
 </blockquote>
 <ol>
-<li>第一步是先看下自己服务器对应的正在使用的网卡地址，左面对应的是网络配置文件中配置的名字，后面会讲到<br><code>[daniel@localhost ~]$ ifconfig </code></li>
+<li>第一步是先看下自己服务器对应的正在使用的网卡地址，左面对应的是网络配置文件中配置的名字，后面会讲到<br><code>[daniel@localhost ~]$ ifconfig </code><img src="/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_1.png" class=""></li>
 <li>找到对应的网络配置文件<br><code># vim /etc/sysconfig/network-scripts/ifcfg-+上面那个第一红方框中的文件名</code></li>
 <li>主要修改的内容如下<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BOOTPROTO=&quot;static&quot; #dhcp改为static   </span><br><span class="line">ONBOOT=&quot;yes&quot; #开机启用本配置  </span><br><span class="line">IPADDR=192.168.7.106 #静态IP  </span><br><span class="line">GATEWAY=192.168.7.1 #默认网关  </span><br><span class="line">NETMASK=255.255.255.0 #子网掩码  </span><br><span class="line">DNS1=192.168.7.1 #DNS 配置</span><br></pre></td></tr></table></figure>
-修改后的效果如下</li>
+修改后的效果如下<img src="/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_2.png" class=""></li>
 <li>重启网络服务<br><code>#service network restart</code></li>
-<li>查看改动后的效果，Centois 7 不再使用 ifconfig 而是用 ip 命令查看网络信息</li>
+<li>查看改动后的效果，Centois 7 不再使用 ifconfig 而是用 ip 命令查看网络信息<img src="/2019/02/18/CentOS7%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81IP%E5%9C%B0%E5%9D%80/screenshot_3.png" class=""></li>
 </ol>
 
     </div>

@@ -29,6 +29,8 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_22.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_2.png">
 <meta property="article:published_time" content="2019-01-31T07:26:16.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.133Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +157,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -231,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -366,9 +368,9 @@
 </ul>
 <h2 id="准备材料"><a href="#准备材料" class="headerlink" title="准备材料"></a>准备材料</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login">打开微信公众号测试账号地址</a>，登录之后，会显示对应的<code>appID</code>和<code>appsecret</code>，这个获取<code>access_token</code>的时候会用到，需要记录下来</li>
-<li>扫描测试账号界面的二维码，关注自己的测试公众号，然后能获取一个opendId，具体界面如下</li>
+<li>扫描测试账号界面的二维码，关注自己的测试公众号，然后能获取一个opendId，具体界面如下<img src="/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_1.png" class=""></li>
 <li>创建发送消息的模板，获取到一个<code>templete_id</code>（测试公众号的模板是可以随便创建，不需要申请流程，但是每个测试账号下面只能有最多10个测试模板），创建模板的时候，一定要注意规则要传递的变量是以<code>&#123;&#123;param.DATA&#125;&#125;</code>，其中param是你的要传递的参数<br>个人创建的模板为：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;first.DATA&#125;&#125; 采购单编号：&#123;&#123;keyword1.DATA&#125;&#125; 采购类型：&#123;&#123;keyword2.DATA&#125;&#125; 订货日期：&#123;&#123;keyword3.DATA&#125;&#125; 要求送货日期：&#123;&#123;keyword4.DATA&#125;&#125; &#123;&#123;remark.DATA&#125;&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_2.png" class=""></li>
 </ul>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="工具类HttpUtils-java和ReadProperties-java"><a href="#工具类HttpUtils-java和ReadProperties-java" class="headerlink" title="工具类HttpUtils.java和ReadProperties.java"></a>工具类<code>HttpUtils.java</code>和<code>ReadProperties.java</code></h3><ul>
 <li>HttpUtils类是用作发送网络请求</li>

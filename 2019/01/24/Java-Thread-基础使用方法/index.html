@@ -29,6 +29,7 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_13.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/24/Java-Thread-%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/screenshot_1.jpg">
 <meta property="article:published_time" content="2019-01-24T05:29:57.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.861Z">
 <meta property="article:author" content="Daniel">
@@ -153,9 +154,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -229,7 +230,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,7 +243,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -424,7 +425,7 @@
 <p><code>getId()</code> 得到线程的ID<br><code>getName()</code>和<code>setName()</code> 用来得到或者设置线程的名称<br><code>getPriority</code>和<code>setPriority</code> 用来获取和设置线程的优先级<br><code>setDaemon</code>和<code>isDaemon</code>用来设置线程为守护线程和判断线程是否为守护线程。</p>
 </blockquote>
 <p><font color='red'>*</font>重点：守护线程和用户线程的却别是，守护线程依赖于创建它的线程，而用户线程不依赖于创建它的线程，当mian方法运行完毕后，守护线程会随之消亡。但是用户线程不会消失，直至其运行完毕。在JVM中，垃圾收集器线程就是守护线程。<br>Thread类中有一个比较常用的静态类方法<code>currentThread</code>用来获取当前线程。  </p>
-<h1 id="方法调用和Thread的生命周期关系"><a href="#方法调用和Thread的生命周期关系" class="headerlink" title="方法调用和Thread的生命周期关系"></a>方法调用和Thread的生命周期关系</h1>
+<h1 id="方法调用和Thread的生命周期关系"><a href="#方法调用和Thread的生命周期关系" class="headerlink" title="方法调用和Thread的生命周期关系"></a>方法调用和Thread的生命周期关系</h1><img src="/2019/01/24/Java-Thread-%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/screenshot_1.jpg" class="">
 
     </div>
 

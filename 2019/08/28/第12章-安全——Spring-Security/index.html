@@ -29,6 +29,7 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_62.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/08/28/%E7%AC%AC12%E7%AB%A0-%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94Spring-Security/screenshot_1.png">
 <meta property="article:published_time" content="2019-08-28T13:55:59.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.302Z">
 <meta property="article:author" content="Daniel">
@@ -152,9 +153,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -228,7 +229,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -241,7 +242,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -344,7 +345,7 @@
 <h2 id="概述和简单安全认证"><a href="#概述和简单安全认证" class="headerlink" title="概述和简单安全认证"></a>概述和简单安全认证</h2><p>在Java项目中一般使用Servlet过滤器（Filter）队请求进行拦截，然后在Filter中通过自己的验证逻辑来决定是否放行请求。同样Spring Security中也是基于这个原理，在进入到DispatcherServlet钱就可以对Spring MVC的请求进行拦截，然后通过一定的验证，从而决定是否放行请求系统。<br>为了对请求进行拦截，Spring Security提供了过滤器DelegatingFilterProxy类给予开发者配置。传统Web工程中，可以使用web.xml进行配置，在Spring Boot中推荐使用注解。在这里只需要引入上面的pom就可以自动启动Spring Secutiry<br>启动项目你会发现在日志的打印内容会包含如下内容</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2019-08-31 11:39:06.517  INFO 13924 --- [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration :</span><br><span class="line">Using generated security password: 7f859ab3-d0e6-4676-9b93-253e7865102c</span><br></pre></td></tr></table></figure>
 <p>在文本框中输入用户名（User）为user，密码为日志打印出来的随机密码，然后点击登录（Login）按钮，就可以跳转到请求路径</p>
-
+<img src="/2019/08/28/%E7%AC%AC12%E7%AB%A0-%E5%AE%89%E5%85%A8%E2%80%94%E2%80%94Spring-Security/screenshot_1.png" class="">
 <p>但是上面的情况遇到了很多问题：</p>
 <ul>
 <li>每次启动都会造成密码不同，客户需要输入不同的密码，不方便</li>

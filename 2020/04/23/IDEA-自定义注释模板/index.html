@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_82.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_3.png">
 <meta property="article:published_time" content="2020-04-22T17:44:11.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.782Z">
 <meta property="article:author" content="Daniel">
@@ -154,9 +157,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -230,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -350,8 +353,8 @@
     <div class="post-body" itemprop="articleBody">
         <p><img src="/images/banner/banner_82.jpg"><br>之前每次添加注释模板的时候，都会去网上查一遍，但是每个人写的教程都不一样，出现注释模板百花齐放，因此在这里记录下自己认为比较好的一套模板，适应@JavaDoc编写的，支持多参数分别列出的一套模板，下面首先介绍下自定义模板组和模板的创建过程</p>
 <h2 id="创建模板组"><a href="#创建模板组" class="headerlink" title="创建模板组"></a>创建模板组</h2><ol>
-<li>首先第一步打开Idea的Setting界面，步骤：打开Idea–&gt;菜单选择File–&gt;选择Setting</li>
-<li>不再描述，自己看图吧
+<li>首先第一步打开Idea的Setting界面，步骤：打开Idea–&gt;菜单选择File–&gt;选择Setting<img src="/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_1.png" class=""></li>
+<li>不再描述，自己看图吧<img src="/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_2.png" class="">
 需要说明的几点：</li>
 </ol>
 <ul>
@@ -359,7 +362,7 @@
 <li>上图中最下面有一排小字，显示最末尾有个<code>Change</code>，是选择注释快捷输入的作用域，也就是在什么地方你可以通过快捷字母进行输入，这个地方是可以修改的，默认的时候这个地方显示的是<code>No Applicable context yet.Define</code>，点击打开可以选择作用域，我这里选择的是Java，也可以选择第一个，全部选择，如果不选的话，在变量编辑界面会出现系统提供下拉选择变量没有的情况</li>
 <li>模板框中一定得现有内容，例如下面的代码注释模板，否则<code>Edit variables</code>按钮是不可点击状态的<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *</span><br><span class="line">$params$</span><br><span class="line"> * @<span class="built_in">return</span> $returns$</span><br><span class="line"> * @exception $exception$</span><br><span class="line"> * @author $author$</span><br><span class="line"> * @date $date$ $time$</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></li>
 <li>上面的变量配置截图和内容如下<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">params:groovyScript(<span class="string">&quot;def result=&#x27;&#x27;; def params=\&quot;<span class="variable">$&#123;_1&#125;</span>\&quot;.replaceAll(&#x27;[\\\\[|\\\\]|\\\\s]&#x27;, &#x27;&#x27;).split(&#x27;,&#x27;).toList(); for(i = 0; i &lt; params.size(); i++) &#123;result+=&#x27; * @param &#x27; + params[i] + ((i &lt; params.size() - 1) ? &#x27;\\r\\n&#x27; : &#x27;&#x27;)&#125;; return result&quot;</span>, methodParameters())</span><br><span class="line"></span><br><span class="line">returns:methodReturnType()</span><br><span class="line"></span><br><span class="line">exception:expressionType(Expression)</span><br><span class="line"></span><br><span class="line">author:user()</span><br><span class="line"></span><br><span class="line">date:date()</span><br><span class="line"></span><br><span class="line">time:time()</span><br></pre></td></tr></table></figure>
-变量录入完的效果见下图，这个地方有个比较奇怪的地方，在输入groovy代码的时候会出现切换后变成空的，这里可以输入完之后，直接点击OK，就能够保存下来了</li>
+变量录入完的效果见下图，这个地方有个比较奇怪的地方，在输入groovy代码的时候会出现切换后变成空的，这里可以输入完之后，直接点击OK，就能够保存下来了<img src="/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/screenshot_3.png" class=""></li>
 </ul>
 
     </div>

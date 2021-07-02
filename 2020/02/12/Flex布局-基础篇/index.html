@@ -29,6 +29,10 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_74.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-layout.png">
+<meta property="og:image" content="http://xydcom.cn/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-direction.png">
+<meta property="og:image" content="http://xydcom.cn/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-wrap.png">
+<meta property="og:image" content="http://xydcom.cn/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/align-items.png">
 <meta property="article:published_time" content="2020-02-12T10:19:58.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.738Z">
 <meta property="article:author" content="Daniel">
@@ -154,9 +158,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -230,7 +234,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +247,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -370,7 +374,7 @@
 <li>flex container:parent element，也就是父级标签</li>
 <li>flex items:child element，也就是子标签</li>
 </ul>
-
+<img src="/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-layout.png" class="">
 <ul>
 <li>main axis(主轴):flex items会沿着flex container的主轴进行布局，但是不一定是水平的，它依赖于<code>flex-direction</code>属性</li>
 <li>main-start|main-end:flex items在flex container 中的起始到截止的位置</li>
@@ -386,7 +390,7 @@
 <ol start="2">
 <li><p>flex-direction</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  flex-direction: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<img src="/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-direction.png" class="">
 <table>
 <thead>
 <tr>
@@ -436,7 +440,7 @@
 </tbody></table>
 </li>
 </ol>
-
+<img src="/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/flex-wrap.png" class="">
 
 <ol start="4">
 <li><p>flex-flow<br><code>flex-flow</code>是<code>flex-direction</code>和<code>flex-wrap</code>的缩写</p>
@@ -503,7 +507,7 @@
 <td>如果flex item未设置高度或设置为auto，将沾满整个容器的高度</td>
 </tr>
 </tbody></table>
-
+<img src="/2020/02/12/Flex%E5%B8%83%E5%B1%80-%E5%9F%BA%E7%A1%80%E7%AF%87/align-items.png" class="">
 <ol start="7">
 <li>align-content属性<br><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.box &#123;</span><br><span class="line">	display: flex;</span><br><span class="line">	height: 500px;</span><br><span class="line">  align-content: flex-start | flex-end | center | space-between | space-around | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <table>

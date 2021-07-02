@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_78.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/generate_id.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/snowflake_id_generate.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/tinyid_id_generate.jpg">
 <meta property="article:published_time" content="2020-02-23T04:48:51.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.102Z">
 <meta property="article:author" content="Daniel">
@@ -152,9 +155,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -228,7 +231,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -241,7 +244,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -369,7 +372,7 @@
 <li>雪花算法（SnowFlake）</li>
 <li>滴滴出品（TinyID）</li>
 <li>百度（Uidgenerator）</li>
-<li>美团（Leaf）</li>
+<li>美团（Leaf）<img src="/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/generate_id.jpg" class=""></li>
 </ul>
 <h1 id="几种分布式生成ID的优缺点"><a href="#几种分布式生成ID的优缺点" class="headerlink" title="几种分布式生成ID的优缺点"></a>几种分布式生成ID的优缺点</h1><h2 id="基于UUID"><a href="#基于UUID" class="headerlink" title="基于UUID"></a>基于UUID</h2><p>在Java的世界里，想要得到一个具有唯一性的ID，首先想到的就是UUID，UUID是全球唯一的特性。UUID也是可以做分布式ID的，但是不推荐</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">  String uuid = UUID.randomUUID().toString.replaceAll(<span class="string">&quot;-&quot;</span>,<span class="string">&quot;&quot;</span>);</span><br><span class="line">  System.out.print(uuid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -418,7 +421,7 @@
 <li>AOF会对每条写命令都进行持久化，即使Redis挂掉了也不会出现重复ID的情况，但由于incr命令的特殊性，会导致Redis重启恢复的数据时间过长</li>
 </ul>
 <h2 id="基于雪花算法（Snowflake）模式"><a href="#基于雪花算法（Snowflake）模式" class="headerlink" title="基于雪花算法（Snowflake）模式"></a>基于雪花算法（Snowflake）模式</h2><h3 id="雪花算法（Snowflake）介绍"><a href="#雪花算法（Snowflake）介绍" class="headerlink" title="雪花算法（Snowflake）介绍"></a>雪花算法（Snowflake）介绍</h3><p>雪花酸防是twitter公司内部分布式项目采用的ID生成算法，开源后广受国内大厂的好评，在该算法影响下各大公司相继开发出各具特色的分布式生成器</p>
-
+<img src="/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/snowflake_id_generate.jpg" class="">
 <p><code>Snowflake</code>生成的是Long类型的ID，一个Long类型占8个字节，每个字节占8比特，也就是说一个Long类型占64个比特。<br>Snowflake ID组成结构：正数位（占1比特）+时间戳（占41比特）+机器ID（占5比特）+数据中心（占5比特）+自增值（占12比特），共64比特组成的一个Long类型</p>
 <ul>
 <li>第一个bit（1bit）：Java中long类的最高位是代表正负，正数是0，附属是1，一般生成ID都是正数，所以默认为0</li>
@@ -439,7 +442,7 @@
 snowflake模式获取分布式自增ID的测试url:<a target="_blank" rel="noopener" href="http://localhost:8080/api/snowflake/get/test">http://localhost:8080/api/snowflake/get/test</a></li>
 </ol>
 <h2 id="滴滴（Tinyid）"><a href="#滴滴（Tinyid）" class="headerlink" title="滴滴（Tinyid）"></a>滴滴（Tinyid）</h2><p>Tinyid由滴滴开发，Github地址<a target="_blank" rel="noopener" href="https://github.com/didi/tinyid">https://github.com/didi/tinyid</a><br>Tinyid是基于号段模式原理实现的与Leaf如出一辙，每个服务获取一个较短(1000,2000],(2000,3000],(3000,4000]</p>
-
+<img src="/2020/02/23/%E5%88%86%E5%B8%83%E5%BC%8F%E7%94%9F%E6%88%90ID%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/tinyid_id_generate.jpg" class="">
 
 <p>Tinyid提供http和tinyid-client两种方式接入</p>
 <ol>

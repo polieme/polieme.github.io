@@ -29,6 +29,7 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_50.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/04/23/%E7%AC%AC5%E7%AB%A0-%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93/screenshot_1.png">
 <meta property="article:published_time" content="2019-04-23T00:38:11.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.357Z">
 <meta property="article:author" content="Daniel">
@@ -153,9 +154,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -229,7 +230,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,7 +243,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -409,7 +410,7 @@
 <p>因为在启动配置文件中装配了对应的接口，所以可以@Autowired注入应用。接着实现getUser方法，下面开发控制器，完成接口的测试，代码如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.chapter5.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.chapter5.pojo.User;</span><br><span class="line"><span class="keyword">import</span> com.example.chapter5.service.MyBatisUserService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/mybatis&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBatisController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyBatisUserService myBatisUserService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/getUser&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">(Long id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> myBatisUserService.getUser(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样，在浏览器中输入<a target="_blank" rel="noopener" href="http://localhost:8080/mybatis/getUser?id=1">http://localhost:8080/mybatis/getUser?id=1</a>，就可以看到下面的结果</p>
-
+<img src="/2019/04/23/%E7%AC%AC5%E7%AB%A0-%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93/screenshot_1.png" class="">
 <p>显然到这里已经整合了MyBatis，并且成功打印出JSON数据集。然而上面只是一个Dao接口，如果有很多Dao接口，一个一个的定义肯定会比较麻烦，这个时候，就可以使用MapperScannerConfigurer类来定义扫描了，他可以配置包和注解类型进行装配，首先把Spring Boot启动配置文件中的关于Dao注入的代码删掉，然后在其中加入如下代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 配置MyBatis接口扫描</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 返回扫描器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MapperScannerConfigurer <span class="title">mapperScannerConfig</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//定义扫描实例</span></span><br><span class="line">    MapperScannerConfigurer mapperScannerConfigurer = <span class="keyword">new</span> MapperScannerConfigurer();</span><br><span class="line">    <span class="comment">//加载SqlSessionFactory，SpringBoot会自动生产，SqlSessionFactory实例</span></span><br><span class="line">    mapperScannerConfigurer.setSqlSessionFactoryBeanName(<span class="string">&quot;sqlSessionFactory&quot;</span>);</span><br><span class="line">    <span class="comment">//定义扫描的包</span></span><br><span class="line">    mapperScannerConfigurer.setBasePackage(<span class="string">&quot;com.example.chapter5.*&quot;</span>);</span><br><span class="line">    <span class="comment">//限定被表位@Repository的接口才被扫描</span></span><br><span class="line">    mapperScannerConfigurer.setAnnotationClass(Repository.class);</span><br><span class="line">    <span class="comment">//通过集成某个接口限制扫描，一般用不多</span></span><br><span class="line">    <span class="comment">//mapperScannerConfigurer.setMarkerInterface(......);</span></span><br><span class="line">    <span class="keyword">return</span> mapperScannerConfigurer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码中使用MapperScannerConfigurer定义扫描包，这样程序就会去自动扫描对应的恶报，然后还使用了注解限制，限制为@Repository，这就是为什么在上面代码中为什么使用这个注解的原因，这样就可以防止扫描中被错误装配。<br>但是上述还是需要编写代码，而实际上还有更为简单的方式，那就是注解@MapperScan，例如我们可以删除上述关于MapperFactoryBean和MapperScannerConfigurer的相关代码，单独使用@MapperScan，例如可以Spring Boot启动代码可以修改为如下格式</p>

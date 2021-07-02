@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_6.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_3.png">
 <meta property="article:published_time" content="2019-02-18T08:38:49.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.702Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +158,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -230,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -355,17 +358,17 @@
 <ol>
 <li><p>首先第一步是查询是否安装了openjdk</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br><span class="line">rpm -qa | grep java或者rpm -qa | grep jdk</span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_1.png" class=""></li>
 <li><p>执行卸载命令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove java 红色框中的内容</span><br><span class="line">或者</span><br><span class="line">rpm -e --nodeps 红色框中的内容</span><br></pre></td></tr></table></figure></li>
 <li><p>安装jdk<br>wget 下载地址<br>从jdk官网下载jdk，对应的版本是<a target="_blank" rel="noopener" href="http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz?AuthParam=1484402679_fcd52afad2d006c2f4d31c50b4e7b6b8">http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz?AuthParam=1484402679_fcd52afad2d006c2f4d31c50b4e7b6b8</a></p>
 </li>
 <li><p>下载完成后进行解压操作，并移动到/usr/local</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf 下载下来的tar.gz 的安装包</span><br><span class="line">mv jdk1.8.0_111/ /usr/<span class="built_in">local</span>/</span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_2.png" class=""></li>
 <li><p>配置环境变量<br>编辑<code>/etc/profile</code>文件，在最后添加如下内容,然后保存</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_111</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_111/jre</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:.:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JRE_HOME</span>/lib</span><br></pre></td></tr></table></figure>
-</li>
+<img src="/2019/02/18/CentOS7%E5%8D%B8%E8%BD%BD%E9%BB%98%E8%AE%A4openjdk%E5%B9%B6%E5%AE%89%E8%A3%85%E6%96%B0%E7%9A%84JDK/screenshot_3.png" class=""></li>
 <li><p>执行编译，使配置文件生效</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">. /etc/profile</span><br><span class="line">或者</span><br><span class="line">切换到etc文件夹下面执行</span><br><span class="line">./profile</span><br></pre></td></tr></table></figure></li>
 </ol>

@@ -29,6 +29,9 @@
 <meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_12.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_3.png">
 <meta property="article:published_time" content="2019-01-25T13:41:34.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:02.375Z">
 <meta property="article:author" content="Daniel">
@@ -155,9 +158,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -231,7 +234,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +247,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -370,7 +373,7 @@
 </ul>
 </li>
 </ul>
-
+<img src="/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_1.png" class="">
 
 <ul>
 <li><strong>Authentication</strong>:身份认证/登录，验证用户是否拥有相应的身份</li>
@@ -387,7 +390,7 @@
 <blockquote>
 <p>Shiro是不会去维护权限、用户的数据的；这些需要我们自己去设计/提供；然后通过相应的接口注入到Shiro</p>
 </blockquote>
-
+<img src="/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_2.png" class="">
 
 <p>从上图可以看出应用程序代码直接交互的对象是Subject，也就是Shiro的对外核心API是Subject：</p>
 <ul>
@@ -402,7 +405,7 @@
 <li>我们需要给SecurityManager注入Realm，从而让SecurityManager获取到相应的用户及权限进行判断</li>
 </ol>
 <hr>
-
+<img src="/2019/01/25/%E7%AC%AC%E4%B8%80%E7%AB%A0-Shiro%E7%AE%80%E4%BB%8B/screenshot_3.png" class="">
 
 <ul>
 <li><strong>Subject</strong>:主体，可以看到主体是任何可以与应用交互的“用户”</li>

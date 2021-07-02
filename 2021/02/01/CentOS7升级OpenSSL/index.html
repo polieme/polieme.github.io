@@ -31,6 +31,8 @@
 <meta property="og:description" content="最近安装OpenVPN的时候，出现OpenSSL升级完成后，SSH远程不上的情况，查询了一些解决方案，现记录如下">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://xydcom.cn/images/banner/banner_96.jpg">
+<meta property="og:image" content="http://xydcom.cn/2021/02/01/CentOS7%E5%8D%87%E7%BA%A7OpenSSL/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2021/02/01/CentOS7%E5%8D%87%E7%BA%A7OpenSSL/screenshot_2.png">
 <meta property="article:published_time" content="2021-02-01T06:45:23.000Z">
 <meta property="article:modified_time" content="2021-04-11T08:43:01.699Z">
 <meta property="article:author" content="Daniel">
@@ -157,9 +159,9 @@
         <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
         <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
         <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">210</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">211</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">99</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">175</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">177</span></a></li>
         <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -233,7 +235,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -246,7 +248,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">210</span>
+        <span class="site-state-item-count">211</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -370,11 +372,11 @@
 <p><strong>修改内容如下：</strong></p>
 <ol>
 <li><p>修改SSHD<code>vim /etc/init.d/sshd</code>的内容，对比下相关内容，修改成如图对应内容即可</p>
-</li>
+<img src="/2021/02/01/CentOS7%E5%8D%87%E7%BA%A7OpenSSL/screenshot_1.png" class=""></li>
 <li><p>修改sshd配置文件<code>/etc/ssh/sshd_config</code>，编辑的时候使用搜查查询到以下关键词，修改为对应的内容</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin yes</span><br><span class="line">X11Forwarding yes</span><br><span class="line">PasswordAuthentication yes</span><br></pre></td></tr></table></figure>
 <p>修改外后的效果见下图</p>
-</li>
+<img src="/2021/02/01/CentOS7%E5%8D%87%E7%BA%A7OpenSSL/screenshot_2.png" class=""></li>
 </ol>
 <p>继续</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 卸载原有的ssh</span></span><br><span class="line">[root@xxx ~]<span class="comment"># for  i   in  $(rpm  -qa  |grep  openssh);do  rpm  -e  $i  --nodeps ;done</span></span><br><span class="line"><span class="comment"># 这个地方执行的时候会弹出几个warning,把waring后面的文件名再改回来</span></span><br><span class="line">[root@xxx ~]<span class="comment"># mv /etc/ssh/sshd_config.rpmsave /etc/ssh/sshd_config</span></span><br><span class="line">[root@xxx ~]<span class="comment"># mv /etc/ssh/ssh_config.rpmsave /etc/ssh/ssh_config</span></span><br><span class="line">[root@xxx ~]<span class="comment"># mv /etc/ssh/moduli.rpmsave /etc/ssh/moduli</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换相关命令，重启sshd服务</span></span><br><span class="line">[root@xxx ~]<span class="comment"># cp -arp /usr/local/openssh/bin/* /usr/bin/</span></span><br><span class="line">[root@xxx ~]<span class="comment"># service sshd restart</span></span><br><span class="line"><span class="comment"># 验证升级，让其他人telnet下服务器IP地址的22端口，如果显示SSH-2.0-OpenSSH_8.0表示成功了</span></span><br><span class="line"><span class="comment"># 设置开机启动</span></span><br><span class="line">[root@xxx ~]<span class="comment"># chkconfig --add sshd</span></span><br><span class="line">[root@xxx ~]<span class="comment"># chkconfig --level 2345 sshd on</span></span><br><span class="line">[root@xxx ~]<span class="comment"># chkconfig --list</span></span><br></pre></td></tr></table></figure>
