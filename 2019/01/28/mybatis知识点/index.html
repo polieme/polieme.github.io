@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis 知识点">
+<meta property="og:url" content="http://xydcom.cn/2019/01/28/mybatis%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_17.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/28/mybatis%E7%9F%A5%E8%AF%86%E7%82%B9/screen_shot_1.png">
+<meta property="article:published_time" content="2019-01-28T07:04:10.000Z">
+<meta property="article:modified_time" content="2021-09-27T08:03:13.169Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="MyBatis">
+<meta property="article:tag" content="大小写">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_17.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/01/28/mybatis%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>mybatis 知识点 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mybatis-%E8%BF%94%E5%9B%9EMap%E7%B1%BB%E5%9E%8Bkey%E6%94%B9%E4%B8%BA%E5%B0%8F%E5%86%99"><span class="nav-number">1.</span> <span class="nav-text">mybatis 返回Map类型key改为小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis-saveOrUpdate%E5%86%99%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">MyBatis saveOrUpdate写法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#selectKey%E5%AE%9E%E7%8E%B0saveOrUpdate"><span class="nav-number">2.1.</span> <span class="nav-text">selectKey实现saveOrUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ON-DUPLICATE-KEY-UPDATE%E5%AE%9E%E7%8E%B0saveOrUpdate"><span class="nav-number">2.2.</span> <span class="nav-text">ON DUPLICATE KEY UPDATE实现saveOrUpdate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8association%E5%92%8Ccollection%E5%AE%9E%E7%8E%B0MyBatis%E6%9F%A5%E8%AF%A2%E5%87%BA%E6%9D%A5%E7%9A%84%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%8C%85%E5%90%ABList%E5%92%8C%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">使用association和collection实现MyBatis查询出来的数据中包含List和对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sql"><span class="nav-number">3.1.</span> <span class="nav-text">sql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="nav-number">3.2.</span> <span class="nav-text">实体类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INSERT%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E8%87%AA%E5%8A%A8%E5%9B%9E%E5%A1%AB%E4%B8%BB%E9%94%AE"><span class="nav-number">4.</span> <span class="nav-text">INSERT插入数据自动回填主键</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%BA%93%E5%AD%97%E6%AE%B5%E4%B8%BA%E8%87%AA%E5%A2%9E%E9%95%BF%E7%9A%84%E6%97%B6%E5%80%99"><span class="nav-number">4.1.</span> <span class="nav-text">数组库字段为自增长的时候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%84%E5%88%99%E7%94%9F%E6%88%90%E4%B8%BB%E9%94%AE"><span class="nav-number">4.2.</span> <span class="nav-text">自定义规则生成主键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%8A%8A%E9%80%97%E5%8F%B7%E5%88%86%E5%89%B2%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%88%90%E5%8F%AF%E4%BB%A5%E6%94%BE%E5%85%A5in%E6%9D%A1%E4%BB%B6%E7%9A%84%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.</span> <span class="nav-text">sql把逗号分割的字符串转换成可以放入in条件的语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">Oracle的实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">MySQL的实现方式</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/28/mybatis%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mybatis 知识点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-28 15:04:10" itemprop="dateCreated datePublished" datetime="2019-01-28T15:04:10+08:00">2019-01-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-27 16:03:13" itemprop="dateModified" datetime="2021-09-27T16:03:13+08:00">2021-09-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">后端开发框架</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/SSM/MyBatis/" itemprop="url" rel="index"><span itemprop="name">MyBatis</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/SSM/MyBatis/%E7%9F%A5%E8%AF%86%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">知识点</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_17.jpg"></p>
+<h2 id="mybatis-返回Map类型key改为小写"><a href="#mybatis-返回Map类型key改为小写" class="headerlink" title="mybatis 返回Map类型key改为小写"></a>mybatis 返回Map类型key改为小写</h2><blockquote>
+<p><font color='red'>当使用mybatis查询数据库的时候，会出现查询出来的Map中字段都是大写的，需要进行处理，处理的方法如下</font>  </p>
+</blockquote>
+<ol>
+<li>添加别名</li>
+<li>别名上添加双引号，查询出来的就是小写了</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getStudentList&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;java.util.Map&quot;</span>&gt;</span></span><br><span class="line">select t.name as &quot;sName&quot;,t.sex as &quot;sSex&quot;</span><br><span class="line">        from student</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MyBatis-saveOrUpdate写法"><a href="#MyBatis-saveOrUpdate写法" class="headerlink" title="MyBatis saveOrUpdate写法"></a>MyBatis saveOrUpdate写法</h2><p>如果按照常规的套路，肯定是现根据ID查询下是否存在，然后如果存在，则走更新方法，如果不存在，走新增方法，但是这种写法真的感觉比较麻烦</p>
+<h3 id="selectKey实现saveOrUpdate"><a href="#selectKey实现saveOrUpdate" class="headerlink" title="selectKey实现saveOrUpdate"></a>selectKey实现saveOrUpdate</h3><ol>
+<li>首先使用<code>selectKey</code>标签查询是否存在满足条件的数据，如果有那么<code>count</code>会大于0，没有，count为0</li>
+<li>如果大于0，那么走UPDATE语句，等于0，走INSERT语句<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;saveOrUpdate&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;ApiAiActivitCifList&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">selectKey</span> <span class="attr">resultType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">keyProperty</span>=<span class="string">&quot;count&quot;</span> <span class="attr">order</span>=<span class="string">&quot;BEFORE&quot;</span>&gt;</span></span><br><span class="line">            SELECT</span><br><span class="line">                COUNT(*) count</span><br><span class="line">            FROM</span><br><span class="line">          ....</span><br><span class="line">        <span class="tag">&lt;/<span class="name">selectKey</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">choose</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">when</span> <span class="attr">test</span>=<span class="string">&quot;count &gt; 0&quot;</span>&gt;</span></span><br><span class="line">              UPDATE ...</span><br><span class="line">            <span class="tag">&lt;/<span class="name">when</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">otherwise</span>&gt;</span></span><br><span class="line">                INSERT ...</span><br><span class="line">            <span class="tag">&lt;/<span class="name">otherwise</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">choose</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="ON-DUPLICATE-KEY-UPDATE实现saveOrUpdate"><a href="#ON-DUPLICATE-KEY-UPDATE实现saveOrUpdate" class="headerlink" title="ON DUPLICATE KEY UPDATE实现saveOrUpdate"></a><code>ON DUPLICATE KEY UPDATE</code>实现saveOrUpdate</h3><p>说明：<code>ON DUPLICATE KEY UPDATE</code> 个人理解是当主键或唯一索引发生重复的时候，走更新SQL，如果没有重复，则走新增SQL，另外还需要说明以下几点：  </p>
+<ul>
+<li> 第一行中的<code>keyProperty</code>是用来指定自动生成的id的字段对应Bean中属性名，这个是用作后续代码使用新增时的ID的时候使用的（像主从表，从表插入时需要主表的主键ID作为从表的外键），在执行完插入之后能直接在传入的<code>parameterType</code>对象中找到新生成的ID  </li>
+<li>在<code>insert</code> SQL中需要把主键也放进去，也就是这里的<code>gift_id</code>（及时Bean对象中giftId为null，也得放），因为如果不放的话，那会出现一直插入的现象</li>
+<li>在这里<code>insert</code>不需要使用<code>autoGenerateKey</code>属性，如果使用了，会出现走<code>update</code>SQL也会更新主键的情况，这样的话就很头疼，你在进入Mapper之前得先记下之前的ID，所以是画蛇添足，直接不加即可</li>
+<li><code>ON DUPLICATE KEY UPDATE</code>后面直接是<code>数据库字段=Bean属性</code>不需要<code>where</code>条件，因为都已经<code>DUPLICATE</code>了，那肯定知道ID是啥了，自己就关联了，表名也是不需要的  </li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;saveSemConfigGiftList&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.xydtech.sem.config.domain.SemConfigGiftList&quot;</span> <span class="attr">keyProperty</span>=<span class="string">&quot;giftId&quot;</span>&gt;</span></span><br><span class="line">  insert into sem_config_gift_list</span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">&quot;(&quot;</span> <span class="attr">suffix</span>=<span class="string">&quot;)&quot;</span> <span class="attr">suffixOverrides</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">      gift_id,</span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;giftName != null  and giftName != &#x27;&#x27;&quot;</span>&gt;</span>gift_name,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;gidtSum != null  and gidtSum != &#x27;&#x27;&quot;</span>&gt;</span>gidt_sum,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">prefix</span>=<span class="string">&quot;values (&quot;</span> <span class="attr">suffix</span>=<span class="string">&quot;)&quot;</span> <span class="attr">suffixOverrides</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">      #&#123;giftId&#125;,</span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;giftName != null  and giftName != &#x27;&#x27;&quot;</span>&gt;</span>#&#123;giftName&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;gidtSum != null  and gidtSum != &#x27;&#x27;&quot;</span>&gt;</span>#&#123;gidtSum&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line">  ON DUPLICATE KEY UPDATE</span><br><span class="line">  <span class="tag">&lt;<span class="name">trim</span> <span class="attr">suffixOverrides</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;giftName != null  and giftName != &#x27;&#x27;&quot;</span>&gt;</span>gift_name = #&#123;giftName&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;gidtSum != null  and gidtSum != &#x27;&#x27;&quot;</span>&gt;</span>gidt_sum = #&#123;gidtSum&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">trim</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用association和collection实现MyBatis查询出来的数据中包含List和对象"><a href="#使用association和collection实现MyBatis查询出来的数据中包含List和对象" class="headerlink" title="使用association和collection实现MyBatis查询出来的数据中包含List和对象"></a>使用<code>association</code>和<code>collection</code>实现MyBatis查询出来的数据中包含List和对象</h2><p>目前假设存在四张表（用户表、机构表、角色、用户角色表），用户表中有外键deptId是机构表的主键，也就是说用户对应着一个机构；用户角色表中是多对多（用户ID和角色ID），也就是说一个用户拥有多个角色，现在需要查询出多个用户的信息，信息中包含用户的部门信息和用户的角色List，该如何实现？</p>
+<img src="/2019/01/28/mybatis%E7%9F%A5%E8%AF%86%E7%82%B9/screen_shot_1.png" class="">
+
+<h3 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>resultMap type<span class="operator">=</span>&quot;ApiSysUser&quot; id<span class="operator">=</span>&quot;SysUserResult&quot;<span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span>id     property<span class="operator">=</span>&quot;userId&quot;       <span class="keyword">column</span><span class="operator">=</span>&quot;user_id&quot;      <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span><span class="keyword">result</span> property<span class="operator">=</span>&quot;userName&quot;     <span class="keyword">column</span><span class="operator">=</span>&quot;user_name&quot;    <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span>association property<span class="operator">=</span>&quot;dept&quot;    <span class="keyword">column</span><span class="operator">=</span>&quot;dept_id&quot; javaType<span class="operator">=</span>&quot;ApiSysDept&quot; resultMap<span class="operator">=</span>&quot;deptResult&quot; <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span>collection  property<span class="operator">=</span>&quot;roles&quot;   javaType<span class="operator">=</span>&quot;java.util.List&quot;        resultMap<span class="operator">=</span>&quot;RoleResult&quot; <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span>resultMap<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span>resultMap id<span class="operator">=</span>&quot;deptResult&quot; type<span class="operator">=</span>&quot;ApiSysDept&quot;<span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span>id     property<span class="operator">=</span>&quot;deptId&quot;   <span class="keyword">column</span><span class="operator">=</span>&quot;dept_id&quot;     <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">	<span class="operator">&lt;</span><span class="keyword">result</span> property<span class="operator">=</span>&quot;deptName&quot; <span class="keyword">column</span><span class="operator">=</span>&quot;dept_name&quot;   <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span>resultMap<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span>resultMap id<span class="operator">=</span>&quot;RoleResult&quot; type<span class="operator">=</span>&quot;ApiSysRole&quot;<span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>id     property<span class="operator">=</span>&quot;roleId&quot;       <span class="keyword">column</span><span class="operator">=</span>&quot;role_id&quot;        <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span><span class="keyword">result</span> property<span class="operator">=</span>&quot;roleName&quot;     <span class="keyword">column</span><span class="operator">=</span>&quot;role_name&quot;      <span class="operator">/</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span>resultMap<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span><span class="keyword">select</span> id<span class="operator">=</span>&quot;getUserByOpenId&quot; parameterType<span class="operator">=</span>&quot;String&quot; resultMap<span class="operator">=</span>&quot;SysUserResult&quot;<span class="operator">&gt;</span></span><br><span class="line">  <span class="keyword">SELECT</span></span><br><span class="line">  	u.user_id,</span><br><span class="line">  	u.user_name,</span><br><span class="line">  	d.dept_id,</span><br><span class="line">  	d.dept_name,</span><br><span class="line">  	r.role_id,</span><br><span class="line">  	r.role_name</span><br><span class="line">  <span class="keyword">FROM</span></span><br><span class="line">  	sys_user u</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sys_dept d <span class="keyword">ON</span> u.dept_id <span class="operator">=</span> d.dept_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sys_user_role ur <span class="keyword">ON</span> u.user_id <span class="operator">=</span> ur.user_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sys_role r <span class="keyword">ON</span> r.role_id <span class="operator">=</span> ur.role_id</span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">select</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xydtech.api.user.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xydtech.common.core.domain.BaseEntity;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModel;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.builder.ToStringBuilder;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.builder.ToStringStyle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.Email;</span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotBlank;</span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.Size;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户对象 sys_user</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> JHON</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@ApiModel(&quot;用户实体类&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiSysUser</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 用户ID */</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;用户ID&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long userId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 用户名称 */</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;用户名称&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 部门对象 */</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;部门对象&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> ApiSysDept dept;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;角色ID&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;ApiSysRole&gt; roles;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="INSERT插入数据自动回填主键"><a href="#INSERT插入数据自动回填主键" class="headerlink" title="INSERT插入数据自动回填主键"></a><code>INSERT</code>插入数据自动回填主键</h2><p>常规情况插入完成就算完了，但是会存在主从表业务时，字表需要使用主表的ID作为从表的外键进行关联，然后在插入的时候一般情况下是没有主键的（自己生成随机数，雪花算法之类的、UUID的除外），所以需要在主表数据保存的同时，将主键返回给Java代码，然后Java代码通过获取到的ID进行后续业务的操作，常规的方法有两种，一种是数据库字段为自增长的时候，另一种是自定义主键  </p>
+<h3 id="数组库字段为自增长的时候"><a href="#数组库字段为自增长的时候" class="headerlink" title="数组库字段为自增长的时候"></a>数组库字段为自增长的时候</h3><p>下面的<code>columnId</code>就是接受数据库自动生成的ID，代码里面可以直接从<code>GenTableColumn</code>中获取<code>columnId</code>了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insertGenTableColumn&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;GenTableColumn&quot;</span> <span class="attr">useGeneratedKeys</span>=<span class="string">&quot;true&quot;</span> <span class="attr">keyProperty</span>=<span class="string">&quot;columnId&quot;</span>&gt;</span></span><br><span class="line">    insert into gen_table_column (</span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;tableId != null and tableId != &#x27;&#x27;&quot;</span>&gt;</span>table_id,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;columnName != null and columnName != &#x27;&#x27;&quot;</span>&gt;</span>column_name,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">     )values(</span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;tableId != null and tableId != &#x27;&#x27;&quot;</span>&gt;</span>#&#123;tableId&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;columnName != null and columnName != &#x27;&#x27;&quot;</span>&gt;</span>#&#123;columnName&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">     )</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义规则生成主键"><a href="#自定义规则生成主键" class="headerlink" title="自定义规则生成主键"></a>自定义规则生成主键</h3><p>这种情况下自己可以在Java代码中先生成，分别设置到主从表对象中，然后进行保存，另一种就可以使用下面的这种方法:<code>selectkey</code>是生成一个<code>key</code>，其中<code>selectkey</code>标签中的<code>keProperty</code>属性要和<code>user</code>对象中一个属性对应上，要不无法保存，直接玩之后，生成的值就可以直接在user对象中获取</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;insertUser&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">useGeneratedKeys</span>=<span class="string">&quot;true&quot;</span> <span class="attr">keProperty</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">selectkey</span> <span class="attr">keProperty</span>=<span class="string">&quot;id&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">order</span>=<span class="string">&quot;BEFORE&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">		select if(max(id) is null, 1, max(id) + 2) as newId from t_user</span></span></span><br><span class="line"><span class="tag"><span class="string">	&lt;/selectkey&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">	insert into t_user(user_name,age) values (#$&#123;userName&#125;,#&#123;age&#125;)</span></span></span><br><span class="line"><span class="tag"><span class="string">&lt;/insert&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="sql把逗号分割的字符串转换成可以放入in条件的语句"><a href="#sql把逗号分割的字符串转换成可以放入in条件的语句" class="headerlink" title="sql把逗号分割的字符串转换成可以放入in条件的语句"></a>sql把逗号分割的字符串转换成可以放入in条件的语句</h2><h3 id="Oracle的实现方式"><a href="#Oracle的实现方式" class="headerlink" title="Oracle的实现方式"></a>Oracle的实现方式</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	table1 t1</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	t1.id <span class="keyword">IN</span> (</span><br><span class="line">		<span class="keyword">SELECT</span></span><br><span class="line">			REGEXP_SUBSTR (<span class="string">&#x27;$&#123;ids&#125;&#x27;</span>, <span class="string">&#x27;[^,]+&#x27;</span>, <span class="number">1</span>, LEVEL)</span><br><span class="line">		<span class="keyword">FROM</span></span><br><span class="line">			DUAL <span class="keyword">CONNECT</span> <span class="keyword">BY</span> REGEXP_SUBSTR (<span class="string">&#x27;$&#123;ids&#125;&#x27;</span>, <span class="string">&#x27;[^,]+&#x27;</span>, <span class="number">1</span>, LEVEL) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">	)</span><br></pre></td></tr></table></figure>
+
+<h3 id="MySQL的实现方式"><a href="#MySQL的实现方式" class="headerlink" title="MySQL的实现方式"></a>MySQL的实现方式</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> FIND_IN_SET(id, <span class="string">&#x27;1,2,3&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+              <a href="/tags/%E5%A4%A7%E5%B0%8F%E5%86%99/" rel="tag"># 大小写</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/28/SSM%E6%A1%86%E6%9E%B6DDL%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8/" rel="prev" title="SSM框架DDL操作数据库表">
+                  <i class="fa fa-chevron-left"></i> SSM框架DDL操作数据库表
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/28/IDEA2018%E6%90%AD%E5%BB%BASSM%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%80%EF%BC%89%E5%89%8D%E6%9C%9F%E6%90%AD%E5%BB%BA/" rel="next" title="IDEA2018搭建SSM框架（一）前期搭建">
+                  IDEA2018搭建SSM框架（一）前期搭建 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

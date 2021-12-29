@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sftp命令上传下载文件">
+<meta property="og:url" content="http://xydcom.cn/2020/02/06/sftp%E5%91%BD%E4%BB%A4%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_72.jpg">
+<meta property="article:published_time" content="2020-02-06T08:44:38.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.389Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="SFTP">
+<meta property="article:tag" content="文件上传下载">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_72.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2020/02/06/sftp%E5%91%BD%E4%BB%A4%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Sftp命令上传下载文件 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E5%88%B0SFTP"><span class="nav-number">1.</span> <span class="nav-text">远程到SFTP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SFTP%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">SFTP命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ls"><span class="nav-number">2.2.1.</span> <span class="nav-text">ls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lls"><span class="nav-number">2.2.2.</span> <span class="nav-text">lls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cd"><span class="nav-number">2.2.3.</span> <span class="nav-text">cd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lcd"><span class="nav-number">2.2.4.</span> <span class="nav-text">lcd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pwd"><span class="nav-number">2.2.5.</span> <span class="nav-text">pwd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lpwd"><span class="nav-number">2.2.6.</span> <span class="nav-text">lpwd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#put"><span class="nav-number">2.2.7.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get"><span class="nav-number">2.2.8.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quit"><span class="nav-number">2.2.9.</span> <span class="nav-text">quit</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2020/02/06/sftp%E5%91%BD%E4%BB%A4%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sftp命令上传下载文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-06 16:44:38" itemprop="dateCreated datePublished" datetime="2020-02-06T16:44:38+08:00">2020-02-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">办公知识</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/Sftp/" itemprop="url" rel="index"><span itemprop="name">Sftp</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_72.jpg"></p>
+<blockquote>
+<p>前提是这样的，最近公司的一台内网机上面只有Xshell没有Sftp，所以在上传和下载文件的时候点击了Xshell上的Sftp，发现直接跳转了一个新的bash界面，而且显示的是Sftp+当前的路径，那也就意味着是可以使用命令进行执行的，然后就查了下，果然是有的</p>
+</blockquote>
+<p><font color='red'>发现ssh远程和ftp好像是使用的一个端口，都是22，不知道是自己无知还是真的就是这样的</font></p>
+<h1 id="远程到SFTP"><a href="#远程到SFTP" class="headerlink" title="远程到SFTP"></a>远程到SFTP</h1><ol>
+<li>方法1：<br>首先在执行命令之前，得先远程到SFTP服务器上才行，常规下载XShell上，点击绿色文件夹按钮就会弹出提示没有安装XFTP，点击确认后就会自己创建一个新的页卡，页卡就会直接远程到SFTP下面</li>
+<li>方法2：<br>点击顶部TAB页卡中的<code>+</code>号按钮，打开一个新的TAB页，然后执行下面的命令（当然命令中的信息需要换成你自己服务器的信息）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[E:\~]$ sftp user@ip port</span><br><span class="line"><span class="comment"># 回车后会弹出输入密码，输入密码后会显示如下信息</span></span><br><span class="line">Host <span class="string">&#x27;xxx.xxxx.xxx&#x27;</span> resolved to xxx.xxx.xxx.xxx.</span><br><span class="line">Connecting to xxx.xxx.xxx.xxx:xxx...</span><br><span class="line">Connection established.</span><br><span class="line">To escape to <span class="built_in">local</span> shell, press <span class="string">&#x27;Ctrl+Alt+]&#x27;</span>.</span><br><span class="line"></span><br><span class="line">Your current <span class="built_in">local</span> directory is</span><br><span class="line">E:\杂七杂八\Xshell\Xshell\Sessions</span><br><span class="line"></span><br><span class="line">Type <span class="built_in">help</span> to browse available commnands.</span><br><span class="line">sftp:/root&gt;</span><br><span class="line"><span class="comment"># 接下来就能执行SFTP命令了</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="SFTP命令"><a href="#SFTP命令" class="headerlink" title="SFTP命令"></a>SFTP命令</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li>ls:展示远程服务器上的文件列表</li>
+<li>lls:展示本机上的文件列表</li>
+</ul>
+<hr>
+<ul>
+<li>cd:切换远程服务器上所在的路径</li>
+<li>lcd:切换本机上的所在的路径</li>
+</ul>
+<hr>
+<ul>
+<li>pwd:展示远程服务器上当前所在的路径</li>
+<li>lpwd:展示本机当前所在的路径</li>
+</ul>
+<hr>
+<ul>
+<li>put:将本机的文件发送到服务器上</li>
+<li>get:将服务器上的文件下载到本机上</li>
+</ul>
+<hr>
+<p>quit:退出sftp</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h3><p>展示远程服务器上的文件列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sftp:/root&gt; ls</span><br><span class="line">drwxr-xr-x    2 root     root         4096 Nov  3  2014 .kettle</span><br><span class="line">-rw-------    1 root     root           44 Jul 17  2014 .lesshst</span><br><span class="line">drwxr-xr-x    2 root     root         4096 Nov 23  2015 视频</span><br><span class="line">-rw-r--r--    1 root     root          176 Sep 23  2004 .bashrc</span><br><span class="line">-rw-------    1 root     root            0 Oct 16 17:25 .mysql_history.TMP</span><br><span class="line">-rw-------    1 root     root         4352 Oct 16 09:42 .mysql_history</span><br><span class="line">drwx------    2 root     root         4096 Mar 18  2019 .gconfd</span><br><span class="line">-rw-r--r--    1 root     root           18 May 20  2009 .bash_logout</span><br><span class="line">-rw-------    1 root     root           69 Dec 15  2016 .rediscli_history</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="lls"><a href="#lls" class="headerlink" title="lls"></a>lls</h3><p>展示本机上的文件列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sftp:/root&gt; lls</span><br><span class="line">02/06/2020 07:01上    &lt;DIR&gt;              .</span><br><span class="line">02/06/2020 07:01上    &lt;DIR&gt;              ..</span><br><span class="line">02/02/2020 06:12上                 7762  default</span><br><span class="line">02/06/2020 06:59上                   21  folder.ini</span><br><span class="line">02/06/2020 07:00上    &lt;DIR&gt;              ITL</span><br><span class="line">02/06/2020 07:01上    &lt;DIR&gt;              个人</span><br><span class="line">02/02/2020 06:12上                 7852  新建会话.xsh</span><br></pre></td></tr></table></figure>
+
+<h3 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h3><p>切换远程服务器上所在的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp:/root&gt; <span class="built_in">cd</span> /home/oracle</span><br><span class="line">sftp:/home/oracle&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="lcd"><a href="#lcd" class="headerlink" title="lcd"></a>lcd</h3><p>切换本机上的所在的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp:/home/oracle&gt; lcd E:\</span><br><span class="line">Local directory is now E:\</span><br></pre></td></tr></table></figure>
+
+<h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h3><p>展示远程服务器上当前所在的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp:/home/oracle&gt; <span class="built_in">pwd</span></span><br><span class="line">Remote directory is /home/oracle</span><br></pre></td></tr></table></figure>
+
+<h3 id="lpwd"><a href="#lpwd" class="headerlink" title="lpwd"></a>lpwd</h3><p>展示本机当前所在的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp:/home/oracle&gt; lpwd</span><br><span class="line">Local directory is E:\</span><br></pre></td></tr></table></figure>
+
+<h3 id="put"><a href="#put" class="headerlink" title="put"></a>put</h3><p>将本机的文件发送到服务器上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp:/home/oracle&gt; put E:\20200206.tar.gz</span><br><span class="line"><span class="comment"># 这会将E盘的20200206.tar.gz文件上传到服务器的/home/oracle下</span></span><br></pre></td></tr></table></figure>
+<h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><p>将服务器上的文件下载到本机上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sftp:/home/oracle&gt; get 20200206.tar.gz</span><br><span class="line">Fetching /home/oracle/20200206.tar.gz to 20200206.tar.gz</span><br><span class="line">160 KB, 204 KB/sec</span><br><span class="line"><span class="comment"># 从服务器上将/home/oracle/下的20200206.tar.gz下载到当前window路径下，可以使用lpwd查看当前win的路径</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="quit"><a href="#quit" class="headerlink" title="quit"></a>quit</h3><p>退出sftp</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sftp:/root&gt; quit</span><br><span class="line">Connection closing...Socket close.</span><br><span class="line">Connection closed by foreign host.</span><br><span class="line">Disconnected from remote host(xxx.xxx.xxxx:xxxx) at 17:16:42.</span><br><span class="line">Type `<span class="built_in">help</span><span class="string">&#x27; to learn how to use Xshell prompt.</span></span><br><span class="line"><span class="string">[E:\~]$</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SFTP/" rel="tag"># SFTP</a>
+              <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD/" rel="tag"># 文件上传下载</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/08/RestTemplate%E6%A8%A1%E6%8B%9FHTTP-POST%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E6%96%87%E4%BB%B6/" rel="prev" title="RestTemplate模拟HTTP-POST请求发送文件">
+                  <i class="fa fa-chevron-left"></i> RestTemplate模拟HTTP-POST请求发送文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/09/HTTP%E7%8A%B6%E6%80%81%E7%A0%81%E5%A4%A7%E5%85%A8/" rel="next" title="HTTP状态码大全">
+                  HTTP状态码大全 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

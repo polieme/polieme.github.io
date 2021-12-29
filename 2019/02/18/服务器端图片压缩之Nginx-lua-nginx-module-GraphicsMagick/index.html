@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器端图片压缩之Nginx+lua_nginx module+GraphicsMagick">
+<meta property="og:url" content="http://xydcom.cn/2019/02/18/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E4%B9%8BNginx-lua-nginx-module-GraphicsMagick/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_12.jpg">
+<meta property="article:published_time" content="2019-02-18T09:20:11.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.498Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="图片压缩">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_12.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/02/18/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E4%B9%8BNginx-lua-nginx-module-GraphicsMagick/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>服务器端图片压缩之Nginx+lua_nginx module+GraphicsMagick | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/02/18/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E4%B9%8BNginx-lua-nginx-module-GraphicsMagick/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          服务器端图片压缩之Nginx+lua_nginx module+GraphicsMagick
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-18 17:20:11" itemprop="dateCreated datePublished" datetime="2019-02-18T17:20:11+08:00">2019-02-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_12.jpg"></p>
+<blockquote>
+<p>在开发电子商务网站时，同一个图片需要不同尺寸的缩略图片，一般有两种策略生成缩略图，一种在上传图片时，生成需要的缩略图，另一种是请求指定尺寸的图片时生存缩略图片，第一种方式有一定限制，就是需要提前知道所有尺寸的图片，如果前端ui设计改变了图片大小，需要重新生成。而第二种方式更加灵活，这里采用第二种方    ，只是淘宝使用ImageMagick）。</p>
+</blockquote>
+<p>这里主要借助lua_nginx module调用GraphicsMagick命令生存生存缩略图片，缩略图片的尺寸包含在请求图片名称中，例如：xxxxx.jpg.80x80.jpg返回的就是xxx.jpg的80x80尺寸的图片大小。nginx配置如下：</p>
+<p>上传图片名称使用32位随机字符替换掉，图片存放目录为图片名称前六个字母，每两个一组，构造三层目录结构存放，这样可以均匀存放图片在不同目录。避免目录存放文件数量限制。<br>为了避免随意生成不同尺寸的缩略图，这里做了限制，在image_sizes中定义了需要的缩略图尺寸。</p>
+<ul>
+<li><p>初次版本</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">location /testImg/ &#123;  </span><br><span class="line">    rewrite_by_lua &#x27;  </span><br><span class="line">        local image_root = &quot;/home/tomcat/eisp-files&quot;;  </span><br><span class="line">        function file_notexists(name)  </span><br><span class="line">           local f=io.open(name,&quot;r&quot;)  </span><br><span class="line">           if f~=nil then io.close(f) return false else return true end  </span><br><span class="line">        end  </span><br><span class="line"></span><br><span class="line">local uri = ngx.re.sub(ngx.var.uri, &quot;/testImg/([0-9a-zA-Z]+)/([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]+).([0-9a-zA-Z]+)&quot;, &quot;/images/$1/$2/$3/$4/$2$3$4$5.$6&quot;, &quot;o&quot;);  </span><br><span class="line">        local index = string.find(uri, &quot;([0-9]+)x([0-9]+)&quot;);  </span><br><span class="line">        local originalUri = string.sub(uri, 0, index-2);  </span><br><span class="line">        local area = string.sub(uri, index);  </span><br><span class="line">        index = string.find(area, &quot;([.])&quot;);  </span><br><span class="line">        area = string.sub(area, 0, index-1);  </span><br><span class="line"></span><br><span class="line">        if file_notexists(image_root .. uri) then  </span><br><span class="line">           local image_sizes = &#123;&quot;80x80&quot;, &quot;800x600&quot;, &quot;40x40&quot;&#125;;  </span><br><span class="line">           function table.contains(table, element)  </span><br><span class="line">              for _, value in pairs(table) do  </span><br><span class="line">                 if value == element then  </span><br><span class="line">                    return true  </span><br><span class="line">                 end  </span><br><span class="line">              end  </span><br><span class="line">              return false  </span><br><span class="line">           end  </span><br><span class="line"></span><br><span class="line">           if table.contains(image_sizes, area) then  </span><br><span class="line">               local command = &quot;gm convert &quot; .. image_root ..  originalUri  .. &quot; -thumbnail &quot; .. area .. &quot; -background gray -gravity center -extent &quot; .. area .. &quot; &quot; .. image_root .. uri;  </span><br><span class="line">               os.execute(command);  </span><br><span class="line">               ngx.req.set_uri(uri, true);  </span><br><span class="line">           else  </span><br><span class="line">               ngx.exit(404);  </span><br><span class="line">           end;  </span><br><span class="line">        else  </span><br><span class="line">           ngx.req.set_uri(uri, true);  </span><br><span class="line">        end;  </span><br><span class="line">    &#x27;;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">location /images/ &#123;  </span><br><span class="line">    alias /home/tomcat/eisp-files/images/;  </span><br><span class="line">    expires 7d;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>最后一次修改版本</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">location /images/ &#123;  </span><br><span class="line">    set $image_root /home/nds/nds-files;  </span><br><span class="line"></span><br><span class="line">    if ($uri ~* &quot;/images/([0-9a-zA-Z]+)/([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]&#123;2&#125;)([0-9a-zA-Z]+).(.*)&quot;) &#123;  </span><br><span class="line">       set $filePath &quot;$image_root/$1/$2/$3/$4/$2$3$4$5.$6&quot;;  </span><br><span class="line">       set $reqPath  &quot;/$1/$2/$3/$4/$2$3$4$5.$6&quot;;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    set $file &quot;$image_root$reqPath&quot;;  </span><br><span class="line"></span><br><span class="line">    if (-f $file) &#123;  </span><br><span class="line">       rewrite &quot;/images/(.+)&quot; /innerImages$reqPath last;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    if (!-f $file) &#123;  </span><br><span class="line">       rewrite_by_lua &#x27;  </span><br><span class="line">          local index = string.find(ngx.var.filePath, &quot;([0-9]+)x([0-9]+)&quot;);  </span><br><span class="line">          local originalUri = string.sub(ngx.var.filePath, 0, index-2);  </span><br><span class="line">          local area = string.sub(ngx.var.filePath, index);  </span><br><span class="line">          index = string.find(area, &quot;([.])&quot;);  </span><br><span class="line">          area = string.sub(area, 0, index-1);  </span><br><span class="line"></span><br><span class="line">          local image_sizes = &#123;&quot;155x155&quot;, &quot;400x400&quot;,&quot;104x104&quot;, &quot;50x50&quot;, &quot;40x40&quot;, &quot;56x56&quot;, &quot;172x172&quot;,&quot;800x600&quot;&#125;;  </span><br><span class="line">          function table.contains(table, element)  </span><br><span class="line">             for _, value in pairs(table) do  </span><br><span class="line">                if value == element then  </span><br><span class="line">                   return true  </span><br><span class="line">                end  </span><br><span class="line">             end  </span><br><span class="line">             return false  </span><br><span class="line">          end  </span><br><span class="line"></span><br><span class="line">          if table.contains(image_sizes, area) then  </span><br><span class="line">             local command = &quot;gm convert &quot; ..  originalUri  .. &quot; -thumbnail &quot; .. area .. &quot; -background white -gravity center -extent &quot; .. area .. &quot; &quot; .. ngx.var.file;  </span><br><span class="line">             os.execute(command);  </span><br><span class="line">             ngx.req.set_uri(&quot;/innerImages&quot; .. ngx.var.reqPath, true);  </span><br><span class="line">          else  </span><br><span class="line">             ngx.exit(404);  </span><br><span class="line">          end;  </span><br><span class="line">       &#x27;;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">location /innerImages/ &#123;  </span><br><span class="line">    alias /home/nds/nds-files/;  </span><br><span class="line">    expires max;   </span><br><span class="line">    tcp_nodelay off;   </span><br><span class="line">    tcp_nopush on;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>本文引自<a target="_blank" rel="noopener" href="http://www.iteye.com/topic/1125126">http://www.iteye.com/topic/1125126</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"># 服务器</a>
+              <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+              <a href="/tags/%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9/" rel="tag"># 图片压缩</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/18/Android%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E6%88%96%E8%80%85Activity/" rel="prev" title="Android开机启动服务或者Activity">
+                  <i class="fa fa-chevron-left"></i> Android开机启动服务或者Activity
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/18/Nginx%E5%BC%80%E5%90%AFGzip%E5%8E%8B%E7%BC%A9%E5%A4%A7%E5%B9%85%E6%8F%90%E9%AB%98%E9%A1%B5%E9%9D%A2%E5%8A%A0%E8%BD%BD%E9%80%9F%E5%BA%A6/" rel="next" title="Nginx开启Gzip压缩大幅提高页面加载速度">
+                  Nginx开启Gzip压缩大幅提高页面加载速度 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

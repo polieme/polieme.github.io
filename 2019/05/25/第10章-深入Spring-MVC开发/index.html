@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="第10章 深入Spring MVC开发">
+<meta property="og:url" content="http://xydcom.cn/2019/05/25/%E7%AC%AC10%E7%AB%A0-%E6%B7%B1%E5%85%A5Spring-MVC%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_56.jpg">
+<meta property="article:published_time" content="2019-05-24T16:57:44.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:07.410Z">
+<meta property="article:author" content="Daniel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_56.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/05/25/%E7%AC%AC10%E7%AB%A0-%E6%B7%B1%E5%85%A5Spring-MVC%E5%BC%80%E5%8F%91/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>第10章 深入Spring MVC开发 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5Spring-MVC-%E5%BC%80%E5%8F%91"><span class="nav-number">1.</span> <span class="nav-text">深入Spring MVC 开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">获取控制器参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%A8%E8%A7%A3%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">无注解下获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-RequestParam%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用@RequestParam获取参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E9%80%92%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.3.</span> <span class="nav-text">传递数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E9%80%92JSON"><span class="nav-number">1.1.4.</span> <span class="nav-text">传递JSON</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87URL%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.5.</span> <span class="nav-text">通过URL传递参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81"><span class="nav-number">1.2.</span> <span class="nav-text">数据验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSR-303%E9%AA%8C%E8%AF%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">JSR-303验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E9%AA%8C%E8%AF%81%E6%9C%BA%E5%88%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">参数验证机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">拦截器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.1.</span> <span class="nav-text">拦截器设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">开发拦截器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.3.3.</span> <span class="nav-text">多个拦截器的顺序</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/05/25/%E7%AC%AC10%E7%AB%A0-%E6%B7%B1%E5%85%A5Spring-MVC%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第10章 深入Spring MVC开发
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-25 00:57:44" itemprop="dateCreated datePublished" datetime="2019-05-25T00:57:44+08:00">2019-05-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:07" itemprop="dateModified" datetime="2021-09-07T10:05:07+08:00">2021-09-07</time>
+      </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_56.jpg"></p>
+<h1 id="深入Spring-MVC-开发"><a href="#深入Spring-MVC-开发" class="headerlink" title="深入Spring MVC 开发"></a>深入Spring MVC 开发</h1><h2 id="获取控制器参数"><a href="#获取控制器参数" class="headerlink" title="获取控制器参数"></a>获取控制器参数</h2><h3 id="无注解下获取参数"><a href="#无注解下获取参数" class="headerlink" title="无注解下获取参数"></a>无注解下获取参数</h3><h3 id="使用-RequestParam获取参数"><a href="#使用-RequestParam获取参数" class="headerlink" title="使用@RequestParam获取参数"></a>使用<code>@RequestParam获取参数</code></h3><p>前后端可能出现命名规则不同，这时需要把前端的参数与后台的参数对应起来。Spring MVC提供注解<code>@RequestParam</code>来确定前后端参数名称的映射关系，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/annotation&quot;)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">requestParam</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="meta">@RequestParam(&quot;int_val&quot;)</span> Integer intVal,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="meta">@RequestParam(&quot;long_val&quot;)</span> Integer longVal,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="meta">@RequestParam(&quot;str_val&quot;)</span> Integer stringVal</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; paramsMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    paramsMap.put(<span class="string">&quot;intVal&quot;</span>,intVal);</span><br><span class="line">    paramsMap.put(<span class="string">&quot;longVal&quot;</span>,longVal);</span><br><span class="line">    paramsMap.put(<span class="string">&quot;stringVal&quot;</span>,stringVal);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> paramsMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在浏览器中输入<a target="_blank" rel="noopener" href="http://localhost:8080/my/annotation?int_val=1&amp;long_val=2&amp;str_val=str%EF%BC%8C%E5%B0%B1%E8%83%BD%E5%A4%9F%E7%9C%8B%E5%88%B0%E8%AF%B7%E6%B1%82%E7%9A%84%E7%BB%93%E6%9E%9C%E3%80%82%E4%BD%86%E6%98%AF%E5%A6%82%E6%9E%9C%E6%8A%8A3%E4%B8%AAHTTP%E5%8F%82%E6%95%B0%E4%B8%AD%E5%8E%BB%E6%8E%89%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%EF%BC%8C%E5%B0%B1%E4%BC%9A%E6%8A%A5%E5%BC%82%E5%B8%B8%E9%94%99%E8%AF%AF%EF%BC%8C%E5%9B%A0%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B@RequestParam%E6%A0%87%E6%B3%A8%E7%9A%84%E5%8F%82%E6%95%B0%E6%98%AF%E4%B8%8D%E8%83%BD%E4%B8%BA%E7%A9%BA%E7%9A%84%EF%BC%8C%E4%B8%BA%E4%BA%86%E5%AE%83%E8%83%BD%E5%A4%9F%E4%B8%BA%E7%A9%BA%EF%BC%8C%E5%8F%AF%E4%BB%A5%E9%85%8D%E7%BD%AE%E5%85%B6%E5%B1%9E%E6%80%A7required%E4%B8%BAfalse%EF%BC%8C%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%8C%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BC%A0%E7%A9%BA%E4%BA%86">http://localhost:8080/my/annotation?int_val=1&amp;long_val=2&amp;str_val=str，就能够看到请求的结果。但是如果把3个HTTP参数中去掉任意一个，就会报异常错误，因为默认的情况下@RequestParam标注的参数是不能为空的，为了它能够为空，可以配置其属性required为false，代码如下，这样就可以传空了</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestParam(value=&quot;int_val&quot;,required = false)</span> Integer intVal,</span><br></pre></td></tr></table></figure>
+
+<h3 id="传递数组"><a href="#传递数组" class="headerlink" title="传递数组"></a>传递数组</h3><p>在Spring MVC中，除了可以传递简单的参数外，还可以传递数组。支持用逗号隔开的数组参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/requestArray&quot;)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">requestArray</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span>[] intArr, Long[] longArr, String[] strArr</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; paramMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    paramMap.put(<span class="string">&quot;intArr&quot;</span>,intArr);</span><br><span class="line">    paramMap.put(<span class="string">&quot;longArr&quot;</span>,longArr);</span><br><span class="line">    paramMap.put(<span class="string">&quot;strArr&quot;</span>,strArr);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> paramMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在浏览器中输入<a target="_blank" rel="noopener" href="http://localhost:8080/my/requestArray?intArr=1,2,3&amp;longArr=4,5,6&amp;strArr=str1,str2,str3%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E9%9C%80%E8%A6%81%E4%BC%A0%E9%80%92%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E6%97%B6%EF%BC%8C%E6%AF%8F%E4%B8%AA%E5%8F%82%E6%95%B0%E7%9A%84%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E5%8F%AA%E9%9C%80%E8%A6%81%E9%80%9A%E8%BF%87%E9%80%97%E5%8F%B7%E5%88%86%E9%9A%94%E5%8D%B3%E5%8F%AF">http://localhost:8080/my/requestArray?intArr=1,2,3&amp;longArr=4,5,6&amp;strArr=str1,str2,str3，可以看到需要传递数组参数时，每个参数的数组元素只需要通过逗号分隔即可</a></p>
+<h3 id="传递JSON"><a href="#传递JSON" class="headerlink" title="传递JSON"></a>传递JSON</h3><p>下面演示下使用ajax传递json数据，首先是js代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> params = &#123;</span><br><span class="line">  userName:userName,</span><br><span class="line">  note:note</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$.post(&#123;</span><br><span class="line">  url:<span class="string">&quot;./insert&quot;</span>,</span><br><span class="line">  <span class="comment">//此处需要告知传递参数类型为JSON，不能缺少</span></span><br><span class="line">  contentType:<span class="string">&quot;application/json&quot;</span>,</span><br><span class="line">  <span class="comment">//将JSON转化为字符串</span></span><br><span class="line">  data:<span class="built_in">JSON</span>.stringify(params),</span><br><span class="line">  success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;/insert&quot;)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">insert</span><span class="params">(<span class="meta">@RequestBody</span> User user)</span></span>&#123;</span><br><span class="line">    userService.insertUser(user);</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的js代码中<code>contentType:&quot;application/json&quot;,</code>和<code>data:JSON.stringify(params),</code>必须要加上，到达后台之后可以通过<code>@RequestBody</code>转化成自己想要的对象</p>
+<h3 id="通过URL传递参数"><a href="#通过URL传递参数" class="headerlink" title="通过URL传递参数"></a>通过URL传递参数</h3><p>REST风格的的接口，常规是通过URL传递参数的，例如获取编号为1的用户，url就写成<code>/user/1</code>，这里的1代表的是用户编号（id），通过注解<code>@PathVariable</code>的组合获取参数URL参数，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">get</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> userService.getUser(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据验证"><a href="#数据验证" class="headerlink" title="数据验证"></a>数据验证</h2><h3 id="JSR-303验证"><a href="#JSR-303验证" class="headerlink" title="JSR-303验证"></a>JSR-303验证</h3><p><code>JSR-303</code>的主要是通过注解的方式进行的，这里先定义一个需要验证的POJO，此时需要在其属性中加入相关的注解，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidtorPojo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//非空判断</span></span><br><span class="line">    <span class="meta">@NotNull(message = &quot;id不能为空&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只能是将来的日期</span></span><br><span class="line">    <span class="meta">@Future(message = &quot;需要一个将来的日期&quot;)</span></span><br><span class="line">    <span class="comment">//@Past//只能是过去的日期</span></span><br><span class="line">    <span class="comment">//日期格式转换</span></span><br><span class="line">    <span class="meta">@DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;)</span></span><br><span class="line">    <span class="comment">//不能为空</span></span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="keyword">private</span> Date date;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//最小0.1元</span></span><br><span class="line">    <span class="meta">@DecimalMin(value=&quot;0.1&quot;)</span></span><br><span class="line">    <span class="meta">@DecimalMax(value=&quot;100000.00&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Double aDouble = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Min(value=1,message = &quot;最小值为1&quot;)</span></span><br><span class="line">    <span class="meta">@Max(value=99,message = &quot;最大值为99&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Integer integer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Range(min = 1,max = 888,message = &quot;范围为1至888&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long range;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//邮箱验证</span></span><br><span class="line">    <span class="meta">@Email(message = &quot;邮箱格式错误&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Size(min=20,max = 30,message = &quot;字符串长度要求20到30&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String size;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value=&quot;/valid/validate&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">validate</span><span class="params">(<span class="meta">@Valid</span> <span class="meta">@RequestBody</span> ValidtorPojo vp, Errors errors)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; errorMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="comment">//获取错误列表</span></span><br><span class="line">        List&lt;ObjectError&gt; oes = errors.getAllErrors();</span><br><span class="line">        <span class="keyword">for</span>(ObjectError oe : oes)&#123;</span><br><span class="line">            String key = <span class="keyword">null</span>;</span><br><span class="line">            String msg = <span class="keyword">null</span>;</span><br><span class="line">            <span class="comment">//字段错误</span></span><br><span class="line">            <span class="keyword">if</span>(oe <span class="keyword">instanceof</span> FieldError)&#123;</span><br><span class="line">                FieldError fe = (FieldError)oe;</span><br><span class="line">                key = fe.getField();<span class="comment">//获取错误验证字段名</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">//非字段错误</span></span><br><span class="line">                key = oe.getObjectName();<span class="comment">//获取验证对象名称</span></span><br><span class="line">            &#125;</span><br><span class="line">            msg = oe.getDefaultMessage();</span><br><span class="line">            errorMap.put(key,msg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> errorMap;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>代码中使用@RequetBody代表接收一个JSON参数，这样Spring就会获取页面提交过来的JSON 数据，然后@Valid注解则表示启动验证机制，这样Spring就会启动JSR-303验证机制进行验证，它会自动地将验证结果放入Errors对象中，这样就可以从中得到相关验证过后的消息。这些验证只能是简单的验证，复杂类的验证比如说总价的验证=单价*数量，这样的逻辑就不能通过JSR-303验证了，为此Spring还提供了自己的验证机制。</p>
+<h3 id="参数验证机制"><a href="#参数验证机制" class="headerlink" title="参数验证机制"></a>参数验证机制</h3><p>在Spring控制器中，还允许使用注解@InitBinder，这个注解的作用是允许在进入控制器方法钱修改WebDataBinder机制。下面在验证机制和日期格式绑定的场景下演示，不过在此之前，需要稍微人事下SPring MVC的验证机制。下面是自定义验证的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserValidator</span> <span class="keyword">implements</span> <span class="title">Validator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置验证器只支持User类验证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Class&lt;?&gt; aClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> aClass.equals(User.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//验证逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(Object o, Errors errors)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//对象如果为空</span></span><br><span class="line">        <span class="keyword">if</span>(o == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//直接在参数处报错，这样就不能进入控制器的方法</span></span><br><span class="line">            errors.rejectValue(<span class="string">&quot;&quot;</span>,<span class="keyword">null</span>,<span class="string">&quot;用户不能为空&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//强制转换</span></span><br><span class="line">        User user = (User) o;</span><br><span class="line">        <span class="comment">//用户名非空字符串</span></span><br><span class="line">        <span class="keyword">if</span>(StringUtils.isEmpty(user.getUserName))&#123;</span><br><span class="line">            <span class="comment">//增加错误，可以进入控制器方法</span></span><br><span class="line">            errors.rejectValue(<span class="string">&quot;userName&quot;</span>,<span class="keyword">null</span>,<span class="string">&quot;用户名不能为空&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了这个验证器，Spring还不会自动启动它，因为还没有绑定给WebDataBinder机制，在Spring MVC中提供了一个注解@InitBinder，他的作用是在执行控制器方法前，处理器会限制性@InitBinder标注的方法。这时可以讲WebDataBinder对象作为参数传递到方法中，通过这层关系得到WebDatBinder对象，这个对象有一个SetValidator方法，它可以绑定自定义的验证器，这样就可以在获取参数之后，通过自定义的验证器去验证参数，知识WebDataBinder除了可以绑定验证器之外，还可以进行参数的自定义，例如，不适用@DataTimeFormat获取日期参数。假设还继续使用代码StringToUserConverter转换器，使用下面的代码验证和设置日志格式<br>绑定验证器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xyd.mc.demo.database.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xyd.mc.demo.database.validator.UserValidator;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.propertyeditors.CustomDateEditor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.Errors;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.FieldError;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.ObjectError;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.WebDataBinder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.Valid;</span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: mc</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: zp</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span>: 2019-08-28 20:14</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 调用控制前先执行这个方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> binder</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@InitBinder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initBinder</span><span class="params">(WebDataBinder binder)</span></span>&#123;</span><br><span class="line">        <span class="comment">//绑定验证器</span></span><br><span class="line">        binder.setValidator(<span class="keyword">new</span> UserValidator());</span><br><span class="line">        <span class="comment">//定义日期参数格式，参数不在徐注解@DateTimeFormat，boolean参数表示是允许为空</span></span><br><span class="line">        binder.registerCustomEditor(Date.class,<span class="keyword">new</span> CustomDateEditor(<span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd&quot;</span>),<span class="keyword">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/validator&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">validator</span><span class="params">(<span class="meta">@Valid</span> User user,Errors errors,Date date)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;user&quot;</span>,user);</span><br><span class="line">        map.put(<span class="string">&quot;date&quot;</span>,date);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断是否有错误存在</span></span><br><span class="line">        <span class="keyword">if</span>(errors.hasErrors())&#123;</span><br><span class="line">            <span class="comment">//获取全部错误</span></span><br><span class="line">            List&lt;ObjectError&gt; oes = errors.getAllErrors();</span><br><span class="line">            <span class="keyword">for</span>(ObjectError oe:oes)&#123;</span><br><span class="line">                <span class="comment">//判断是否字段错误</span></span><br><span class="line">                <span class="keyword">if</span>(oe <span class="keyword">instanceof</span> FieldError)&#123;</span><br><span class="line">                    <span class="comment">//字段错误</span></span><br><span class="line">                    FieldError fe = (FieldError) oe;</span><br><span class="line">                    map.put(fe.getField(),fe.getDefaultMessage());</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">//对象错误</span></span><br><span class="line">                    map.put(oe.getObjectName(),oe.getDefaultMessage());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的initBinder方法因为标注注解@InitBinder，因此会在控制器方法前执行，并且将WebDataBinder对象传递进去，这个方法里绑定了自定义的验证器UserValidator，而且设置了日期的格式，所以在控制器方法中不在需要@DateTimeFormate去定义日期格式。通过这样的自定义，在使用注解@Valid注解User参数后，Spring MVC会遍历对应的验证器，当遍历到UserValidator时，会去执行他的support方法，因为该方法会返回true，所以SPring MVC会用这个验证去验证User类的数据<br>这里还要关注下控制器中的方法的Errors参数，他是SPring MVC通过验证器验证后得到的错误信息，由Spring MVC执行完验证规则后进行传递，这里首先是判断是否存在错误，如果存在错误，则遍历错误，然后将错误信息放入Map中返回，因为方法标注了@ResponseBody，所以最后会转换成JSON相应请求</p>
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><h3 id="拦截器设计"><a href="#拦截器设计" class="headerlink" title="拦截器设计"></a>拦截器设计</h3><p>首先所有的拦截器都需要实现<code>HandlerInterceptor</code>接口，拦截器中有三个方法，分别是preHandle、postHandle、afterCompletion，他们的执行顺序如下</p>
+<ul>
+<li>执行preHandle方法，该方法会返回一个布尔值。如果为false，则结束所有的流程；如果为true则执行下一步</li>
+<li>执行处理器逻辑，它包括控制器的功能</li>
+<li>执行postHandle方法</li>
+<li>执行师徒解析和视图渲染</li>
+<li>执行afterCompletion方法<br>因为这个接口是Java8 的接口，所以3个方法都被声明为default，并且提供了空实现。当我们需要自定义方法的时候，主需要实现HandlerInterceptor，覆盖其对应的方法即可。</li>
+</ul>
+<h3 id="开发拦截器"><a href="#开发拦截器" class="headerlink" title="开发拦截器"></a>开发拦截器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xyd.mc.interceptor;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: mc</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 项目拦截器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: zp</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@create</span>: 2019-08-28 21:12</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;处理器前方法&quot;</span>);</span><br><span class="line">        <span class="comment">//返回true，不会拦截</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;处理器后方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;处理器完成方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的代码重写了3个方法，在这些方法中打印了一些信息，这样就可以定位拦截器的执行书序。有了这个拦截器，Spring MVC并不会发现他，还需要进行注册才能拦截，为此在配置文件中实现WebMvcConfigurer接口，最后覆盖其addInterceptors方法进行注册拦截器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xyd.mc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xyd.mc.interceptor.ApplicationInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.domain.EntityScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cache.annotation.EnableCaching;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.MessageListener;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.listener.ChannelTopic;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.listener.RedisMessageListenerContainer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.listener.Topic;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.RedisSerializer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Repository;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.PostConstruct;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication(scanBasePackages = &#123;&quot;com.xyd.mc&quot;&#125;)</span></span><br><span class="line"><span class="meta">@EntityScan(basePackages = &quot;com.xyd.mc.*.*.pojo&quot;)</span></span><br><span class="line"><span class="meta">@MapperScan(</span></span><br><span class="line"><span class="meta">    basePackages = &quot;com.xyd.mc.*&quot;,</span></span><br><span class="line"><span class="meta">    sqlSessionTemplateRef = &quot;sqlSessionTemplate&quot;,</span></span><br><span class="line"><span class="meta">    annotationClass = Repository.class</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McApplication</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/********其他代码********/</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加拦截器</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> registry</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//注册拦截器到Spring MVC机制，然后他会返回一个拦截器注册</span></span><br><span class="line">        InterceptorRegistration ir = registry.addInterceptor(<span class="keyword">new</span> ApplicationInterceptor());</span><br><span class="line">        <span class="comment">//指定拦截器的匹配模式，限制拦截器拦截请求</span></span><br><span class="line">        ir.addPathPatterns(<span class="string">&quot;/*/*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里implements了WebMvcConfigurer接口，并重写了addInterceptors方法，将咱们写的拦截器加进去，他会拦截所有的请求只要是符合<code>/*/*</code>的请求</p>
+<h3 id="多个拦截器的顺序"><a href="#多个拦截器的顺序" class="headerlink" title="多个拦截器的顺序"></a>多个拦截器的顺序</h3><ul>
+<li>对于处理器前方法采用先注册限制性，而处理器后方法和完成方法则是先注册后执行的原则。</li>
+<li>一旦一个拦截器返回false，则后续的拦截器、处理器和所有拦截器的处理器后方法都不会被执行</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/25/%E7%AC%AC9%E7%AB%A0-%E5%88%9D%E8%AF%86Spring-MVC/" rel="prev" title="第9章 初识Spring MVC">
+                  <i class="fa fa-chevron-left"></i> 第9章 初识Spring MVC
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/31/tomcat%E6%97%A5%E5%BF%97%E5%AE%9A%E6%97%B6%E5%A4%87%E4%BB%BD%E5%92%8COracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9A%E6%97%B6%E5%A4%87%E4%BB%BD/" rel="next" title="Tomcat日志定时备份和Oracle数据库定时备份">
+                  Tomcat日志定时备份和Oracle数据库定时备份 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

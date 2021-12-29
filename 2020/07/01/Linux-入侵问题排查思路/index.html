@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 入侵问题排查思路">
+<meta property="og:url" content="http://xydcom.cn/2020/07/01/Linux-%E5%85%A5%E4%BE%B5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_83.jpg">
+<meta property="article:published_time" content="2020-07-01T03:52:04.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.052Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="入侵">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_83.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2020/07/01/Linux-%E5%85%A5%E4%BE%B5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Linux 入侵问题排查思路 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%EF%BC%8C%E6%9F%A5%E6%89%BE%E5%85%A5%E4%BE%B5%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">深入分析，查找入侵原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A3%80%E6%9F%A5%E9%9A%90%E8%97%8F%E5%B8%90%E6%88%B7%E5%8F%8A%E5%BC%B1%E5%8F%A3%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">一、检查隐藏帐户及弱口令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A3%80%E6%9F%A5%E6%81%B6%E6%84%8F%E8%BF%9B%E7%A8%8B%E5%8F%8A%E9%9D%9E%E6%B3%95%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.2.</span> <span class="nav-text">二、检查恶意进程及非法端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%A3%80%E6%9F%A5%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BA%8F%E5%92%8C%E5%8F%AF%E7%96%91%E5%90%AF%E5%8A%A8%E9%A1%B9"><span class="nav-number">1.3.</span> <span class="nav-text">三、检查恶意程序和可疑启动项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%A3%80%E6%9F%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E"><span class="nav-number">1.4.</span> <span class="nav-text">四、检查第三方软件漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A2%AB%E5%85%A5%E4%BE%B5%E5%90%8E%E7%9A%84%E5%AE%89%E5%85%A8%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">被入侵后的安全优化建议</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2020/07/01/Linux-%E5%85%A5%E4%BE%B5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 入侵问题排查思路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-01 11:52:04" itemprop="dateCreated datePublished" datetime="2020-07-01T11:52:04+08:00">2020-07-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_83.jpg"></p>
+<h2 id="深入分析，查找入侵原因"><a href="#深入分析，查找入侵原因" class="headerlink" title="深入分析，查找入侵原因"></a>深入分析，查找入侵原因</h2><h3 id="一、检查隐藏帐户及弱口令"><a href="#一、检查隐藏帐户及弱口令" class="headerlink" title="一、检查隐藏帐户及弱口令"></a>一、检查隐藏帐户及弱口令</h3><ol>
+<li>检查服务器系统及应用帐户是否存在 <strong>弱口令</strong>：</li>
+</ol>
+<ul>
+<li>检查说明：检查管理员帐户、数据库帐户、MySQL 帐户、tomcat 帐户、网站后台管理员帐户等密码设置是否较为简单，简单的密码很容易被黑客破解。</li>
+<li>解决方法：以管理员权限登录系统或应用程序后台，修改为复杂的密码。</li>
+<li>风险性：高。</li>
+</ul>
+<ol start="2">
+<li>使用<code>last</code>命令查看下服务器近期登录的帐户记录，确认是否有可疑 IP 登录过机器：<ul>
+<li>检查说明：攻击者或者恶意软件往往会往系统中注入隐藏的系统帐户实施提权或其他破坏性的攻击。</li>
+<li>解决方法：检查发现有可疑用户时，可使用命令<code>usermod -L 用户名</code>禁用用户或者使用命令<code>userdel -r 用户名</code>删除用户。</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+<li>通过<code>less /var/log/secure|grep &#39;Accepted&#39;</code>命令，查看是否有可疑 IP 成功登录机器：<ul>
+<li>检查说明：攻击者或者恶意软件往往会往系统中注入隐藏的系统帐户实施提权或其他破坏性的攻击。</li>
+<li>解决方法： 使用命令<code>usermod -L 用户名</code>禁用用户或者使用命令<code>userdel -r 用户名</code>删除用户。</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+<li>检查系统是否采用 <strong>默认管理端口</strong>：<ul>
+<li>检查系统所用的管理端口（SSH、FTP、MySQL、Redis 等）是否为默认端口，这些默认端口往往被容易自动化的工具进行爆破成功。</li>
+<li>解决方法：<ol>
+<li>在服务器内编辑<code>/etc/ssh/sshd_config</code>文件中的 Port 22，将22修改为非默认端口，修改之后需要重启 ssh 服务。<blockquote>
+<p>!当对端口进行修改时，需同时在 <a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cvm/instance/index?rid=1">云服务器控制台</a> 上修改对应主机的安全组配置，在其入站规则中，放行对应端口，详情请参见 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/215/39790">添加安全组规则</a>。</p>
+</blockquote>
+</li>
+<li>运行<code>/etc/init.d/sshd restart（CentOS）或 /etc/init.d/ssh restart（Debian / Ubuntu）</code>命令重启是配置生效。<br> 3. 修改 FTP、MySQL、Redis 等的程序配置文件的默认监听端口21、3306、6379为其他端口。</li>
+<li>限制远程登录的 IP，编辑<code>/etc/hosts.deny</code> 、<code>/etc/hosts.allow</code>两个文件来限制 IP。</li>
+</ol>
+</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+<li>检查<code>/etc/passwd</code>文件，看是否有非授权帐户登录：<ul>
+<li>检查说明：攻击者或者恶意软件往往会往系统中注入隐藏的系统帐户实施提权或其他破坏性的攻击。</li>
+<li>解决方法： 使用命令<code>usermod -L 用户名</code>禁用用户或者使用命令<code>userdel -r 用户名</code>删除用户。</li>
+<li>风险性：中。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、检查恶意进程及非法端口"><a href="#二、检查恶意进程及非法端口" class="headerlink" title="二、检查恶意进程及非法端口"></a>二、检查恶意进程及非法端口</h3><ol>
+<li>运行<code>netstat –antp</code>查看下服务器是否有未被授权的端口被监听，查看下对应的 pid。</li>
+</ol>
+<ul>
+<li>检查服务器是否存在恶意进程,恶意进程往往会开启监听端口，与外部控制机器进行连接。</li>
+<li>解决方法：<ol>
+<li>若发现有非授权进程，运行<code>ls -l /proc/$PID/exe</code>或<code>file /proc/$PID/exe </code>（$PID 为对应的 pid 号），查看下 pid 所对应的进程文件路径。</li>
+<li>如果为恶意进程，删除下对应的文件即可。</li>
+</ol>
+<ul>
+<li>风险性：高。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>使用<code>ps -ef</code>和<code>top</code>命令查看是否有异常进程<ul>
+<li>检查说明：运行以上命令，当发现有名称不断变化的非授权进程占用大量系统 CPU 或内存资源时，则可能为恶意程序。</li>
+<li>解决方法：确认该进程为恶意进程后，可以使用<code>kill -9 进程名</code>命令结束进程，或使用防火墙限制进程外联。</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、检查恶意程序和可疑启动项"><a href="#三、检查恶意程序和可疑启动项" class="headerlink" title="三、检查恶意程序和可疑启动项"></a>三、检查恶意程序和可疑启动项</h3><ol>
+<li>使用<code>chkconfig --list</code>和<code>cat /etc/rc.local</code>命令查看下开机启动项中是否有异常的启动服务。<ul>
+<li>检查说明：恶意程序往往会添加在系统的启动项，在用户关机重启后再次运行。</li>
+<li>解决方法：如发现有恶意进程，可使用<code>chkconfig 服务名 off</code>命令关闭，同时检查<code>/etc/rc.local</code>中是否有异常项目，如有请注释掉。</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+<li>进入 cron 文件目录，查看是否存在非法定时任务脚本。<ul>
+<li>检查说明：查看<code>/etc/crontab</code>，<code>/etc/cron.d</code>，<code>/etc/cron.daily</code>，<code>cron.hourly/</code>，<code>cron.monthly</code>，<code>cron.weekly/</code>是否存在可疑脚本或程序。</li>
+<li>解决方法：如发现有不认识的计划任务，可定位脚本确认是否正常业务脚本，如果非正常业务脚本，可直接注释掉任务内容或删除脚本。</li>
+<li>风险性：高。</li>
+</ul>
+</li>
+</ol>
+<h3 id="四、检查第三方软件漏洞"><a href="#四、检查第三方软件漏洞" class="headerlink" title="四、检查第三方软件漏洞"></a>四、检查第三方软件漏洞</h3><ol>
+<li>如果您服务器内有运行 Web、数据库等应用服务，请您限制应用程序帐户对文件系统的写权限，同时尽量使用非 root 帐户运行。<ul>
+<li>检查说明：使用非 root 帐户运行可以保障在应用程序被攻陷后攻击者无法立即远程控制服务器，减少攻击损失</li>
+<li>解决方法：<ol>
+<li>进入 web 服务根目录或数据库配置目录；</li>
+<li>运行<code>chown -R apache:apache /var/www/xxxx</code>、<code>chmod -R 750 file1.txt</code>命令配置网站访问权限。</li>
+</ol>
+</li>
+<li>风险性：中。</li>
+<li><a href=#ex>参考示例</a></li>
+</ul>
+</li>
+<li>升级修复应用程序漏洞</li>
+</ol>
+<ul>
+<li>检查说明：机器被入侵，部分原因是系统使用的应用程序软件版本较老，存在较多的漏洞而没有修复，导致可以被入侵利用。</li>
+<li>解决方法：比较典型的漏洞例如 ImageMagick、openssl、glibc 等，用户可以根据腾讯云已发布安全通告指导通过 apt-get/yum 等方式进行直接升级修复。</li>
+<li>风险性：高。</li>
+</ul>
+<p><a id="ex"></a><br><strong>网站目录文件权限的参考示例如下：</strong><br><strong>场景：</strong><br>我们假设 HTTP 服务器运行的用户和用户组是 www，网站用户为 centos，网站根目录是<code>/home/centos/web</code>。<br><strong>方法/步骤：</strong></p>
+<ol>
+<li>我们首先设定网站目录和文件的所有者和所有组为 centos，www，如下命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R centos:www &#x2F;home&#x2F;centos&#x2F;web</span><br></pre></td></tr></table></figure></li>
+<li>设置网站目录权限为750，750是 centos 用户对目录拥有读写执行的权限，设置后，centos 用户可以在任何目录下创建文件，用户组有有读执行权限，这样才能进入目录，其它用户没有任何权限。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find -type d -exec chmod 750 &#123;&#125; \;</span><br></pre></td></tr></table></figure></li>
+<li>设置网站文件权限为640，640指只有 centos 用户对网站文件有更改的权限，HTTP 服务器只有读取文件的权限，无法更改文件，其它用户无任何权限。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find -not -type d -exec chmod 640 &#123;&#125; \;</span><br></pre></td></tr></table></figure></li>
+<li>针对个别目录设置可写权限。例如，网站的一些缓存目录就需要给 HTTP 服务有写入权限、discuz x2 的<code>/data/</code>目录就必须要写入权限。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find data -type d -exec chmod 770 &#123;&#125; \;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="被入侵后的安全优化建议"><a href="#被入侵后的安全优化建议" class="headerlink" title="被入侵后的安全优化建议"></a>被入侵后的安全优化建议</h2><ol>
+<li>尽量使用 SSH 密钥进行登录，减少暴力破解的风险。</li>
+<li>在服务器内编辑<code>/etc/ssh/sshd_config</code>文件中的 Port 22，将 22 修改为其他非默认端口，修改之后重启 SSH 服务。可使用命令重启<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;sshd restart（CentOS）或 &#x2F;etc&#x2F;init.d&#x2F;ssh restart（Debian&#x2F;Ubuntu）</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>!当修改端口时，需同时在 <a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cvm/instance/index?rid=1">云服务器控制台</a> 上修改对应主机安全组配置，在其入站规则中放行对应端口，详情请参见 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/215/39790">添加安全组规则</a>。</p>
+</blockquote>
+</li>
+<li>如果必须使用 SSH 密码进行管理，选择一个好密码。</li>
+</ol>
+<ul>
+<li>无论应用程序管理后台（网站、中间件、tomcat 等）、远程 SSH、远程桌面、数据库，都建议设置复杂且不一样的密码。</li>
+<li>下面是一些好密码的实例（可以使用空格）：<pre><code>`1qtwo-threeMiles3c45jia`
+` caser, lanqiu streets`
+</code></pre>
+</li>
+<li>下面是一些弱口令的示例，可能是您在公开的工作中常用的词或者是您生活中常用的词：<pre><code> 公司名+日期（coca-cola2016xxxx）
+ 常用口语（Iamagoodboy）
+</code></pre>
+</li>
+</ul>
+<ol start="4">
+<li>使用以下命令检查主机有哪些端口开放，关闭非业务端口。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -antp</span><br></pre></td></tr></table></figure></li>
+<li>通过<strong>腾讯云-安全组防火墙</strong>限制仅允许制定 IP 访问管理或通过编辑<code>/etc/hosts.deny</code>、<code>/etc/hosts.allow</code>两个文件来限制 IP。</li>
+<li>应用程序尽量不使用 <strong>root</strong> 权限。<br>例如 Apache、Redis、MySQL、Nginx 等程序，尽量不要以 root 权限的方式运行。</li>
+<li>修复系统提权漏洞与运行在 root 权限下的<strong>程序漏洞</strong>，以免恶意软件通过漏洞提权获得 root 权限传播后门。<ul>
+<li>及时更新系统或所用应用程序的版本，如 Struts2、Nginx，ImageMagick、Java 等。</li>
+<li>关闭应用程序的远程管理功能，如 Redis、NTP 等，如果无远程管理需要，可关闭对外监听端口或配置。</li>
+</ul>
+</li>
+<li>定期<strong>备份</strong>云服务器业务数据。<ul>
+<li>对重要的业务数据进行异地备份或云备份，避免主机被入侵后无法恢复。</li>
+<li>除了您的 home，root 目录外，您还应当备份 /etc 和可用于取证的 /var/log 目录。</li>
+</ul>
+</li>
+<li>安装腾讯云<strong>主机安全 Agent</strong>，在发生攻击后，可以了解自身风险情况。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%85%A5%E4%BE%B5/" rel="tag"># 入侵</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/23/IDEA-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E9%87%8A%E6%A8%A1%E6%9D%BF/" rel="prev" title="IDEA 自定义注释模板">
+                  <i class="fa fa-chevron-left"></i> IDEA 自定义注释模板
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/02/Docker%E6%95%99%E7%A8%8B/" rel="next" title="Docker教程">
+                  Docker教程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

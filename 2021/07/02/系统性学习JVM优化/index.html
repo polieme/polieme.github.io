@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="生命，是一树花开，或热烈或寂寞。生命中，总有一些令人唏嘘的空白，有些人让你牵绊，却不是相守；有些东西让你羡慕，却不能拥有；有些错过让你留恋，却终生遗憾。总想寻一处山林，安静生活浅写岁月；总想借一些日子，播种向日葵的温暖，栽种阳光的花瓣。春花秋月，夏萤冬雪，怀一心宁淡，安然度日。经年流转，透过指尖的温度，期许岁月静好，这一路走来，你会发现，生活于我们，温暖，一直是一种牵引；于生活的海洋中冲浪，云帆尽">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统性学习JVM优化">
+<meta property="og:url" content="http://xydcom.cn/2021/07/02/%E7%B3%BB%E7%BB%9F%E6%80%A7%E5%AD%A6%E4%B9%A0JVM%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:description" content="生命，是一树花开，或热烈或寂寞。生命中，总有一些令人唏嘘的空白，有些人让你牵绊，却不是相守；有些东西让你羡慕，却不能拥有；有些错过让你留恋，却终生遗憾。总想寻一处山林，安静生活浅写岁月；总想借一些日子，播种向日葵的温暖，栽种阳光的花瓣。春花秋月，夏萤冬雪，怀一心宁淡，安然度日。经年流转，透过指尖的温度，期许岁月静好，这一路走来，你会发现，生活于我们，温暖，一直是一种牵引；于生活的海洋中冲浪，云帆尽">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_103.jpg">
+<meta property="article:published_time" content="2021-07-02T06:33:49.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:07.515Z">
+<meta property="article:author" content="Daniel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_103.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2021/07/02/%E7%B3%BB%E7%BB%9F%E6%80%A7%E5%AD%A6%E4%B9%A0JVM%E4%BC%98%E5%8C%96/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>系统性学习JVM优化 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AF%B9JVM%E5%81%9A%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">为什么要对JVM做优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">JVM的运行参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">三种参数类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">标准参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">2.2.1.</span> <span class="nav-text">实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#server%E4%B8%8E-client%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.2.</span> <span class="nav-text">-server与-client参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#X%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">-X参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Xint%E3%80%81-Xcom%E3%80%81-Xmixed"><span class="nav-number">2.3.1.</span> <span class="nav-text">-Xint、-Xcom、-Xmixed</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XX%E5%8F%82%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">-XX参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xms%E4%B8%8E-Xmx%E5%8F%82%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">-Xms与-Xmx参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BJVM%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.</span> <span class="nav-text">查看JVM的运行参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cjava%E5%91%BD%E4%BB%A4%E6%97%B6%E6%89%93%E5%8D%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.1.</span> <span class="nav-text">运行java命令时打印参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84jvm%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.2.</span> <span class="nav-text">查看正在运行的jvm参数</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2021/07/02/%E7%B3%BB%E7%BB%9F%E6%80%A7%E5%AD%A6%E4%B9%A0JVM%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统性学习JVM优化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-02 14:33:49" itemprop="dateCreated datePublished" datetime="2021-07-02T14:33:49+08:00">2021-07-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:07" itemprop="dateModified" datetime="2021-09-07T10:05:07+08:00">2021-09-07</time>
+      </span>
+
+  
+</div>
+
+            <div class="post-description">生命，是一树花开，或热烈或寂寞。生命中，总有一些令人唏嘘的空白，有些人让你牵绊，却不是相守；有些东西让你羡慕，却不能拥有；有些错过让你留恋，却终生遗憾。总想寻一处山林，安静生活浅写岁月；总想借一些日子，播种向日葵的温暖，栽种阳光的花瓣。春花秋月，夏萤冬雪，怀一心宁淡，安然度日。经年流转，透过指尖的温度，期许岁月静好，这一路走来，你会发现，生活于我们，温暖，一直是一种牵引；于生活的海洋中冲浪，云帆尽头，轻回眸，处处是别有洞天。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_103.jpg"></p>
+<p>之前做JVM的优化都是查一点做一点，jmap，MAT也都是现用现查，没有做过系统性的学习，最近有点时间准备把这块补一下</p>
+<h1 id="为什么要对JVM做优化"><a href="#为什么要对JVM做优化" class="headerlink" title="为什么要对JVM做优化"></a>为什么要对JVM做优化</h1><p>本地开发中很少会需要JVM优化，但是生产环境高并发，多用户下就会出现下面的情况</p>
+<ul>
+<li>运行的应用卡住了，没有日志输出，程序没有反应</li>
+<li>服务器CPU负载突然升高</li>
+<li>….</li>
+</ul>
+<h1 id="JVM的运行参数"><a href="#JVM的运行参数" class="headerlink" title="JVM的运行参数"></a>JVM的运行参数</h1><p>在JVM中有很多的参数可以惊醒设置，这样可以让jvm在各种环境中都有够高效的运行，绝大部分的参数保持默认即可</p>
+<h2 id="三种参数类型"><a href="#三种参数类型" class="headerlink" title="三种参数类型"></a>三种参数类型</h2><p>JVM的参数类型分为三类，分别是：</p>
+<ul>
+<li>标准参数<ul>
+<li>-help</li>
+<li>version</li>
+</ul>
+</li>
+<li>X参数（非标准参数）<ul>
+<li>-Xint</li>
+<li>-Xcomp</li>
+</ul>
+</li>
+<li>-XX参数（使用率比较高，关注）<ul>
+<li>-XX:newSize</li>
+<li>-XX:+UseSerialGC</li>
+</ul>
+</li>
+</ul>
+<h2 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h2><p>JVM的标准参数，一般都是很稳定的，在未来的JVM版本中不会发生改变，可以使用<code>java -help</code>检索出所有的标准参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -<span class="built_in">help</span></span><br><span class="line">用法: java [-options] class [args...]</span><br><span class="line">           (执行类)</span><br><span class="line">   或  java [-options] -jar jarfile [args...]</span><br><span class="line">           (执行 jar 文件)</span><br><span class="line">其中选项包括:</span><br><span class="line">    -d32          使用 32 位数据模型 (如果可用)</span><br><span class="line">    -d64          使用 64 位数据模型 (如果可用)</span><br><span class="line">    -server       选择 <span class="string">&quot;server&quot;</span> VM</span><br><span class="line">                  默认 VM 是 server.</span><br><span class="line"></span><br><span class="line">    -cp &lt;目录和 zip/jar 文件的类搜索路径&gt;</span><br><span class="line">    -classpath &lt;目录和 zip/jar 文件的类搜索路径&gt;</span><br><span class="line">                  用 ; 分隔的目录, JAR 档案</span><br><span class="line">                  和 ZIP 档案列表, 用于搜索类文件。</span><br><span class="line">    -D&lt;名称&gt;=&lt;值&gt;</span><br><span class="line">                  设置系统属性</span><br><span class="line">    -verbose:[class|gc|jni]</span><br><span class="line">                  启用详细输出</span><br><span class="line">    -version      输出产品版本并退出</span><br><span class="line">    -version:&lt;值&gt;</span><br><span class="line">                  警告: 此功能已过时, 将在</span><br><span class="line">                  未来发行版中删除。</span><br><span class="line">                  需要指定的版本才能运行</span><br><span class="line">    -showversion  输出产品版本并继续</span><br><span class="line">    -jre-restrict-search | -no-jre-restrict-search</span><br><span class="line">                  警告: 此功能已过时, 将在</span><br><span class="line">                  未来发行版中删除。</span><br><span class="line">                  在版本搜索中包括/排除用户专用 JRE</span><br><span class="line">    -? -<span class="built_in">help</span>      输出此帮助消息</span><br><span class="line">    -X            输出非标准选项的帮助</span><br><span class="line">    -ea[:&lt;packagename&gt;...|:&lt;classname&gt;]</span><br><span class="line">    -enableassertions[:&lt;packagename&gt;...|:&lt;classname&gt;]</span><br><span class="line">                  按指定的粒度启用断言</span><br><span class="line">    -da[:&lt;packagename&gt;...|:&lt;classname&gt;]</span><br><span class="line">    -disableassertions[:&lt;packagename&gt;...|:&lt;classname&gt;]</span><br><span class="line">                  禁用具有指定粒度的断言</span><br><span class="line">    -esa | -enablesystemassertions</span><br><span class="line">                  启用系统断言</span><br><span class="line">    -dsa | -disablesystemassertions</span><br><span class="line">                  禁用系统断言</span><br><span class="line">    -agentlib:&lt;libname&gt;[=&lt;选项&gt;]</span><br><span class="line">                  加载本机代理库 &lt;libname&gt;, 例如 -agentlib:hprof</span><br><span class="line">                  另请参阅 -agentlib:jdwp=<span class="built_in">help</span> 和 -agentlib:hprof=<span class="built_in">help</span></span><br><span class="line">    -agentpath:&lt;pathname&gt;[=&lt;选项&gt;]</span><br><span class="line">                  按完整路径名加载本机代理库</span><br><span class="line">    -javaagent:&lt;jarpath&gt;[=&lt;选项&gt;]</span><br><span class="line">                  加载 Java 编程语言代理, 请参阅 java.lang.instrument</span><br><span class="line">    -splash:&lt;imagepath&gt;</span><br><span class="line">                  使用指定的图像显示启动屏幕</span><br><span class="line">有关详细信息, 请参阅 http://www.oracle.com/technetwork/java/javase/documentation/index.html。</span><br></pre></td></tr></table></figure>
+
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><blockquote>
+<p>实战1：查看JVM版本</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -version</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br><span class="line"><span class="comment"># -showversion参数是表示，先打印版本信息，再执行后面的命令，在调试的时候非常有用</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>实战2： 通过<code>-D</code>设置系统属性参数</p>
+</blockquote>
+<ol>
+<li><p>创建一个<code>java</code>文件，然后输入如下内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestJVM</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		String str = System.getProperty(<span class="string">&quot;str&quot;</span>);</span><br><span class="line">		<span class="keyword">if</span>(str == <span class="keyword">null</span>)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;testJVM&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			System.out.println(str);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>进行编译和测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;javac TestJVM.java</span><br><span class="line"></span><br><span class="line">C:\Users\Daniel&gt;java TestJVM</span><br><span class="line">testJVM</span><br><span class="line"><span class="comment"># 在这里可以看到使用D参数设置的str能在代码中获取的到</span></span><br><span class="line">C:\Users\Daniel&gt;java -Dstr=123 TestJVM</span><br><span class="line">123</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="server与-client参数"><a href="#server与-client参数" class="headerlink" title="-server与-client参数"></a><code>-server</code>与<code>-client</code>参数</h3><p>可以通过<code>-server</code>或<code>-client</code>设置JVM的运行参数</p>
+<ul>
+<li>他们的区别是Server VM的初始堆空间会大一些，默认使用的是并行垃圾回收器，启动慢运行快</li>
+<li>Client VM相对来讲会保守一些，初始堆空间小一些，使用串行的垃圾回收器，她的目标是让JVM的启动速度更快，但运行速度会比Server VM模式慢些</li>
+<li>JVM在启动的时候会根据硬件和操作系统自动选择使用Server还是Client类型的JVM</li>
+<li>32位操作系统<ul>
+<li>如果是Windows系统，不论硬件配置如何，都默认使用Client类型的JVM</li>
+<li>如果是其他操作系统上，机器配置有2GB以上的内存同时又2个以上CPU的话，默认使用server模式，否则使用client模式</li>
+</ul>
+</li>
+<li>64位操作系统<ul>
+<li>只有Server类型，不支持Client类型</li>
+</ul>
+</li>
+</ul>
+<p>测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -client -showversion TestJVM</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line"><span class="comment"># 因为我的电脑是64位的系统，因此指定Client，也是运行Server模式</span></span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br><span class="line"></span><br><span class="line">testJVM</span><br></pre></td></tr></table></figure>
+
+<h2 id="X参数"><a href="#X参数" class="headerlink" title="-X参数"></a><code>-X</code>参数</h2><p>JVM的<code>-X</code>参数是非标准参数，在不同版本的JVM中，参数可能会有所不同，可以通过<code>java -X</code>查看非标准参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -X</span><br><span class="line">    -Xmixed           混合模式执行 (默认)</span><br><span class="line">    -Xint             仅解释模式执行</span><br><span class="line">    -Xbootclasspath:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;</span><br><span class="line">                      设置搜索路径以引导类和资源</span><br><span class="line">    -Xbootclasspath/a:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;</span><br><span class="line">                      附加在引导类路径末尾</span><br><span class="line">    -Xbootclasspath/p:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;</span><br><span class="line">                      置于引导类路径之前</span><br><span class="line">    -Xdiag            显示附加诊断消息</span><br><span class="line">    -Xnoclassgc       禁用类垃圾收集</span><br><span class="line">    -Xincgc           启用增量垃圾收集</span><br><span class="line">    -Xloggc:&lt;file&gt;    将 GC 状态记录在文件中 (带时间戳)</span><br><span class="line">    -Xbatch           禁用后台编译</span><br><span class="line">    -Xms&lt;size&gt;        设置初始 Java 堆大小</span><br><span class="line">    -Xmx&lt;size&gt;        设置最大 Java 堆大小</span><br><span class="line">    -Xss&lt;size&gt;        设置 Java 线程堆栈大小</span><br><span class="line">    -Xprof            输出 cpu 配置文件数据</span><br><span class="line">    -Xfuture          启用最严格的检查, 预期将来的默认值</span><br><span class="line">    -Xrs              减少 Java/VM 对操作系统信号的使用 (请参阅文档)</span><br><span class="line">    -Xcheck:jni       对 JNI 函数执行其他检查</span><br><span class="line">    -Xshare:off       不尝试使用共享类数据</span><br><span class="line">    -Xshare:auto      在可能的情况下使用共享类数据 (默认)</span><br><span class="line">    -Xshare:on        要求使用共享类数据, 否则将失败。</span><br><span class="line">    -XshowSettings    显示所有设置并继续</span><br><span class="line">    -XshowSettings:all</span><br><span class="line">                      显示所有设置并继续</span><br><span class="line">    -XshowSettings:vm 显示所有与 vm 相关的设置并继续</span><br><span class="line">    -XshowSettings:properties</span><br><span class="line">                      显示所有属性设置并继续</span><br><span class="line">    -XshowSettings:locale</span><br><span class="line">                      显示所有与区域设置相关的设置并继续</span><br><span class="line"></span><br><span class="line">-X 选项是非标准选项, 如有更改, 恕不另行通知。</span><br></pre></td></tr></table></figure>
+
+<h3 id="Xint、-Xcom、-Xmixed"><a href="#Xint、-Xcom、-Xmixed" class="headerlink" title="-Xint、-Xcom、-Xmixed"></a><code>-Xint</code>、<code>-Xcom</code>、<code>-Xmixed</code></h3><ul>
+<li>在解释模式（interpreted mode）下，-Xint标记会强制JVM执行所有的字节码，当然这回降低运行速度，通常低10倍或更多。</li>
+<li>-Xcomp参数与-Xint正好相反，JVM在第一次使用时会把所有的字节码编译成本地代码，从而带来最大程度的优化<ul>
+<li>然而，很多应用在使用-Xcomp也会有一些性能损失，当然这比使用-Xint损失的少，云因是-Xcomp没有让JVM启动JIT编译器的全部功能。JIT编译器可以对是否需要编译做判断，如果所有代码都进行编译的话，对于一些只执行一次的代码就没有意义了</li>
+</ul>
+</li>
+<li>-Xmixed是会和模式，将解释模式与编译模式进行混合使用，由JVM自己决定，这是jvm默认的模式，也是<font color='red'>推荐使用的模式</font></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 强制设置为解释模式</span></span><br><span class="line">C:\Users\Daniel&gt;java -showversion -Xint TestJVM</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line"><span class="comment"># 本行最后显示的是解释模式</span></span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, interpreted mode)</span><br><span class="line"></span><br><span class="line">testJVM</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制设置为编译模式（编译模式下，第一次执行会比解释模式下执行慢一些）</span></span><br><span class="line">C:\Users\Daniel&gt;java -showversion -Xcomp TestJVM</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line"><span class="comment"># 本行最后显示是编译模式</span></span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, compiled mode)</span><br><span class="line"></span><br><span class="line">testJVM</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认的混合模式</span></span><br><span class="line">C:\Users\Daniel&gt;java -showversion TestJVM</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br><span class="line"></span><br><span class="line">testJVM</span><br></pre></td></tr></table></figure>
+
+<h2 id="XX参数"><a href="#XX参数" class="headerlink" title="-XX参数"></a><code>-XX</code>参数</h2><p>-XX参数也是非标准参数，主要用于jvm调优和debug操作<br>-XX参数的使用有两种方式，一种是boolean类型，一种是非boolean类型：</p>
+<ul>
+<li>boolean类型<ul>
+<li>格式：-XX:[+-]</li>
+<li>如：-XX:+DisableExplicitGC表示禁用手动调用gc操作，也就是说调用System.gc()无效</li>
+</ul>
+</li>
+<li>非boolean类型<ul>
+<li>格式：-XX:</li>
+<li>如：-XX:NewRatio=1表示新生代和老年代的比值</li>
+</ul>
+</li>
+</ul>
+<p>用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -showversion -XX:+DisableExplicitGC TestJVM</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br><span class="line"></span><br><span class="line">testJVM</span><br></pre></td></tr></table></figure>
+
+<h2 id="Xms与-Xmx参数"><a href="#Xms与-Xmx参数" class="headerlink" title="-Xms与-Xmx参数"></a><code>-Xms</code>与<code>-Xmx</code>参数</h2><p>-Xms与-Xmx分别是设置JVM的堆内存的初始大小和最大大小<br>-Xmx2048m：等价于-XX:MaxHeapSize，设置JVM最大堆内存为2048M<br>-Xms512m：等价于-XX:InitialHeapSize，设置JVM初始堆内存为512M<br>适当的调整JVM的内存大小，可以充分利用服务器资源，让程序跑得更快，这里提一点，Xmx和Xms最好设置大小一致，初始化即最大，减少GC回收</p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -Xms512m -Xmx2048m TestJVM</span><br><span class="line">testJVM</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看JVM的运行参数"><a href="#查看JVM的运行参数" class="headerlink" title="查看JVM的运行参数"></a>查看JVM的运行参数</h2><p>有些时候我们需要查看JVM的运行参数，这个需求可能会存在两种情况</p>
+<ul>
+<li>运行java命令时打印出运行参数</li>
+<li>查看正在运行的java进程的参数</li>
+</ul>
+<h3 id="运行java命令时打印参数"><a href="#运行java命令时打印参数" class="headerlink" title="运行java命令时打印参数"></a>运行java命令时打印参数</h3><p>运行java命令时打印参数，需要添加-XX:+PrintFlagsFinal参数即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Daniel&gt;java -XX:+PrintFlagsFinal -version</span><br><span class="line">[Global flags]</span><br><span class="line">     intx ActiveProcessorCount                      = -1                                  &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizeDecrementScaleFactor          = 4                                   &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizeMajorGCDecayTimeScale         = 10                                  &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizePausePolicy                   = 0                                   &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizePolicyCollectionCostMargin    = 50                                  &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizePolicyInitializingSteps       = 20                                  &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizePolicyOutputInterval          = 0                                   &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizePolicyWeight                  = 10                                  &#123;product&#125;</span><br><span class="line">    uintx AdaptiveSizeThroughPutPolicy              = 0                                   &#123;product&#125;</span><br><span class="line">    uintx AdaptiveTimeWeight                        = 25                                  &#123;product&#125;</span><br><span class="line">     bool AdjustConcurrency                         = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     bool AggressiveHeap                            = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     bool AggressiveOpts                            = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     intx AliasLevel                                = 3                                   &#123;C2 product&#125;</span><br><span class="line">     bool AlignVector                               = <span class="literal">false</span>                               &#123;C2 product&#125;</span><br><span class="line">     intx AllocateInstancePrefetchLines             = 1                                   &#123;product&#125;</span><br><span class="line">     intx AllocatePrefetchDistance                  = 192                                 &#123;product&#125;</span><br><span class="line">     intx AllocatePrefetchInstr                     = 0                                   &#123;product&#125;</span><br><span class="line">     ......</span><br><span class="line">     bool UseXmmI2D                                 = <span class="literal">false</span>                               &#123;ARCH product&#125;</span><br><span class="line">     bool UseXmmI2F                                 = <span class="literal">false</span>                               &#123;ARCH product&#125;</span><br><span class="line">     bool UseXmmLoadAndClearUpper                   = <span class="literal">true</span>                                &#123;ARCH product&#125;</span><br><span class="line">     bool UseXmmRegToRegMoveAll                     = <span class="literal">true</span>                                &#123;ARCH product&#125;</span><br><span class="line">     bool VMThreadHintNoPreempt                     = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     intx VMThreadPriority                          = -1                                  &#123;product&#125;</span><br><span class="line">     intx VMThreadStackSize                         = 0                                   &#123;pd product&#125;</span><br><span class="line">     intx ValueMapInitialSize                       = 11                                  &#123;C1 product&#125;</span><br><span class="line">     intx ValueMapMaxLoopSize                       = 8                                   &#123;C1 product&#125;</span><br><span class="line">     intx ValueSearchLimit                          = 1000                                &#123;C2 product&#125;</span><br><span class="line">     bool VerifyMergedCPBytecodes                   = <span class="literal">true</span>                                &#123;product&#125;</span><br><span class="line">     bool VerifySharedSpaces                        = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     intx WorkAroundNPTLTimedWaitHang               = 1                                   &#123;product&#125;</span><br><span class="line">    uintx YoungGenerationSizeIncrement              = 20                                  &#123;product&#125;</span><br><span class="line">    uintx YoungGenerationSizeSupplement             = 80                                  &#123;product&#125;</span><br><span class="line">    uintx YoungGenerationSizeSupplementDecay        = 8                                   &#123;product&#125;</span><br><span class="line">    uintx YoungPLABSize                             = 4096                                &#123;product&#125;</span><br><span class="line">     bool ZeroTLAB                                  = <span class="literal">false</span>                               &#123;product&#125;</span><br><span class="line">     intx hashCode                                  = 5                                   &#123;product&#125;</span><br><span class="line">java version <span class="string">&quot;1.8.0_251&quot;</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_251-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>由上述的信息可以看出，参数由boolean类型和数字类型，值的操作符是=或:=，分别代表默认值或被修改的值</p>
+<h3 id="查看正在运行的jvm参数"><a href="#查看正在运行的jvm参数" class="headerlink" title="查看正在运行的jvm参数"></a>查看正在运行的jvm参数</h3><p>如果想要查看正在运行的jvm就需要借助于jinfo命令查看。首先启动一个tomcat用作测试，来观察下jvm的参数</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/17/%E5%A4%84%E7%90%86Linux-x86-64-Error-12-Cannot-allocate-memory/" rel="prev" title="处理Linux-x86_64 Error: 12: Cannot allocate memory">
+                  <i class="fa fa-chevron-left"></i> 处理Linux-x86_64 Error: 12: Cannot allocate memory
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/09/Twitter%E5%BC%80%E6%BA%90%E7%9A%84%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86%E5%8F%8AJava%E5%AE%9E%E7%8E%B0/" rel="next" title="Twitter开源的雪花算法原理及Java实现">
+                  Twitter开源的雪花算法原理及Java实现 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

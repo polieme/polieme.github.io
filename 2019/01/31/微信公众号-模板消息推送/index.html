@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号 模板消息发送">
+<meta property="og:url" content="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_22.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_2.png">
+<meta property="article:published_time" content="2019-01-31T07:26:16.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.494Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="微信公众号">
+<meta property="article:tag" content="模板消息发送">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_22.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>微信公众号 模板消息发送 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">名词介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%9D%90%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">准备材料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E7%B1%BBHttpUtils-java%E5%92%8CReadProperties-java"><span class="nav-number">3.1.</span> <span class="nav-text">工具类HttpUtils.java和ReadProperties.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E8%BF%94%E5%9B%9E%E6%B6%88%E6%81%AF%E5%AE%9E%E4%BD%93%E7%B1%BBWeixinAccessTokenEntity-java"><span class="nav-number">3.2.</span> <span class="nav-text">微信返回消息实体类WeixinAccessTokenEntity.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%85%AC%E5%85%B1%E6%96%B9%E6%B3%95%E7%B1%BBWeChatCommon-java"><span class="nav-number">3.3.</span> <span class="nav-text">发送消息的公共方法类WeChatCommon.java</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信公众号 模板消息发送
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-31 15:26:16" itemprop="dateCreated datePublished" datetime="2019-01-31T15:26:16+08:00">2019-01-31</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">后端插件</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/" itemprop="url" rel="index"><span itemprop="name">微信公众号</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_22.jpg"></p>
+<blockquote>
+<p>前言<br>微信公众号开发，其实很简单，这里是在微信公众号测试账号（公众号沙箱）上的开发流程，具体到生产环境的公众号开发，另行配置，比如说公众号主体信息认证、消息模板配置（审核很严，需要提前进行申请，防止影响业务）</p>
+</blockquote>
+<h2 id="名词介绍"><a href="#名词介绍" class="headerlink" title="名词介绍"></a>名词介绍</h2><ul>
+<li>appID：第三方用户唯一凭证</li>
+<li>appsecret：第三方用户唯一凭证密钥，即appsecret</li>
+<li>access_token：公众号的全局唯一接口调用凭据，公众号调用各接口时都需使用access_token，通过接口传递appId和appsecret，而且目前的有效时间是7200s，所以需要定期进行数据再求，更改access_token</li>
+<li>opendId：用户与公众号对应关系的唯一ID，一个用户对多个公众号有多个不同的openId，一个公众号对不同的用户有不同的openId</li>
+<li>templete_id：模板ID，发送消息的时候是通过调用接口，传递模板ID和对应模板中的参数进行数据发送的</li>
+</ul>
+<h2 id="准备材料"><a href="#准备材料" class="headerlink" title="准备材料"></a>准备材料</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login">打开微信公众号测试账号地址</a>，登录之后，会显示对应的<code>appID</code>和<code>appsecret</code>，这个获取<code>access_token</code>的时候会用到，需要记录下来</li>
+<li>扫描测试账号界面的二维码，关注自己的测试公众号，然后能获取一个opendId，具体界面如下<img src="/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_1.png" class=""></li>
+<li>创建发送消息的模板，获取到一个<code>templete_id</code>（测试公众号的模板是可以随便创建，不需要申请流程，但是每个测试账号下面只能有最多10个测试模板），创建模板的时候，一定要注意规则要传递的变量是以<code>&#123;&#123;param.DATA&#125;&#125;</code>，其中param是你的要传递的参数<br>个人创建的模板为：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;first.DATA&#125;&#125; 采购单编号：&#123;&#123;keyword1.DATA&#125;&#125; 采购类型：&#123;&#123;keyword2.DATA&#125;&#125; 订货日期：&#123;&#123;keyword3.DATA&#125;&#125; 要求送货日期：&#123;&#123;keyword4.DATA&#125;&#125; &#123;&#123;remark.DATA&#125;&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/01/31/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/screenshot_2.png" class=""></li>
+</ul>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="工具类HttpUtils-java和ReadProperties-java"><a href="#工具类HttpUtils-java和ReadProperties-java" class="headerlink" title="工具类HttpUtils.java和ReadProperties.java"></a>工具类<code>HttpUtils.java</code>和<code>ReadProperties.java</code></h3><ul>
+<li>HttpUtils类是用作发送网络请求</li>
+<li>ReadProperties类是用作读取Properties中的appid和appsecret（因为这两个值一般不会发生变化，所以存在properties文件中）  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStreamWriter;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.net.ConnectException;</span><br><span class="line"><span class="keyword">import</span> java.net.CookieHandler;</span><br><span class="line"><span class="keyword">import</span> java.net.CookieManager;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.ProtocolException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.net.URLConnection;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpUtils</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Do POST request</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> url</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> JsonObject</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">  * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">doPostForJson</span><span class="params">(String url, JSONObject jsonObj)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">   System.out.println(<span class="string">&quot;POST parameter : &quot;</span> + jsonObj.toString());</span><br><span class="line">   URL localURL = <span class="keyword">new</span> URL(url);</span><br><span class="line">   URLConnection connection = localURL.openConnection();</span><br><span class="line">   HttpURLConnection httpURLConnection = (HttpURLConnection)connection;</span><br><span class="line">   httpURLConnection.setDoOutput(<span class="keyword">true</span>);</span><br><span class="line">   httpURLConnection.setRequestMethod(<span class="string">&quot;POST&quot;</span>);</span><br><span class="line">   httpURLConnection.setRequestProperty(<span class="string">&quot;Accept-Charset&quot;</span>, <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">   httpURLConnection.setRequestProperty(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br><span class="line">   httpURLConnection.setRequestProperty(<span class="string">&quot;Content-Length&quot;</span>, String.valueOf(jsonObj.toString().length()));</span><br><span class="line">   OutputStream outputStream = <span class="keyword">null</span>;</span><br><span class="line">   OutputStreamWriter outputStreamWriter = <span class="keyword">null</span>;</span><br><span class="line">   InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">   InputStreamReader inputStreamReader = <span class="keyword">null</span>;</span><br><span class="line">   BufferedReader reader = <span class="keyword">null</span>;</span><br><span class="line">   StringBuffer resultBuffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">   String tempLine = <span class="keyword">null</span>;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">     outputStream = httpURLConnection.getOutputStream();</span><br><span class="line">     outputStreamWriter = <span class="keyword">new</span> OutputStreamWriter(outputStream,<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">     outputStreamWriter.write(jsonObj.toString());</span><br><span class="line">     outputStreamWriter.flush();</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (httpURLConnection.getResponseCode() &gt;= <span class="number">300</span>) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;HTTP Request is not success, Response code is &quot;</span> + httpURLConnection.getResponseCode());</span><br><span class="line">     &#125;</span><br><span class="line">     inputStream = httpURLConnection.getInputStream();</span><br><span class="line">     inputStreamReader = <span class="keyword">new</span> InputStreamReader(inputStream);</span><br><span class="line">     reader = <span class="keyword">new</span> BufferedReader(inputStreamReader);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">while</span> ((tempLine = reader.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">       resultBuffer.append(tempLine);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">     <span class="keyword">if</span> (outputStreamWriter != <span class="keyword">null</span>) &#123;</span><br><span class="line">       outputStreamWriter.close();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (outputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">       outputStream.close();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (reader != <span class="keyword">null</span>) &#123;</span><br><span class="line">       reader.close();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (inputStreamReader != <span class="keyword">null</span>) &#123;</span><br><span class="line">       inputStreamReader.close();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">       inputStream.close();</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> resultBuffer.toString();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 发送GET请求</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> url</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">  * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">doGet</span><span class="params">(String url)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">     URL localURL = <span class="keyword">new</span> URL(url);</span><br><span class="line">     URLConnection connection = localURL.openConnection();</span><br><span class="line">     HttpURLConnection httpURLConnection = (HttpURLConnection)connection;</span><br><span class="line">     httpURLConnection.setRequestProperty(<span class="string">&quot;Accept-Charset&quot;</span>, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">     httpURLConnection.setRequestProperty(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br><span class="line">     InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">     InputStreamReader inputStreamReader = <span class="keyword">null</span>;</span><br><span class="line">     BufferedReader reader = <span class="keyword">null</span>;</span><br><span class="line">     StringBuffer resultBuffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">     String tempLine = <span class="keyword">null</span>;</span><br><span class="line">     <span class="keyword">if</span> (httpURLConnection.getResponseCode() &gt;= <span class="number">300</span>) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;HTTP Request is not success, Response code is &quot;</span> + httpURLConnection.getResponseCode());</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">         inputStream = httpURLConnection.getInputStream();</span><br><span class="line">         inputStreamReader = <span class="keyword">new</span> InputStreamReader(inputStream,<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">         reader = <span class="keyword">new</span> BufferedReader(inputStreamReader);</span><br><span class="line"></span><br><span class="line">         <span class="keyword">while</span> ((tempLine = reader.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">             resultBuffer.append(tempLine);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">if</span> (reader != <span class="keyword">null</span>) &#123;</span><br><span class="line">             reader.close();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (inputStreamReader != <span class="keyword">null</span>) &#123;</span><br><span class="line">             inputStreamReader.close();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">             inputStream.close();</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> resultBuffer.toString();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.MissingResourceException;</span><br><span class="line"><span class="keyword">import</span> java.util.ResourceBundle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ResourceBundle bundle;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		<span class="comment">// 读取propertiest资源文件</span></span><br><span class="line">		bundle = ResourceBundle.getBundle(<span class="string">&quot;systemconfig&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据name获得propertiest资源文件里字符串的名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getString</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		String value = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			value = bundle.getString(name);</span><br><span class="line">			value = <span class="keyword">new</span> String(value.getBytes(<span class="string">&quot;ISO8859-1&quot;</span>), <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (MissingResourceException e) &#123;</span><br><span class="line">			System.err.println(e);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception ee) &#123;</span><br><span class="line">			System.err.println(ee);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (<span class="string">&quot;&quot;</span>.equals(value)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> value;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="微信返回消息实体类WeixinAccessTokenEntity-java"><a href="#微信返回消息实体类WeixinAccessTokenEntity-java" class="headerlink" title="微信返回消息实体类WeixinAccessTokenEntity.java"></a>微信返回消息实体类<code>WeixinAccessTokenEntity.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 请求微信Token返回的实体类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAccessTokenEntity</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String accessToken;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">long</span> expirationTime;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">WeixinAccessTokenEntity</span><span class="params">(String accessToken, <span class="keyword">long</span> expirationTime)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.accessToken = accessToken;</span><br><span class="line">		<span class="keyword">this</span>.expirationTime = expirationTime;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getAccessToken</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> accessToken;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccessToken</span><span class="params">(String accessToken)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.accessToken = accessToken;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getExpirationTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> expirationTime;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setExpirationTime</span><span class="params">(<span class="keyword">long</span> expirationTime)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.expirationTime = expirationTime;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="发送消息的公共方法类WeChatCommon-java"><a href="#发送消息的公共方法类WeChatCommon-java" class="headerlink" title="发送消息的公共方法类WeChatCommon.java"></a>发送消息的公共方法类<code>WeChatCommon.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.third.util;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.context.ContextLoader;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.context.WebApplicationContext;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.third.bean.common.WeixinAccessTokenEntity;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 微信公众号相关公共类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zp</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeChatCommon</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> JSONObject <span class="title">sendTempleteMsg</span><span class="params">(String openId,String templateId,Map&lt;String,Object&gt; msgContentMap)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//返回的JSONObject</span></span><br><span class="line">		JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		jsonObject.put(<span class="string">&quot;code&quot;</span>,-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//获取access_token</span></span><br><span class="line">		String accessToken = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//首先通过项目全局上下文判断access_token是否失效</span></span><br><span class="line">			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();  </span><br><span class="line">		    ServletContext application = webApplicationContext.getServletContext();</span><br><span class="line">		    Object wechatAccessTokenObj = application.getAttribute(<span class="string">&quot;tokenMap&quot;</span>);</span><br><span class="line">		    WeixinAccessTokenEntity wechatAccessTokenEntity = wechatAccessTokenObj == <span class="keyword">null</span> ? <span class="keyword">null</span>: (WeixinAccessTokenEntity)wechatAccessTokenObj;</span><br><span class="line"></span><br><span class="line">		    <span class="comment">//如果超期，或者access_token没有的时候，重新生成，并设置到全局上下文中</span></span><br><span class="line">		    <span class="keyword">if</span>(wechatAccessTokenEntity == <span class="keyword">null</span> || wechatAccessTokenEntity.getExpirationTime()&lt;System.currentTimeMillis()) &#123;</span><br><span class="line">		    	accessToken = getAccseeToken();</span><br><span class="line">		    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		    	accessToken = wechatAccessTokenEntity.getAccessToken();</span><br><span class="line">		    &#125;</span><br><span class="line"></span><br><span class="line">		    <span class="comment">//如果还是获取失败，则走Exception</span></span><br><span class="line">			<span class="keyword">if</span>(accessToken == <span class="keyword">null</span> || <span class="string">&quot;&quot;</span>.equals(accessToken)) &#123;</span><br><span class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;获取accessToken失败!&quot;</span>);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//组装发送的JSON串信息</span></span><br><span class="line">			JSONObject sendInfoJsonObject = packSendTemplate(openId,templateId,msgContentMap);</span><br><span class="line">			<span class="comment">//发送网络请求</span></span><br><span class="line">			String urlStr = <span class="string">&quot;https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=&quot;</span>+accessToken;<span class="comment">//发送消息Url</span></span><br><span class="line">			HttpUtils httpUtils = <span class="keyword">new</span> HttpUtils();</span><br><span class="line">			String returnMsgInfoStr = httpUtils.doPostForJson(urlStr, sendInfoJsonObject);</span><br><span class="line"></span><br><span class="line">			System.out.println(returnMsgInfoStr);</span><br><span class="line">			JSONObject returnMsgInfoJSONObject = JSON.parseObject(returnMsgInfoStr);</span><br><span class="line">			<span class="keyword">if</span>(returnMsgInfoJSONObject!=<span class="keyword">null</span> &amp;&amp; returnMsgInfoJSONObject.getInteger(<span class="string">&quot;errcode&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">				jsonObject.put(<span class="string">&quot;code&quot;</span>,<span class="number">0</span>);</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				jsonObject.put(<span class="string">&quot;msg&quot;</span>,returnMsgInfoJSONObject.get(<span class="string">&quot;errmsg&quot;</span>));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			jsonObject.put(<span class="string">&quot;msg&quot;</span>,e.getMessage());</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> jsonObject;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取access_token</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getAccseeToken</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//首先获取appId和appSecret（这个是读取配置文件*.properties文件），当然你也可以写死成上面获取到的appId和appsecret</span></span><br><span class="line">		String appId=ReadProperties.getString(<span class="string">&quot;appId&quot;</span>);</span><br><span class="line">		String appSecret=ReadProperties.getString(<span class="string">&quot;appsecret&quot;</span>);		</span><br><span class="line"></span><br><span class="line">	    WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();  </span><br><span class="line">	    ServletContext application = webApplicationContext.getServletContext();  </span><br><span class="line"></span><br><span class="line">	    String url=<span class="string">&quot;https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=&quot;</span>+appId+<span class="string">&quot;&amp;secret=&quot;</span>+appSecret;</span><br><span class="line">	    HttpUtils httpRequestor = <span class="keyword">new</span> HttpUtils();</span><br><span class="line">	    String returnData=<span class="string">&quot;&quot;</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			returnData = httpRequestor.doGet(url);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;  </span><br><span class="line">	    JSONObject json=JSON.parseObject(returnData);  </span><br><span class="line">	    <span class="keyword">if</span>(json.containsKey(<span class="string">&quot;access_token&quot;</span>))&#123;  </span><br><span class="line">	        <span class="keyword">if</span>(json.get(<span class="string">&quot;access_token&quot;</span>)!=<span class="keyword">null</span>&amp;&amp;!json.get(<span class="string">&quot;access_token&quot;</span>).equals(<span class="string">&quot;&quot;</span>))&#123;  </span><br><span class="line">            <span class="comment">//如果获取成功了，设置到程序的全局变量中，当然如果是集群或者其他的话，可以直接放入Redis，并设置失效时间</span></span><br><span class="line">	            application.setAttribute(<span class="string">&quot;tokenMap&quot;</span>, <span class="keyword">new</span> WeixinAccessTokenEntity(json.get(<span class="string">&quot;access_token&quot;</span>).toString(),  </span><br><span class="line">	                    System.currentTimeMillis()+Long.parseLong(json.get(<span class="string">&quot;expires_in&quot;</span>).toString())*<span class="number">1000</span>));  </span><br><span class="line">	            <span class="keyword">return</span> json.get(<span class="string">&quot;access_token&quot;</span>).toString();</span><br><span class="line">	        &#125;  </span><br><span class="line">	    &#125;  </span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 组装微信消息模板JsonObject</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> JSONObject <span class="title">packSendTemplate</span><span class="params">(String openId,String templateId,Map&lt;String,Object&gt; msgContentMap)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		jsonObject.put(<span class="string">&quot;touser&quot;</span>,openId);</span><br><span class="line">		jsonObject.put(<span class="string">&quot;template_id&quot;</span>,templateId);</span><br><span class="line"></span><br><span class="line">		JSONObject dataJSONObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String,Object&gt; entry : msgContentMap.entrySet()) &#123;</span><br><span class="line">			JSONObject tempContentJSONObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">			tempContentJSONObject.put(<span class="string">&quot;value&quot;</span>, entry.getValue());</span><br><span class="line">			tempContentJSONObject.put(<span class="string">&quot;color&quot;</span>, <span class="string">&quot;#173177&quot;</span>);</span><br><span class="line"></span><br><span class="line">			dataJSONObject.put(entry.getKey(),tempContentJSONObject);</span><br><span class="line">		&#125;</span><br><span class="line">		jsonObject.put(<span class="string">&quot;data&quot;</span>,dataJSONObject);</span><br><span class="line">		<span class="keyword">return</span> jsonObject;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//没写测试代码，直接写了个main方法进行的测试</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		Map&lt;String,Object&gt; msgContentMap = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;欢迎欢迎!&quot;</span>);</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;keyword1&quot;</span>, <span class="string">&quot;你好啊123123123&quot;</span>);</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;keyword2&quot;</span>, <span class="string">&quot;欢迎欢迎!&quot;</span>);</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;keyword3&quot;</span>, <span class="string">&quot;欢迎欢迎!&quot;</span>);</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;keyword4&quot;</span>, <span class="string">&quot;欢迎欢迎!&quot;</span>);</span><br><span class="line">		msgContentMap.put(<span class="string">&quot;remark&quot;</span>, <span class="string">&quot;欢迎欢迎!&quot;</span>);</span><br><span class="line">		sendTempleteMsg(<span class="string">&quot;openId&quot;</span>,<span class="string">&quot;templateId&quot;</span>,msgContentMap);<span class="comment">//这个地方需要修改成用户对应的openId和你自己创建的模板ID</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>WeChatCommon 一定要记住修改openId和templateId为自己的</li>
+<li>accsee_token的有效时间目前为两小时</li>
+<li>模板中的参数一定要和模板中的参数名字保持一致</li>
+<li>生产环境模板一定要尽快申请，防止到时申请（审核时间比较长）不下来影响业务</li>
+<li>目前是用项目全局上下文存储的access_token，如果有redis，可以存储在redis中，并设置时间有效</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/" rel="tag"># 微信公众号</a>
+              <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81/" rel="tag"># 模板消息发送</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/30/Java-ExecutorService%E9%99%90%E5%88%B6%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F/" rel="prev" title="Java ExecutorService限制线程数量">
+                  <i class="fa fa-chevron-left"></i> Java ExecutorService限制线程数量
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/01/CSS%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="CSS知识点">
+                  CSS知识点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows下Oracle11g安装">
+<meta property="og:url" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_44.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_5.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_6.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_7.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_9.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_10.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_11.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_12.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_13.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_14.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_15.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_16.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_18.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_19.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_20.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_21.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_22.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_23.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_24.png">
+<meta property="og:image" content="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_17.png">
+<meta property="article:published_time" content="2019-03-06T03:01:51.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.217Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="Oracle安装">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_44.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Windows下Oracle11g安装 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%9D%90%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">准备材料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">解压</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E4%B8%9A%E5%8A%A1%E4%B8%8A%E9%9C%80%E8%A6%81%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8D%B3%E6%96%B0%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">创建自己业务上需要的数据库即新建数据库实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%AF%B9%E5%BA%94%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E4%BE%8B%E4%B8%8B%E9%9D%A2%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B4%EF%BC%8C%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%A9%BA%E9%97%B4%E7%AD%89"><span class="nav-number">4.</span> <span class="nav-text">在对应的数据库实例下面创建表空间，表数据空间等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">数据导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">6.</span> <span class="nav-text">问题解决</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows下Oracle11g安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-06 11:01:51" itemprop="dateCreated datePublished" datetime="2019-03-06T11:01:51+08:00">2019-03-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" itemprop="url" rel="index"><span itemprop="name">软件安装</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_44.jpg"></p>
+<blockquote>
+<p>5年多没有碰Oracle了，从原来的9i已经到现在的12c了，今天项目上要用到Oracle11g的测试环境，因此在Window上部署了一版Oracle，期间碰到的坑还是蛮多的，比如说要安装的电脑上本来安装着10g，需要现卸载，但是咨询说是简版的oracle，卸载程序不生效，又各种捣鼓卸载，删注册表等等，介于此，特此在这记录一下</p>
+</blockquote>
+<h2 id="准备材料"><a href="#准备材料" class="headerlink" title="准备材料"></a>准备材料</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>Oracle的两个安装包，下载地址分别是：</p>
+<ul>
+<li>win64_11gR2_database_1of2<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1AewnMe-mwm54_aRTFAHbSg">https://pan.baidu.com/s/1AewnMe-mwm54_aRTFAHbSg</a><br>提取码：vbxg</li>
+<li>win64_11gR2_database_2of2<br>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1rj9WBsut79NYTgLpEHq3uQ">https://pan.baidu.com/s/1rj9WBsut79NYTgLpEHq3uQ</a><br>提取码：un5g</li>
+</ul>
+<p><font color='red'>如果下载慢，可以去官网上下载，但是下载下来的是12c，哈哈，没有找到之前版本的下载地址<a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/cn/database/enterprise-edition/downloads/oracle12c-windows-3633015-zhs.html">下载地址</a></font></p>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><ol>
+<li>将下载下来的两个压缩包进行解压，然后合并到一块，可以直接右键解压到当前目录（尽量一个一个解压，防止出现问题），如图所示<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_1.png" class=""></li>
+<li>解压完成之后，会出现一个合并的<code>database</code>文件夹，文件夹总体大小大概在2.12G左右，具体见下图所示<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_2.png" class=""></li>
+</ol>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ol>
+<li>打开<code>database</code>文件夹，双击<code>setup.exe</code>文件启动安装程序，如果是win10，会显示下面的图片，可以直接点击“是”继续安装，或者修改配置文件，配置文件在下面的步骤中讲到<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_3.png" class=""></li>
+<li>修改配置文件，修复上面的提示框<br>打开<code>%解压目录%\stage\cvu\cvu_prereq.xml</code>文件，然后修改配置文件内容，修改方法为找到<code>Windows 7</code>所在的<code>OPERATING_SYSTEM</code>，然后整个复制<code>OPERATING_SYSTEM</code>及内部的内容，然后粘贴在<code>OPERATING_SYSTEM</code>的兄弟节点的最后，然后修改<code>RELEASE</code>为6.2，<code>Windows 7</code>改为<code>Windows 10</code>，修改后的内容和粘贴后的配置文件截图如下所示，修改完成后再启动安装程序：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">OPERATING_SYSTEM</span> <span class="attr">RELEASE</span>=<span class="string">&quot;6.2&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">VERSION</span> <span class="attr">VALUE</span>=<span class="string">&quot;3&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ARCHITECTURE</span> <span class="attr">VALUE</span>=<span class="string">&quot;64-bit&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">NAME</span> <span class="attr">VALUE</span>=<span class="string">&quot;Windows 10&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ENV_VAR_LIST</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ENV_VAR</span> <span class="attr">NAME</span>=<span class="string">&quot;PATH&quot;</span> <span class="attr">MAX_LENGTH</span>=<span class="string">&quot;1023&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ENV_VAR_LIST</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">OPERATING_SYSTEM</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_4.png" class=""></li>
+<li>在此打开安装程序，界面显示如下，其中的<code>电子邮件</code>和<code>我希望...</code>可选填，不填后面会提醒“是否确认不希望收到相关配置中的…”，直接点击是就可以了<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_5.png" class=""></li>
+<li>网格安装选项、安装类型，具体操作见下图<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_6.png" class="">
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_7.png" class=""></li>
+<li>典型安装<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_9.png" class="">
+后面我就盗图了，因为已经安装过了，所以提示其他内容了</li>
+<li>先决条件检查，检查电脑硬件是否满足条件<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_10.png" class=""></li>
+<li>概要信息，即安装信息的概要显示<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_11.png" class=""></li>
+<li>安装过程不用管，界面显示如下图<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_12.png" class=""></li>
+<li>数据库软件安装完成后，会弹出安装数据库默认实例<code>ORCL</code>名称数据库的向导界面，如下图所示<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_13.png" class=""></li>
+<li>数据库实例创建完后，系统默认是把所有的账户锁定（除sys和system外），建议点开“口令管理”，将<code>scott</code>账号解锁，并设置密码，操作如下图所示<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_14.png" class="">
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_15.png" class=""></li>
+<li>安装完成后的界面如下<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_16.png" class=""></li>
+</ol>
+<h2 id="创建自己业务上需要的数据库即新建数据库实例"><a href="#创建自己业务上需要的数据库即新建数据库实例" class="headerlink" title="创建自己业务上需要的数据库即新建数据库实例"></a>创建自己业务上需要的数据库即新建数据库实例</h2><ol>
+<li>点击<code>Win</code>键，找到Oracle文件夹下面的<code>Database Configuration Assitant</code>菜单，并点击打开，具体见下图<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_18.png" class=""></li>
+<li>打开之后，点击<code>下一步</code>，勾选<code>创建数据库</code>后点击下一步<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_19.png" class="">
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_20.png" class=""></li>
+<li>选择<code>一般用途或事务处理</code>，点击下一步，填写数据库实例，然后点击下一步<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_21.png" class="">
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_22.png" class=""></li>
+<li>剩下的一路Next，字符集看自己需求，如果有需要，可以对应的设置，直到下面的界面，然后点击完成会出一个汇总信息界面，点击确定，就会打开创建的Progress界面<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_23.png" class="">
+<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_24.png" class=""></li>
+</ol>
+<h2 id="在对应的数据库实例下面创建表空间，表数据空间等"><a href="#在对应的数据库实例下面创建表空间，表数据空间等" class="headerlink" title="在对应的数据库实例下面创建表空间，表数据空间等"></a>在对应的数据库实例下面创建表空间，表数据空间等</h2><ol>
+<li>在客户端机子上修改<code>tnsnames.ora</code>文件，添加新创建数据库的信息，修改里面的HOST为Oracle服务器的IP地址，SERVICE_NAME为你创建数据库实例的名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">khgl_116 &#x3D;</span><br><span class="line">  (DESCRIPTION &#x3D;</span><br><span class="line">    (ADDRESS &#x3D; (PROTOCOL &#x3D; TCP)(HOST &#x3D; 68.0.0.116)(PORT &#x3D; 1521))</span><br><span class="line">    (CONNECT_DATA &#x3D;</span><br><span class="line">      (SERVER &#x3D; DEDICATED)</span><br><span class="line">      (SERVICE_NAME &#x3D; ORCL)</span><br><span class="line">    )</span><br><span class="line">  )</span><br></pre></td></tr></table></figure></li>
+<li>使用创建数据库时的sys用户连接数据库，并执行下面的命令创建表空间和表数据控件<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> temporary tablespace jnmcdb_table tempfile <span class="string">&#x27;D:\app\Administrator\oradata\orcl\jnmcdb_table.dbf&#x27;</span></span><br><span class="line">　　size <span class="number">50</span>m</span><br><span class="line">　　autoextend <span class="keyword">on</span></span><br><span class="line">　　next <span class="number">50</span>m maxsize <span class="number">20480</span>m</span><br><span class="line">　　extent management <span class="keyword">local</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建表数据空间</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span>space jnmcdb_data logging datafile <span class="string">&#x27;D:\app\Administrator\oradata\orcl\jnmcdb_data.dbf&#x27;</span></span><br><span class="line">　　size <span class="number">50</span>m</span><br><span class="line">　　autoextend <span class="keyword">on</span></span><br><span class="line">　　next <span class="number">50</span>m maxsize <span class="number">20480</span>m</span><br><span class="line">　　extent management <span class="keyword">local</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建用户关联到表空间和表数据空间</span></span><br><span class="line">　<span class="keyword">create</span> <span class="keyword">user</span> jnmcbusi identified <span class="keyword">by</span> <span class="number">123456</span></span><br><span class="line">　　<span class="keyword">default</span> tablespace jnmcdb_data  </span><br><span class="line">　　temporary tablespace jnmcdb_table ;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imp username<span class="operator">/</span>password<span class="variable">@ORALCEID</span>（数据库名，以下图，在登录后左上方）  file<span class="operator">=</span>D:\<span class="number">20140227.</span>dmp <span class="keyword">full</span><span class="operator">=</span>y ignore<span class="operator">=</span>y</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><ol>
+<li>本机可以正常访问，局域网内其他主机访问显示<code>ORA-12541:TNS:无监听程序</code>，修复方法见下图<img src="/2019/03/06/Windows%E4%B8%8BOracle11g%E5%AE%89%E8%A3%85/screenshot_17.png" class=""></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+              <a href="/tags/Oracle%E5%AE%89%E8%A3%85/" rel="tag"># Oracle安装</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/03/Kali-Linux%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF-%E5%AE%89%E8%A3%85/" rel="prev" title="Kali Linux学习之路-安装">
+                  <i class="fa fa-chevron-left"></i> Kali Linux学习之路-安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/07/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%82%E5%B8%B8%E8%A7%A3%E5%86%B3/" rel="next" title="Oracle数据库异常解决">
+                  Oracle数据库异常解决 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

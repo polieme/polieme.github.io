@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows curl安装及常规命令使用">
+<meta property="og:url" content="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_1.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_4.png">
+<meta property="article:published_time" content="2019-02-16T01:22:57.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.407Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="软件安装">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="curl">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_1.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>windows curl安装及常规命令使用 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#curl%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">curl是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDWindows%E7%89%88%E6%9C%AC%E7%9A%84curl"><span class="nav-number">2.1.</span> <span class="nav-text">下载Windows版本的curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">2.2.</span> <span class="nav-text">添加环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">2.3.</span> <span class="nav-text">测试是否安装成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">使用案例</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          windows curl安装及常规命令使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-16 09:22:57" itemprop="dateCreated datePublished" datetime="2019-02-16T09:22:57+08:00">2019-02-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" itemprop="url" rel="index"><span itemprop="name">软件安装</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_1.jpg"></p>
+<h2 id="curl是什么"><a href="#curl是什么" class="headerlink" title="curl是什么"></a>curl是什么</h2><p>curl是一个利用URL语法在命令行下工作的文件传输工具，它支持的通信协议有FTP、FTPS、HTTP、HTTPS、TFTP、SFTP、Gopher、SCP、Telnet、DICT、FILE、LDAP、LDAPS、IMAP、POP3、SMTP和RTSP。curl还支持SSL认证、HTTP POST、HTTP PUT、FTP上传, HTTP form based upload、proxies、HTTP/2、cookies、用户名+密码认证(Basic, Plain, Digest, CRAM-MD5, NTLM, Negotiate and Kerberos)、file transfer resume、proxy tunneling</p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="下载Windows版本的curl"><a href="#下载Windows版本的curl" class="headerlink" title="下载Windows版本的curl"></a>下载Windows版本的curl</h3><ol>
+<li>下载Win版curl的地址如下<a target="_blank" rel="noopener" href="https://curl.haxx.se/windows/">https://curl.haxx.se/windows/</a></li>
+<li>根据你自己的个人系统位数，下载对应的版本，我是X64的因此下载了下图中的红圈标注出来的版本</li>
+<li>下载完成后解压，放到你想放置的位置，本次安装放在了<code>D:\Program Files\curl</code>（这里进行了解压文件的重命名，也可以不用重命名）<img src="/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_1.png" class=""></li>
+</ol>
+<h3 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h3><ol>
+<li>我的电脑-&gt;右键“属性”-&gt;高级系统设置-&gt;环境变量<br>在**<font color='red'>系统变量</font>**中点击<code>新建</code>按钮，如下图所示<img src="/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_2.png" class=""></li>
+<li>弹出<code>新建系统变量</code>界面，在变量名中输入<code>CURL_HOME</code>，在变量值中输入<code>D:\Program Files\curl\bin</code><font color='red'>这个地方需要注意，替换成你自己的curl安装目录，并在最后添加\bin</font>，具体如下图所示<img src="/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_3.png" class=""></li>
+<li>修改<code>系统变量</code>中的<code>Path</code>，添加<code>%CURL_HOME%</code>，具体操作见下图<img src="/2019/02/16/windows-curl%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B8%B8%E8%A7%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/screenshot_4.png" class=""></li>
+<li>添加完成后，点击确定<h3 id="测试是否安装成功"><a href="#测试是否安装成功" class="headerlink" title="测试是否安装成功"></a>测试是否安装成功</h3></li>
+<li>打开<code>CMD</code>窗口，然后输入<code>curl --help</code>，看是否有反应，如果有如下输出，说明正常，如果没有，说明安装失败，根据具体的提示百度确认问题出在哪里<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl --<span class="built_in">help</span></span><br><span class="line">Usage: curl [options...] &lt;url&gt;</span><br><span class="line">     --abstract-unix-socket &lt;path&gt; Connect via abstract Unix domain socket</span><br><span class="line">     --anyauth       Pick any authentication method</span><br><span class="line"> -a, --append        Append to target file when uploading</span><br><span class="line">     --basic         Use HTTP Basic Authentication</span><br><span class="line">     --cacert &lt;file&gt; CA certificate to verify peer against</span><br><span class="line">     --capath &lt;dir&gt;  CA directory to verify peer against</span><br><span class="line"> -E, --cert &lt;certificate[:password]&gt; Client certificate file and password</span><br><span class="line">     --cert-status   Verify the status of the server certificate</span><br><span class="line">     --cert-type &lt;<span class="built_in">type</span>&gt; Certificate file <span class="built_in">type</span> (DER/PEM/ENG)</span><br><span class="line">     --ciphers &lt;list of ciphers&gt; SSL ciphers to use</span><br><span class="line">     --compressed    Request compressed response</span><br><span class="line">     --compressed-ssh Enable SSH compression</span><br><span class="line"> -K, --config &lt;file&gt; Read config from a file</span><br><span class="line">     --connect-timeout &lt;seconds&gt; Maximum time allowed <span class="keyword">for</span> connection</span><br><span class="line">     --connect-to &lt;HOST1:PORT1:HOST2:PORT2&gt; Connect to host</span><br><span class="line"> -C, --continue-at &lt;offset&gt; Resumed transfer offset</span><br><span class="line"> -b, --cookie &lt;data&gt; Send cookies from string/file</span><br><span class="line"> -c, --cookie-jar &lt;filename&gt; Write cookies to &lt;filename&gt; after operation</span><br><span class="line">     --create-dirs   Create necessary <span class="built_in">local</span> directory hierarchy</span><br><span class="line">     --crlf          Convert LF to CRLF <span class="keyword">in</span> upload</span><br><span class="line">     --crlfile &lt;file&gt; Get a CRL list <span class="keyword">in</span> PEM format from the given file</span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>详细的使用方法见地址<a target="_blank" rel="noopener" href="https://curl.haxx.se/docs/manpage.html">https://curl.haxx.se/docs/manpage.html</a><br>语法：<code>#curl [option] [url]</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-a/--append 上传文件时，附加到目标文件  </span><br><span class="line"> -A/--user-agent &lt;string&gt;  设置用户代理发送给服务器  </span><br><span class="line"> - anyauth   可以使用“任何”身份验证方法  </span><br><span class="line"> -b/--cookie &lt;name=string/file&gt; cookie字符串或文件读取位置  </span><br><span class="line"> - basic 使用HTTP基本验证  </span><br><span class="line"> -B/--use-ascii 使用ASCII /文本传输  </span><br><span class="line"> -c/--cookie-jar &lt;file&gt; 操作结束后把cookie写入到这个文件中  </span><br><span class="line"> -C/--continue-at &lt;offset&gt;  断点续转  </span><br><span class="line"> -d/--data &lt;data&gt;   HTTP POST方式传送数据  </span><br><span class="line"> --data-ascii &lt;data&gt;  以ascii的方式post数据  </span><br><span class="line"> --data-binary &lt;data&gt; 以二进制的方式post数据  </span><br><span class="line"> --negotiate     使用HTTP身份验证  </span><br><span class="line"> --digest        使用数字身份验证  </span><br><span class="line"> --disable-eprt  禁止使用EPRT或LPRT  </span><br><span class="line"> --disable-epsv  禁止使用EPSV  </span><br><span class="line"> -D/--dump-header &lt;file&gt; 把header信息写入到该文件中  </span><br><span class="line"> --egd-file &lt;file&gt; 为随机数据(SSL)设置EGD socket路径  </span><br><span class="line"> --tcp-nodelay   使用TCP_NODELAY选项  </span><br><span class="line"> -e/--referer 来源网址  </span><br><span class="line"> -E/--cert &lt;cert[:passwd]&gt; 客户端证书文件和密码 (SSL)  </span><br><span class="line"> --cert-type &lt;<span class="built_in">type</span>&gt; 证书文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --key &lt;key&gt;     私钥文件名 (SSL)  </span><br><span class="line"> --key-type &lt;<span class="built_in">type</span>&gt; 私钥文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --pass  &lt;pass&gt;  私钥密码 (SSL)  </span><br><span class="line"> --engine &lt;eng&gt;  加密引擎使用 (SSL). <span class="string">&quot;--engine list&quot;</span> <span class="keyword">for</span> list  </span><br><span class="line"> --cacert &lt;file&gt; CA证书 (SSL)  </span><br><span class="line"> --capath &lt;directory&gt; CA目录 (made using c_rehash) to verify peer against (SSL)  </span><br><span class="line"> --ciphers &lt;list&gt;  SSL密码  </span><br><span class="line"> --compressed    要求返回是压缩的形势 (using deflate or gzip)  </span><br><span class="line"> --connect-timeout &lt;seconds&gt; 设置最大请求时间  </span><br><span class="line"> --create-dirs   建立本地目录的目录层次结构  </span><br><span class="line"> --crlf          上传是把LF转变成CRLF  </span><br><span class="line"> -f/--fail          连接失败时不显示http错误  </span><br><span class="line"> --ftp-create-dirs 如果远程目录不存在，创建远程目录  </span><br><span class="line"> --ftp-method [multicwd/nocwd/singlecwd] 控制CWD的使用  </span><br><span class="line"> --ftp-pasv      使用 PASV/EPSV 代替端口  </span><br><span class="line"> --ftp-skip-pasv-ip 使用PASV的时候,忽略该IP地址  </span><br><span class="line"> --ftp-ssl       尝试用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> --ftp-ssl-reqd  要求用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> -F/--form &lt;name=content&gt; 模拟http表单提交数据  </span><br><span class="line"> -form-string &lt;name=string&gt; 模拟http表单提交数据  </span><br><span class="line"> -g/--globoff 禁用网址序列和范围使用&#123;&#125;和[]  </span><br><span class="line"> -G/--get 以get的方式来发送数据  </span><br><span class="line"> -h/--<span class="built_in">help</span> 帮助  </span><br><span class="line"> -H/--header &lt;line&gt;自定义头信息传递给服务器  </span><br><span class="line"> --ignore-content-length  忽略的HTTP头信息的长度  </span><br><span class="line"> -i/--include 输出时包括protocol头信息  </span><br><span class="line"> -I/--head  只显示文档信息  </span><br><span class="line"> 从文件中读取-j/--junk-session-cookies忽略会话Cookie  </span><br><span class="line"> - 界面&lt;interface&gt;指定网络接口/地址使用  </span><br><span class="line"> - krb4 &lt;级别&gt;启用与指定的安全级别krb4  </span><br><span class="line"> -j/--junk-session-cookies 读取文件进忽略session cookie  </span><br><span class="line"> --interface &lt;interface&gt; 使用指定网络接口/地址  </span><br><span class="line"> --krb4 &lt;level&gt;  使用指定安全级别的krb4  </span><br><span class="line"> -k/--insecure 允许不使用证书到SSL站点  </span><br><span class="line"> -K/--config  指定的配置文件读取  </span><br><span class="line"> -l/--list-only 列出ftp目录下的文件名称  </span><br><span class="line"> --limit-rate &lt;rate&gt; 设置传输速度  </span><br><span class="line"> --local-port&lt;NUM&gt; 强制使用本地端口号  </span><br><span class="line"> -m/--max-time &lt;seconds&gt; 设置最大传输时间  </span><br><span class="line"> --max-redirs &lt;num&gt; 设置最大读取的目录数  </span><br><span class="line"> --max-filesize &lt;bytes&gt; 设置最大下载的文件总量  </span><br><span class="line"> -M/--manual  显示全手动  </span><br><span class="line"> -n/--netrc 从netrc文件中读取用户名和密码  </span><br><span class="line"> --netrc-optional 使用 .netrc 或者 URL来覆盖-n  </span><br><span class="line"> --ntlm          使用 HTTP NTLM 身份验证  </span><br><span class="line"> -N/--no-buffer 禁用缓冲输出  </span><br><span class="line"> -o/--output 把输出写到该文件中  </span><br><span class="line"> -O/--remote-name 把输出写到该文件中，保留远程文件的文件名  </span><br><span class="line"> -p/--proxytunnel   使用HTTP代理  </span><br><span class="line"> --proxy-anyauth 选择任一代理身份验证方法  </span><br><span class="line"> --proxy-basic   在代理上使用基本身份验证  </span><br><span class="line"> --proxy-digest  在代理上使用数字身份验证  </span><br><span class="line"> --proxy-ntlm    在代理上使用ntlm身份验证  </span><br><span class="line"> -P/--ftp-port &lt;address&gt; 使用端口地址，而不是使用PASV  </span><br><span class="line"> -Q/--quote &lt;cmd&gt;文件传输前，发送命令到服务器  </span><br><span class="line"> -r/--range &lt;range&gt;检索来自HTTP/1.1或FTP服务器字节范围  </span><br><span class="line"> --range-file 读取（SSL）的随机文件  </span><br><span class="line"> -R/--remote-time   在本地生成文件时，保留远程文件时间  </span><br><span class="line"> --retry &lt;num&gt;   传输出现问题时，重试的次数  </span><br><span class="line"> --retry-delay &lt;seconds&gt;  传输出现问题时，设置重试间隔时间  </span><br><span class="line"> --retry-max-time &lt;seconds&gt; 传输出现问题时，设置最大重试时间  </span><br><span class="line"> -s/--silent静音模式。不输出任何东西  </span><br><span class="line"> -S/--show-error   显示错误  </span><br><span class="line"> --socks4 &lt;host[:port]&gt; 用socks4代理给定主机和端口  </span><br><span class="line"> --socks5 &lt;host[:port]&gt; 用socks5代理给定主机和端口  </span><br><span class="line"> --stderr &lt;file&gt;  </span><br><span class="line"> -t/--telnet-option &lt;OPT=val&gt; Telnet选项设置  </span><br><span class="line"> --trace &lt;file&gt;  对指定文件进行debug  </span><br><span class="line"> --trace-ascii &lt;file&gt; Like --跟踪但没有hex输出  </span><br><span class="line"> --trace-time    跟踪/详细输出时，添加时间戳  </span><br><span class="line"> -T/--upload-file &lt;file&gt; 上传文件  </span><br><span class="line"> --url &lt;URL&gt;     Spet URL to work with  </span><br><span class="line"> -u/--user &lt;user[:password]&gt;设置服务器的用户和密码  </span><br><span class="line"> -U/--proxy-user &lt;user[:password]&gt;设置代理用户名和密码  </span><br><span class="line"> -v/--verbose  </span><br><span class="line"> -V/--version 显示版本信息  </span><br><span class="line"> -w/--write-out [format]什么输出完成后  </span><br><span class="line"> -x/--proxy &lt;host[:port]&gt;在给定的端口上使用HTTP代理  </span><br><span class="line"> -X/--request &lt;<span class="built_in">command</span>&gt;指定什么命令  </span><br><span class="line"> -y/--speed-time 放弃限速所要的时间。默认为30  </span><br><span class="line"> -Y/--speed-limit 停止传输速度的限制，速度时间<span class="string">&#x27;秒  </span></span><br><span class="line"><span class="string"> -z/--time-cond  传送时间设置  </span></span><br><span class="line"><span class="string"> -0/--http1.0  使用HTTP 1.0  </span></span><br><span class="line"><span class="string"> -1/--tlsv1  使用TLSv1（SSL）  </span></span><br><span class="line"><span class="string"> -2/--sslv2 使用SSLv2的（SSL）  </span></span><br><span class="line"><span class="string"> -3/--sslv3         使用的SSLv3（SSL）  </span></span><br><span class="line"><span class="string"> --3p-quote      like -Q for the source URL for 3rd party transfer  </span></span><br><span class="line"><span class="string"> --3p-url        使用url，进行第三方传送  </span></span><br><span class="line"><span class="string"> --3p-user       使用用户名和密码，进行第三方传送  </span></span><br><span class="line"><span class="string"> -4/--ipv4   使用IP4  </span></span><br><span class="line"><span class="string"> -6/--ipv6   使用IP6  </span></span><br><span class="line"><span class="string"> -#/--progress-bar 用进度条显示当前的传送状态</span></span><br></pre></td></tr></table></figure>
+<h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><ol>
+<li><p>获取页面的数据<br><code>curl www.baidu.com</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl www.baidu.com</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+<li><p>获取页面数据的同时，查看HTTP头信息<br><code>curl -i www.baidu.com</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -i www.baidu.com</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Length: 2381</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Date: Sat, 16 Feb 2019 02:10:54 GMT</span><br><span class="line">Etag: <span class="string">&quot;588604c8-94d&quot;</span></span><br><span class="line">Last-Modified: Mon, 23 Jan 2017 13:27:36 GMT</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: bfe/1.0.8.18</span><br><span class="line">Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+<li><p>仅获取HTTP头信息<br><code>curl -I www.baidu.com</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -I www.baidu.com</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Length: 277</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Date: Sat, 16 Feb 2019 02:12:46 GMT</span><br><span class="line">Etag: <span class="string">&quot;575e1f60-115&quot;</span></span><br><span class="line">Last-Modified: Mon, 13 Jun 2016 02:50:08 GMT</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: bfe/1.0.8.18</span><br></pre></td></tr></table></figure></li>
+<li><p>获取更详细的信息，包解析ip的过程等等<br><code>curl -v www.baidu.com</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -v www.baidu.com</span><br><span class="line">* Expire <span class="keyword">in</span> 0 ms <span class="keyword">for</span> 6 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 1 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 1 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 2 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 6 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 7 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 10 ms <span class="keyword">for</span> 1 (transfer 0x23fb58a20a0)</span><br><span class="line">*   Trying 111.13.100.91...</span><br><span class="line">* TCP_NODELAY <span class="built_in">set</span></span><br><span class="line">* Expire <span class="keyword">in</span> 149983 ms <span class="keyword">for</span> 3 (transfer 0x23fb58a20a0)</span><br><span class="line">* Expire <span class="keyword">in</span> 200 ms <span class="keyword">for</span> 4 (transfer 0x23fb58a20a0)</span><br><span class="line">* Connected to www.baidu.com (111.13.100.91) port 80 (<span class="comment">#0)</span></span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; Host: www.baidu.com</span><br><span class="line">&gt; User-Agent: curl/7.64.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt; Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">&lt; Connection: Keep-Alive</span><br><span class="line">&lt; Content-Length: 2381</span><br><span class="line">&lt; Content-Type: text/html</span><br><span class="line">&lt; Date: Sat, 16 Feb 2019 02:14:02 GMT</span><br><span class="line">&lt; Etag: <span class="string">&quot;588604c8-94d&quot;</span></span><br><span class="line">&lt; Last-Modified: Mon, 23 Jan 2017 13:27:36 GMT</span><br><span class="line">&lt; Pragma: no-cache</span><br><span class="line">&lt; Server: bfe/1.0.8.18</span><br><span class="line">&lt; Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/</span><br><span class="line">&lt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.co</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+<li><p>保存访问的网页(文件会下载到你当前命令执行的所在目录)</p>
+</li>
+</ol>
+<ul>
+<li><p>使用重定向功能保存<br><code>curl www.baidu.com &gt;&gt; index.html</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl http://www.baidu.com &gt;&gt;index.html</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  2381  100  2381    0     0  27367      0 --:--:-- --:--:-- --:--:-- 27367</span><br></pre></td></tr></table></figure></li>
+<li><p>使用curl内置option:-o(小写) 保存网页<br><code>curl -o temp.html www.baidu.com</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -o temp.html www.baidu.com</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  2381  100  2381    0     0  27686      0 --:--:-- --:--:-- --:--:-- 27686</span><br></pre></td></tr></table></figure></li>
+<li><p>使用curl内置option:-O(大写) 保存网页上的文件<br><code>curl -O http://www.linux.com/hello.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -O http://www.linux.com/hello.sh</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>测试网页返回值<br>测试网站是否正常的常用方法<br><code>curl -o /dev/null -s -w %&#123;http_code&#125; www.linux.com</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt; curl -o /dev/null -s -w %&#123;http_code&#125; www.linux.com</span><br><span class="line">301</span><br></pre></td></tr></table></figure></li>
+<li>通过执行代理服务器及端口访问<br><code>curl -x 192.168.100.100:1080 http://www.linux.com</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl -x 192.168.100.100:1080 http://www.linux.com</span></span><br></pre></td></tr></table></figure></li>
+<li>Cookie<br>很多网站上使用cookie记录session信息，curl可以增加相关参数处理cookie信息</li>
+</ol>
+<ul>
+<li>保存网站上的cookie，内置option: -c(小写)，文件会存储在你命令执行的位置<br><code>curl -c cookie.txt www.baidu.com</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -c cookie.txt www.baidu.com</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&quot;bg s_ipt_wr&quot;&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&gt;&lt;/span&gt;&lt;span class=&quot;bg s_btn_wr&quot;&gt;&lt;input type=submit id=su value=百度一下 class=&quot;bg s_btn&quot;&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻&lt;/a&gt; &lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地图&lt;/a&gt; &lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&gt;视频&lt;/a&gt; &lt;a href=http://tieba.baidu.com name=tj_trtieba class=mnav&gt;贴吧&lt;/a&gt; &lt;noscript&gt; &lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=http%3A%2F%2Fwww.bai</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+<li>保存http的response里面的header信息，内置option:-D<br><code>curl -D cookie.txt www.baidu.com</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -D cookie.txt www.baidu.com</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&quot;bg s_ipt_wr&quot;&gt;&lt;input id=kw name=wd class=s_ipt value maxleng</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure></li>
+<li>使用cookie<br>网站访问有时候会检测你的cookie信息是否合法，因此需要使用上面保存的cookie信息，内置option:-b<br><code>curl -b cookie.txt www.baidu.com</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -b cookie.txt www.baidu.com</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet <span class="built_in">type</span>=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=<span class="comment">#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&quot;bg s_ipt_wr&quot;&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&gt;&lt;/span&gt;&lt;span class=&quot;bg s_btn_wr&quot;&gt;&lt;input type=submit id=su value=百度一下 class=&quot;bg s_btn&quot;&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻&lt;/a&gt; &lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地</span></span><br><span class="line">.......</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="9">
+<li><p>模拟浏览器<br>有些网站需要特定的浏览器进行访问，而且还有些需要特定的版本。curl内置option:-A可以让我们指定浏览器去访问网址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -A <span class="string">&quot;Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.0)&quot;</span> http://www.linux.com</span><br></pre></td></tr></table></figure></li>
+<li><p>伪造referer（盗链）<br>很多服务器会出现检测http访问的rederer从而控制访问。比如：先访问主页，然后再访问主页上的邮箱页面，这里访问邮箱的referer地址就是访问首页成功后的页面地址，如果服务器发现对邮箱页面访问的referer地址不是首页地址，断定是盗链<br>curl内置option:-e 可以让我们设定referer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl -e &quot;www.linux.com&quot; http://mail.linux.com</span></span><br></pre></td></tr></table></figure></li>
+<li><p>下载文件</p>
+</li>
+</ol>
+<ul>
+<li><p>利用curl下载文件<br>使用内置option: -o (小写)<br><code>curl -o baidulogo.png https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\zp&gt;curl -o baidulogo.png https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png?<span class="built_in">where</span>=super</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  6958  100  6958    0     0  18654      0 --:--:-- --:--:-- --:--:-- 18654</span><br></pre></td></tr></table></figure></li>
+<li><p>使用内置option: -O (大写)，这个会保存服务器上文件的名字作为本地文件名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png?<span class="built_in">where</span>=super</span><br></pre></td></tr></table></figure></li>
+<li><p>循环下载<br>有时候下载图片可能是前面的部分一样，但是后一部分不一样的情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl -O http://www.linux.com/dodo[1-5].JPG</span></span><br></pre></td></tr></table></figure></li>
+<li><p>下载重名文件<br>如果两次下载的文件重名，就出现文件覆盖的情况，为了不覆盖文件，可执行下面的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl -o #1_#2.JPG http://www.linux.com/&#123;hello,bb&#125;/dodo[1-5].JPG</span></span><br></pre></td></tr></table></figure>
+
+<p>这样在hello/dodo1.JPG的文件下载下来就会变成hello_dodo1.JPG,其他文件依此类推，从而有效的避免了文件被覆盖</p>
+</li>
+<li><p>分块下载<br>有时候文件比较大，需要分段去下载，使用内置的option:-r</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -r 0-100 -o dodo1_part1.JPG http://www.linux.com/dodo1.JPG</span><br><span class="line">curl -r 100-200 -o dodo1_part2.JPG http://www.linux.com/dodo1.JPG</span><br><span class="line">curl -r 200- -o dodo1_part3.JPG http://www.linux.com/dodo1.JPG</span><br><span class="line">cat dodo1_part* &gt; dodo1.JPG/*这个是linux指令，因此需要在Linux环境下*/</span><br></pre></td></tr></table></figure></li>
+<li><p>通过FTP下载文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl -O -u 用户名:密码 ftp://www.linux.com/dodo1.JPG</span></span><br><span class="line"><span class="comment"># curl -O ftp://用户名:密码@www.linux.com/dodo1.JPG</span></span><br></pre></td></tr></table></figure></li>
+<li><p>显示下载进度条</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O -<span class="comment"># http://www.linux.com/dodo1.JPG</span></span><br></pre></td></tr></table></figure></li>
+<li><p>断点续传<br>在Window中，我们可以使用迅雷进行断点续传，curl内置option:-C 同样可以达到相同的效果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -C -O http://www.linux.com/dodo1.JPG</span><br></pre></td></tr></table></figure></li>
+<li><p>上传文件<br>内置option:-T 实现文件上传，下面是上传一个demo.txt文件到ftp服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -T  demo.txt -u 用户名:用户密码 ftp://www.linux.com/img/</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="tag"># 软件安装</a>
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+              <a href="/tags/curl/" rel="tag"># curl</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/11/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="prev" title="Linux常用命令">
+                  <i class="fa fa-chevron-left"></i> Linux常用命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/16/%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84HTTP%E6%96%B9%E6%B3%95/" rel="next" title="不安全的HTTP方法">
+                  不安全的HTTP方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派安装LiRC配合红外接收（HX1838B）记录遥控发射内容">
+<meta property="og:url" content="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_44.jpg">
+<meta property="og:image" content="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_4.png">
+<meta property="article:published_time" content="2019-02-20T01:24:01.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.502Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="树莓派">
+<meta property="article:tag" content="红外线">
+<meta property="article:tag" content="HX1838B">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_44.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>树莓派安装LiRC配合红外接收（HX1838B）记录遥控发射内容 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%9F%E8%AF%9D"><span class="nav-number">1.</span> <span class="nav-text">废话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HX-1838B-%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%E6%A8%A1%E5%9D%97-%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F%E5%9B%BE%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">1.HX 1838B(红外接收模块)连线示意图如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HW-483-%E5%8F%91%E9%80%81%E7%BA%A2%E5%A4%96%E6%A8%A1%E5%9D%97-%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F%E5%9B%BE%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">HW-483(发送红外模块)连线示意图如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85LiRC"><span class="nav-number">2.3.</span> <span class="nav-text">2.安装LiRC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%8B%E9%9D%A2%E8%BF%99%E5%87%A0%E8%A1%8C%E5%88%B0-etc-modules%E4%B8%AD"><span class="nav-number">2.3.1.</span> <span class="nav-text">添加下面这几行到&#x2F;etc&#x2F;modules中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%8B%E9%9D%A2%E8%BF%99%E5%87%A0%E8%A1%8C%E5%88%B0%E6%96%87%E4%BB%B6-etc-lirc-hardware-conf%E4%B8%AD%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%BF%99%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E5%88%9B%E5%BB%BA"><span class="nav-number">2.3.2.</span> <span class="nav-text">添加下面这几行到文件&#x2F;etc&#x2F;lirc&#x2F;hardware.conf中，如果这个文件不存在，可以直接创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%8B%E9%9D%A2%E7%9A%84%E4%BB%A3%E7%A0%81%E5%88%B0-boot-config-txt%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="nav-number">2.3.3.</span> <span class="nav-text">添加下面的代码到&#x2F;boot&#x2F;config.txt文件中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%BF%99%E4%B8%AA%E6%96%87%E4%BB%B6-etc-lirc-lirc-options-conf%E4%B8%AD%E7%9A%84driver%E5%92%8Cdevice%E5%AF%B9%E5%BA%94%E7%9A%84%E5%80%BC"><span class="nav-number">2.3.4.</span> <span class="nav-text">修改这个文件&#x2F;etc&#x2F;lirc&#x2F;lirc_options.conf中的driver和device对应的值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1%E7%84%B6%E5%90%8E%E8%BF%9B%E8%A1%8C%E5%90%AF%E5%8A%A8%EF%BC%8C%E4%BD%BF%E4%B8%8A%E9%9D%A2%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%95%88"><span class="nav-number">2.3.5.</span> <span class="nav-text">关闭服务然后进行启动，使上面的配置文件生效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5lirc%E7%9A%84%E5%90%AF%E5%8A%A8%E7%8A%B6%E6%80%81"><span class="nav-number">2.3.6.</span> <span class="nav-text">检查lirc的启动状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E6%B5%8B%E8%AF%95%E4%B9%8B%E5%89%8D%E9%87%8D%E5%90%AF%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.3.7.</span> <span class="nav-text">在测试之前重启系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%B5%8Blirc%E7%8A%B6%E6%80%81%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8"><span class="nav-number">2.3.8.</span> <span class="nav-text">检测lirc状态是否正常</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BD%95%E5%88%B6%E6%99%AE%E9%80%9A%E7%9A%84%E9%81%A5%E6%8E%A7%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">3. 录制普通的遥控器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%B8%A6%E7%9A%84-lircd-conf%EF%BC%8C%E7%84%B6%E5%90%8E%E6%8A%8A%E7%94%9F%E6%88%90%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E5%88%B0-etc-lirc-l%E4%B8%8B"><span class="nav-number">2.4.1.</span> <span class="nav-text">备份系统自带的 lircd.conf，然后把生成的配置文件拷贝到&#x2F;etc&#x2F;lirc&#x2F;l下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%8B%E9%9D%A2%E7%9A%84%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95%E6%8C%89%E9%94%AE%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="nav-number">2.4.2.</span> <span class="nav-text">使用下面的命令测试按键是否生效</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%BD%95%E5%88%B6%E7%A9%BA%E8%B0%83%E9%81%A5%E6%8E%A7%E5%99%A8"><span class="nav-number">2.5.</span> <span class="nav-text">4.录制空调遥控器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8F%91%E5%B0%84%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.6.</span> <span class="nav-text">5. 发射信号</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树莓派安装LiRC配合红外接收（HX1838B）记录遥控发射内容
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-20 09:24:01" itemprop="dateCreated datePublished" datetime="2019-02-20T09:24:01+08:00">2019-02-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">物联网</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/%E6%A0%91%E8%8E%93%E6%B4%BE/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_44.jpg"></p>
+<h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><blockquote>
+<p>最近想制作一个家庭智能遥控系统，控制空调等设备，因此就像用家里积灰的树莓派做个空调智能控制器，初步的思路很简单，就是先判定时间，如果是到了下午六点，温度还在30度以上，发起指令，控制空调启动设置温度为27℃，也可以通过APP远程进行启动和关闭</p>
+</blockquote>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="1-HX-1838B-红外接收模块-连线示意图如下："><a href="#1-HX-1838B-红外接收模块-连线示意图如下：" class="headerlink" title="1.HX 1838B(红外接收模块)连线示意图如下："></a>1.HX 1838B(红外接收模块)连线示意图如下：</h3><img src="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_1.png" class="" title="树莓派与HX 1838B连接线示意图">
+
+<h3 id="HW-483-发送红外模块-连线示意图如下："><a href="#HW-483-发送红外模块-连线示意图如下：" class="headerlink" title="HW-483(发送红外模块)连线示意图如下："></a>HW-483(发送红外模块)连线示意图如下：</h3><img src="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_2.png" class="" title="树莓派与HW-483连接线示意图">
+<img src="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_3.png" class="" title="HW-483实体图">
+<img src="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85LiRC%E9%85%8D%E5%90%88%E7%BA%A2%E5%A4%96%E6%8E%A5%E6%94%B6%EF%BC%88HX1838B%EF%BC%89%E8%AE%B0%E5%BD%95%E9%81%A5%E6%8E%A7%E5%8F%91%E5%B0%84%E5%86%85%E5%AE%B9/screenshot_4.png" class="" title="HW-483实体图">
+
+<h3 id="2-安装LiRC"><a href="#2-安装LiRC" class="headerlink" title="2.安装LiRC"></a>2.安装LiRC</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install lirc</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加下面这几行到-etc-modules中"><a href="#添加下面这几行到-etc-modules中" class="headerlink" title="添加下面这几行到/etc/modules中"></a>添加下面这几行到/etc/modules中</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lirc_dev</span><br><span class="line">lirc_rpi gpio_in_pin&#x3D;18 gpio_out_pin&#x3D;17</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加下面这几行到文件-etc-lirc-hardware-conf中，如果这个文件不存在，可以直接创建"><a href="#添加下面这几行到文件-etc-lirc-hardware-conf中，如果这个文件不存在，可以直接创建" class="headerlink" title="添加下面这几行到文件/etc/lirc/hardware.conf中，如果这个文件不存在，可以直接创建"></a>添加下面这几行到文件/etc/lirc/hardware.conf中，如果这个文件不存在，可以直接创建</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LIRCD_ARGS&#x3D;&quot;--uinput --listen&quot;</span><br><span class="line">LOAD_MODULES&#x3D;true</span><br><span class="line">DRIVER&#x3D;&quot;default&quot;</span><br><span class="line">DEVICE&#x3D;&quot;&#x2F;dev&#x2F;lirc0&quot;</span><br><span class="line">MODULES&#x3D;&quot;lirc_rpi&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="添加下面的代码到-boot-config-txt文件中"><a href="#添加下面的代码到-boot-config-txt文件中" class="headerlink" title="添加下面的代码到/boot/config.txt文件中"></a>添加下面的代码到/boot/config.txt文件中</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dtoverlay&#x3D;lirc-rpi,gpio_in_pin&#x3D;18,gpio_out_pin&#x3D;17</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改这个文件-etc-lirc-lirc-options-conf中的driver和device对应的值"><a href="#修改这个文件-etc-lirc-lirc-options-conf中的driver和device对应的值" class="headerlink" title="修改这个文件/etc/lirc/lirc_options.conf中的driver和device对应的值"></a>修改这个文件/etc/lirc/lirc_options.conf中的driver和device对应的值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">driver    &#x3D; default</span><br><span class="line">device    &#x3D; &#x2F;dev&#x2F;lirc0</span><br></pre></td></tr></table></figure>
+
+<h4 id="关闭服务然后进行启动，使上面的配置文件生效"><a href="#关闭服务然后进行启动，使上面的配置文件生效" class="headerlink" title="关闭服务然后进行启动，使上面的配置文件生效"></a>关闭服务然后进行启动，使上面的配置文件生效</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd stop</span><br><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd start</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="检查lirc的启动状态"><a href="#检查lirc的启动状态" class="headerlink" title="检查lirc的启动状态"></a>检查lirc的启动状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd status</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="在测试之前重启系统"><a href="#在测试之前重启系统" class="headerlink" title="在测试之前重启系统"></a>在测试之前重启系统</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ reboot</span><br></pre></td></tr></table></figure>
+
+<h4 id="检测lirc状态是否正常"><a href="#检测lirc状态是否正常" class="headerlink" title="检测lirc状态是否正常"></a>检测lirc状态是否正常</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd stop</span><br><span class="line">$ mode2 -d &#x2F;dev&#x2F;lirc0</span><br><span class="line">&lt;摁遥控上的遥控键，看是否打印一些带有pulse和space的字符&gt;</span><br><span class="line">pulse 560</span><br><span class="line">space 1706</span><br><span class="line">pulse 535</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-录制普通的遥控器"><a href="#3-录制普通的遥控器" class="headerlink" title="3. 录制普通的遥控器"></a>3. 录制普通的遥控器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd stop</span><br><span class="line">$ sudo irrecord -d &#x2F;dev&#x2F;lirc0 ~&#x2F;lircd.conf</span><br></pre></td></tr></table></figure>
+<p>根据提示进行操作，其中需要输入到遥控器的名称，其中得注意，如果摁键的时间最好在1S多点，保证出现两个点以上，不超过10个，然后把所有的键都摁一边</p>
+<h4 id="备份系统自带的-lircd-conf，然后把生成的配置文件拷贝到-etc-lirc-l下"><a href="#备份系统自带的-lircd-conf，然后把生成的配置文件拷贝到-etc-lirc-l下" class="headerlink" title="备份系统自带的 lircd.conf，然后把生成的配置文件拷贝到/etc/lirc/l下"></a>备份系统自带的 lircd.conf，然后把生成的配置文件拷贝到/etc/lirc/l下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mv &#x2F;etc&#x2F;lirc&#x2F;lircd.conf &#x2F;etc&#x2F;lirc&#x2F;lircd_original.conf</span><br><span class="line">$ sudo cp ~&#x2F;lircd.conf &#x2F;etc&#x2F;lirc&#x2F;lircd.conf</span><br><span class="line">$ sudo &#x2F;etc&#x2F;init.d&#x2F;lircd start</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用下面的命令测试按键是否生效"><a href="#使用下面的命令测试按键是否生效" class="headerlink" title="使用下面的命令测试按键是否生效"></a>使用下面的命令测试按键是否生效</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ irsend SEND_ONCE &lt;遥控器的名字&gt; KEY_POWER</span><br><span class="line">$ irsend SEND_ONCE &lt;device-name&gt; KEY_VOLUMEUP</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-录制空调遥控器"><a href="#4-录制空调遥控器" class="headerlink" title="4.录制空调遥控器"></a>4.录制空调遥控器</h3><p>空调遥控器这种带逻辑控制的比较麻烦.每次发射的都是含有温度、模式、制冷制热等一连串的指令，按照之前irrecord指令生成conf文件，行不通，只能使用raw的原始码，记录也是通过mode2 命令实现<br>①首先制作模板，得到的模板见下面,如果不行可以直接拷贝下面的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;lircd restart</span><br><span class="line">irrecord  -f -d &#x2F;dev&#x2F;lirc0 ~&#x2F;lircd.conf #制作模板，具体的模板制作过程和上面一样</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">begin remote</span><br><span class="line"></span><br><span class="line">  name  &#x2F;home&#x2F;pi&#x2F;lircd.conf</span><br><span class="line">  flags RAW_CODES</span><br><span class="line">  eps            30</span><br><span class="line">  aeps          100</span><br><span class="line"></span><br><span class="line">  gap          19886</span><br><span class="line"></span><br><span class="line">      begin raw_codes</span><br><span class="line"></span><br><span class="line">          name KEY_OPEN</span><br><span class="line">               90     102     331</span><br><span class="line"></span><br><span class="line">      end raw_codes</span><br><span class="line"></span><br><span class="line">end remote</span><br></pre></td></tr></table></figure>
+<p>②接下来就是录制,然后把第一行最大的数去掉，把剩下的填到对应的按钮下面，然后重复上面的操作，记录多个按钮，然后填在对应的按钮下面，配置完的配置文件如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># -m --mode 使用行列显示模式，不显示pulse、space</span><br><span class="line">mode2 -m -d &#x2F;dev&#x2F;lirc0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">begin remote</span><br><span class="line"></span><br><span class="line">  name  air</span><br><span class="line">  flags RAW_CODES</span><br><span class="line">  eps            30</span><br><span class="line">  aeps          100</span><br><span class="line"></span><br><span class="line">  gap          19987</span><br><span class="line"></span><br><span class="line">      begin raw_codes</span><br><span class="line"></span><br><span class="line">	name KEY_CLOSE</span><br><span class="line">	  8990    4486      677     1630      680      527</span><br><span class="line">          651      555      679      527      680      527</span><br><span class="line">          676      530      679      527      682      523</span><br><span class="line">          682     1629      684      523      681      523</span><br><span class="line">          682     1629      679      525      688      519</span><br><span class="line">          655      551      680      533      673      526</span><br><span class="line">          682      526      682      522      654      554</span><br><span class="line">          653      561      672     1627      681      528</span><br><span class="line">          678      528      683      525      678      528</span><br><span class="line">          678      525      691      527      670     1628</span><br><span class="line">          681      525      682     1626      682      526</span><br><span class="line">          682      523      692     1615      683      522</span><br><span class="line">          682    19958</span><br><span class="line"></span><br><span class="line">          687      522      683      549      660      519</span><br><span class="line">          684      520      687      522      680      524</span><br><span class="line">          686      549      652      527      687      522</span><br><span class="line">          690      514      683      522      686      520</span><br><span class="line">          684      525      679      527      685      521</span><br><span class="line">          681      525      681      528      682      522</span><br><span class="line">          684      527      681      521      711      495</span><br><span class="line">          688      518      670      540      682      522</span><br><span class="line">          683      523      683      549      659      524</span><br><span class="line">          682      522      681      552      658      523</span><br><span class="line">          685     1621      683      525      682    39966</span><br><span class="line"></span><br><span class="line">         9028     4451      689     1620      686      547</span><br><span class="line">          658      553      657      544      657      549</span><br><span class="line">          665      542      662      545      658      548</span><br><span class="line">          658     1624      685      547      663      544</span><br><span class="line">          657     1625      683      548      657      550</span><br><span class="line">          662      543      657      550      661      545</span><br><span class="line">          670      537      659      547      660      546</span><br><span class="line">          658      549      634     1651      682      548</span><br><span class="line">          657      549      632      575      657      549</span><br><span class="line">          629      577      661      545      643     1638</span><br><span class="line">          657     1652      662     1647      654      577</span><br><span class="line">          630      579      628     1650      665      578</span><br><span class="line">          632    19975</span><br><span class="line"></span><br><span class="line">          651      581      631      576      626      581</span><br><span class="line">          627      578      659      547      631      577</span><br><span class="line">          631      575      627     1662      673      553</span><br><span class="line">          627      580      628      577      630      576</span><br><span class="line">          627      579      634      573      631      574</span><br><span class="line">          655      551      630      577      657      550</span><br><span class="line">          655      553      628      578      631      575</span><br><span class="line">          628      578      654      552      627      580</span><br><span class="line">          654      552      632      575      653      554</span><br><span class="line">          626      580      629      577      630      576</span><br><span class="line">          627     1654      657     1652      653</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	name KEY_OPEN</span><br><span class="line">	  8984    4493      648     1659      648      559</span><br><span class="line">	  648      557      649     1656      676      534</span><br><span class="line">          648      557      649      558      648      561</span><br><span class="line">          646     1662      649      557      647      561</span><br><span class="line">          644     1660      655      552      649      558</span><br><span class="line">          648      558      648      559      648      558</span><br><span class="line">          648      560      646      558      649      560</span><br><span class="line">          647      556      650     1658      651      557</span><br><span class="line">          648      560      646      558      648      559</span><br><span class="line">          648      557      650      558      646     1660</span><br><span class="line">          649      558      648     1658      650      559</span><br><span class="line">          648      558      648     1659      649      564</span><br><span class="line">          645    19988</span><br><span class="line"></span><br><span class="line">          648      556      651      558      647      562</span><br><span class="line">          646      558      648      557      650      559</span><br><span class="line">          649      556      649      557      649      557</span><br><span class="line">          651      558      646      557      650      558</span><br><span class="line">          649      556      650      557      656      553</span><br><span class="line">          647      557      649      557      651      556</span><br><span class="line">          650      559      647      560      646      556</span><br><span class="line">          650      569      638      557      649      560</span><br><span class="line">          646      558      649      558      648      562</span><br><span class="line">          646      556      650      557      648      561</span><br><span class="line">          646     1660      648     1659      650    40004</span><br><span class="line"></span><br><span class="line">         8989     4491      648     1659      650      559</span><br><span class="line">          646      560      647     1661      648      559</span><br><span class="line">          647      558      649      556      651      558</span><br><span class="line">          647     1659      651      557      648      558</span><br><span class="line">          650     1659      649      558      649      558</span><br><span class="line">          648      556      650      557      648      557</span><br><span class="line">          652      558      646      559      648      559</span><br><span class="line">          647      560      655     1652      646      559</span><br><span class="line">          651      553      651      557      649      559</span><br><span class="line">          648      555      650      559      649     1657</span><br><span class="line">          650     1658      650     1658      649      557</span><br><span class="line">          651      557      648     1658      650      558</span><br><span class="line">          648    19992</span><br><span class="line"></span><br><span class="line">          648      559      649      559      647      558</span><br><span class="line">          648      559      648      558      647      560</span><br><span class="line">          648      558      648     1658      650      557</span><br><span class="line">          649      557      648      559      648      558</span><br><span class="line">          647      557      651      558      647      558</span><br><span class="line">          648      559      647      567      640      558</span><br><span class="line">          648      560      647      558      648      559</span><br><span class="line">          648      558      649      558      648      559</span><br><span class="line">          648      558      648      557      648      558</span><br><span class="line">          650      560      646      558      648      557</span><br><span class="line">          649     1660      648      558      650</span><br><span class="line"></span><br><span class="line">	  end raw_codes</span><br><span class="line"></span><br><span class="line">end remote</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>③最后，把配置文件复制到指定目录 /etc/lirc/lircd.conf/ 并重启lircd服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp aircon.lircd.conf &#x2F;etc&#x2F;lirc&#x2F;lircd.conf.d&#x2F;</span><br><span class="line">sudo service lircd restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-发射信号"><a href="#5-发射信号" class="headerlink" title="5. 发射信号"></a>5. 发射信号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 发射命令：irsend SEND_ONCE 遥控器名称 按钮名称</span><br><span class="line">irsend SEND_ONCE aircon KEY_OPEN</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果前面的步骤一切正常，但在发射信号时报错“transmission failed”。请检查生成的遥控器配置文件，查看flags项，若是flags RAW_CODES|CONST_LENGTH，请尝试将其修改成flags RAW_CODES并重启lircd服务。再测试能否发射信号。</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/prasanthj/c15a5298eb682bde34961c322c95378b">github上的一个文章</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/x_r_su/article/details/53044993">树莓派给家用电器加上智能（红外篇）</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014135418?utm_source=tag-newest">树莓派学习手记——制作一个空调遥控器（红外接收、发射的实现）题</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag"># 树莓派</a>
+              <a href="/tags/%E7%BA%A2%E5%A4%96%E7%BA%BF/" rel="tag"># 红外线</a>
+              <a href="/tags/HX1838B/" rel="tag"># HX1838B</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%8F%91%E6%99%BA%E8%83%BD%E5%B0%8F%E8%BD%A6/" rel="prev" title="树莓派开发智能小车">
+                  <i class="fa fa-chevron-left"></i> 树莓派开发智能小车
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/20/%E6%A0%91%E8%8E%93%E6%B4%BE3GPIO%E5%BC%95%E8%84%9A%E5%9B%BE/" rel="next" title="树莓派3GPIO引脚图">
+                  树莓派3GPIO引脚图 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

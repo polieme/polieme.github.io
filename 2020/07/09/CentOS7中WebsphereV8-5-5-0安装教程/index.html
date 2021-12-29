@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7中WebsphereV8.5.5.0安装教程">
+<meta property="og:url" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_86.jpg">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_1.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_2.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_3.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_4.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_5.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_6.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_7.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_8.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_9.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_10.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_11.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_12.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_13.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_14.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_15.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_16.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_17.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_18.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_19.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_20.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_21.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_22.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_23.png">
+<meta property="og:image" content="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_24.png">
+<meta property="article:published_time" content="2020-07-09T07:42:07.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:05.729Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="软件安装">
+<meta property="article:tag" content="中间件">
+<meta property="article:tag" content="Websphere">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_86.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>CentOS7中WebsphereV8.5.5.0安装教程 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">准备安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">安装前准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation-Manager-%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">Installation Manager 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6Installation-Manager%E5%AE%89%E8%A3%85%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">解压缩文件Installation Manager安装文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E8%AE%A4%E4%B8%8B%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">3.2.</span> <span class="nav-text">确认下安装配置文件内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C-consoleinst-sh%E8%84%9A%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85Installation-Manager"><span class="nav-number">3.3.</span> <span class="nav-text">执行.&#x2F;consoleinst.sh脚本开始安装Installation Manager</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAS%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">WAS安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87-1"><span class="nav-number">4.1.</span> <span class="nav-text">安装前准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Websphere"><span class="nav-number">4.2.</span> <span class="nav-text">安装Websphere</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BADmgr%E7%AE%A1%E7%90%86%E6%A6%82%E8%A6%81%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">创建Dmgr管理概要文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A6%82%E8%A6%81%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BA%E6%A6%82%E8%A6%81%E6%96%87%E4%BB%B6"><span class="nav-number">5.1.</span> <span class="nav-text">使用概要管理工具创建概要文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%90%AF%E5%8A%A8%E6%A6%82%E8%A6%81%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">通过命令行启动概要管理服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E9%AA%8C%E8%AF%81Development-Manager%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F%E5%8F%8A%E7%AE%A1%E7%90%86"><span class="nav-number">5.3.</span> <span class="nav-text">通过浏览器验证Development Manager启动成功及管理</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CentOS7中WebsphereV8.5.5.0安装教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-09 15:42:07" itemprop="dateCreated datePublished" datetime="2020-07-09T15:42:07+08:00">2020-07-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:05" itemprop="dateModified" datetime="2021-09-07T10:05:05+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" itemprop="url" rel="index"><span itemprop="name">软件安装</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/Websphere/" itemprop="url" rel="index"><span itemprop="name">Websphere</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_86.jpg"></p>
+<p>WAS8之后，Websphere的安装包不在区分系统，一份安装包可以在多个平台安装，只是针对Installation Manager进行了操作系统的区分，Websphere的产品必须通过Install Manager安装</p>
+<h2 id="准备安装包"><a href="#准备安装包" class="headerlink" title="准备安装包"></a>准备安装包</h2><h2 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h2><ol>
+<li>目前手头的拿到的文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Installation Manager安装包</span></span><br><span class="line">InstalMgr1.6.2_LNX_X86_64_WAS_8.5.5.zip</span><br><span class="line"></span><br><span class="line"><span class="comment"># WAS-FP的安装包</span></span><br><span class="line">8.5.5-WS-WAS-FP017-part1.zip</span><br><span class="line">8.5.5-WS-WAS-FP017-part2.zip</span><br><span class="line">8.5.5-WS-WAS-FP017-part3.zip</span><br><span class="line"></span><br><span class="line"><span class="comment"># WAS_ND安装包</span></span><br><span class="line">WAS_ND_V8.5.5_1_OF_3.zip</span><br><span class="line">WAS_ND_V8.5.5_2_OF_3.zip</span><br><span class="line">WAS_ND_V8.5.5_3_OF_3.zip</span><br></pre></td></tr></table></figure></li>
+<li>将上面的zip包放到<code>/opt/WebSphereInstallPackage/</code>下</li>
+</ol>
+<h2 id="Installation-Manager-安装"><a href="#Installation-Manager-安装" class="headerlink" title="Installation Manager 安装"></a>Installation Manager 安装</h2><h3 id="解压缩文件Installation-Manager安装文件"><a href="#解压缩文件Installation-Manager安装文件" class="headerlink" title="解压缩文件Installation Manager安装文件"></a>解压缩文件<code>Installation Manager</code>安装文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 切换到放压缩文件的目录下</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># cd /opt/WebSphereInstallPackage/</span></span><br><span class="line"><span class="comment">## 创建用于解压Installation Manager的目录</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># mkdir installManager</span></span><br><span class="line"><span class="comment">## 指定刚刚创建的目录进行解压</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d installManager/ InstalMgr1.6.2_LNX_X86_64_WAS_8.5.5.zip</span></span><br></pre></td></tr></table></figure>
+<h3 id="确认下安装配置文件内容"><a href="#确认下安装配置文件内容" class="headerlink" title="确认下安装配置文件内容"></a>确认下安装配置文件内容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># cd installManager/</span></span><br><span class="line">[root@CDH1 installManager]<span class="comment"># cat install.xml</span></span><br></pre></td></tr></table></figure>
+<p>确认下内容是否和下方的一致（版本version可能存在差异）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">agent-input</span> <span class="attr">clean</span>=<span class="string">&#x27;true&#x27;</span> <span class="attr">temporary</span>=<span class="string">&#x27;true&#x27;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">repository</span> <span class="attr">location</span>=<span class="string">&#x27;.&#x27;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">install</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">offering</span> <span class="attr">features</span>=<span class="string">&#x27;agent_core,agent_jre&#x27;</span> <span class="attr">id</span>=<span class="string">&#x27;com.ibm.cic.agent&#x27;</span> <span class="attr">version</span>=<span class="string">&#x27;1.6.2000.20130301_2248&#x27;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">install</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">agent-input</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="执行-consoleinst-sh脚本开始安装Installation-Manager"><a href="#执行-consoleinst-sh脚本开始安装Installation-Manager" class="headerlink" title="执行./consoleinst.sh脚本开始安装Installation Manager"></a>执行<code>./consoleinst.sh</code>脚本开始安装Installation Manager</h3><ol>
+<li><p>执行<code>./consoleinst.sh</code>脚本，并输入<code>N</code>，进入下一页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 installManager]<span class="comment"># ./consoleinst.sh</span></span><br><span class="line">预处理输入。</span><br><span class="line">正在装入存储库...</span><br><span class="line">正在准备和解析所选软件包...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">=====&gt; IBM Installation Manager&gt; 安装</span><br><span class="line"></span><br><span class="line">选择要安装的软件包：</span><br><span class="line">     1. [X] IBM Installation Manager 1.6.2</span><br><span class="line"></span><br><span class="line">     O. 检查其他版本、修订程序和扩展</span><br><span class="line"></span><br><span class="line">     N. 下一页,      C. 取消</span><br><span class="line">-----&gt; [N] N</span><br></pre></td></tr></table></figure></li>
+<li><p>输入<code>A</code>，选择我接手许可协议中的条款</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">=====&gt; IBM Installation Manager&gt; 安装&gt; 许可证</span><br><span class="line"></span><br><span class="line">仔细阅读下列许可证协议。</span><br><span class="line">通过输入编号来查看许可证协议：</span><br><span class="line">     1. IBM Installation Manager - 许可协议</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">     A. [ ] 我接受许可协议中的条款(A)</span><br><span class="line">     D. [ ] 我不接受许可协议中的条款(D)</span><br><span class="line"></span><br><span class="line">     B. 上一页,      C. 取消</span><br><span class="line">-----&gt; [C] A</span><br></pre></td></tr></table></figure></li>
+<li><p>输入N，跳到下一页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">=====&gt; IBM Installation Manager&gt; 安装&gt; 许可证</span><br><span class="line"></span><br><span class="line">仔细阅读下列许可证协议。</span><br><span class="line">通过输入编号来查看许可证协议：</span><br><span class="line">     1. IBM Installation Manager - 许可协议</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">     A. [X] 我接受许可协议中的条款(A)</span><br><span class="line">     D. [ ] 我不接受许可协议中的条款(D)</span><br><span class="line"></span><br><span class="line">     B. 上一页,      N. 下一页,      C. 取消</span><br><span class="line">-----&gt; [N] N</span><br></pre></td></tr></table></figure></li>
+<li><p>界面会显示<code>Installation Manager</code>默认安装的路径，确认后输入<code>N</code>，继续下一项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">=====&gt; IBM Installation Manager&gt; 安装&gt; 许可证&gt; 位置</span><br><span class="line"></span><br><span class="line">Installation Manager 安装位置：</span><br><span class="line">        /opt/IBM/InstallationManager/eclipse</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">     L. 更改 Installation Manager 安装位置</span><br><span class="line"></span><br><span class="line">     B. 上一页,      N. 下一页,      C. 取消</span><br><span class="line">-----&gt; [N] N</span><br></pre></td></tr></table></figure></li>
+<li><p>安装摘要信息确认，输入<code>I</code>，选择安装。等待安装完成后，输入<code>R</code>重启<code>Installation Manager</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">=====&gt; IBM Installation Manager&gt; 安装&gt; 许可证&gt; 位置&gt; 摘要</span><br><span class="line"></span><br><span class="line">目标位置：</span><br><span class="line">  软件包组名                      :  IBM Installation Manager</span><br><span class="line">  安装目录                       :  /opt/IBM/InstallationManager/eclipse</span><br><span class="line"></span><br><span class="line">要安装的软件包：</span><br><span class="line">        IBM Installation Manager 1.6.2</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">     G. 生成安装响应文件</span><br><span class="line"></span><br><span class="line">     B. 上一页,      I. 安装,      C. 取消</span><br><span class="line">-----&gt; [I] I</span><br><span class="line">                 25%                50%                75%                100%</span><br><span class="line">------------------|------------------|------------------|------------------|</span><br><span class="line">............................................................................</span><br><span class="line"></span><br><span class="line">=====&gt; IBM Installation Manager&gt; 安装&gt; 许可证&gt; 位置&gt; 摘要&gt; 完成</span><br><span class="line"></span><br><span class="line">安装已成功完成。</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">     R. 重新启动 Installation Manager</span><br><span class="line">-----&gt; [R] R</span><br></pre></td></tr></table></figure></li>
+<li><p>输入<code>X</code>退出<code>Installation Manager</code>。至此，Installation Manager安装完成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">=====&gt; IBM Installation Manager</span><br><span class="line"></span><br><span class="line">选择：</span><br><span class="line">     1. 安装 - 安装软件包</span><br><span class="line">     2. 更新 - 查找并安装对已安装软件包的更新和修订</span><br><span class="line">     3. 修改 - 更改已安装的软件包</span><br><span class="line">     4. 回滚 - 还原到已安装软件包的较低版本</span><br><span class="line">     5. 卸载 - 除去已安装的软件包。</span><br><span class="line"></span><br><span class="line">其他选项：</span><br><span class="line">     L. 查看日志</span><br><span class="line">     S. 查看安装历史记录</span><br><span class="line">     V. 查看已安装的软件包</span><br><span class="line">        ------------------------</span><br><span class="line">     P. 首选项</span><br><span class="line">        ------------------------</span><br><span class="line">     A. 关于 IBM Installation Manager</span><br><span class="line">        ------------------------</span><br><span class="line">     X. 退出 Installation Manager</span><br><span class="line"></span><br><span class="line">-----&gt; X</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="WAS安装"><a href="#WAS安装" class="headerlink" title="WAS安装"></a>WAS安装</h2><h3 id="安装前准备-1"><a href="#安装前准备-1" class="headerlink" title="安装前准备"></a>安装前准备</h3><ol>
+<li>创建目录，解压文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># cd /opt/WebSphereInstallPackage/</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># mkdir wasfp wasnd</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 解压WS-WAS-FP</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasfp 8.5.5-WS-WAS-FP017-part1.zip</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasfp 8.5.5-WS-WAS-FP017-part2.zip</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasfp 8.5.5-WS-WAS-FP017-part3.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 解压WAS_ND</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasnd WAS_ND_V8.5.5_1_OF_3.zip</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasnd WAS_ND_V8.5.5_2_OF_3.zip</span></span><br><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># unzip -d wasnd WAS_ND_V8.5.5_3_OF_3.zip</span></span><br></pre></td></tr></table></figure>
+解压完的<code>wasnd</code>下的目录结构<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># ll wasnd/</span></span><br><span class="line">总用量 12</span><br><span class="line">-rw-r--r--  1 root root  380 5月  14 2013 Copyright.txt</span><br><span class="line">drwxr-xr-x  5 root root   56 5月  14 2013 disk1</span><br><span class="line">drwxr-xr-x  3 root root   35 5月  14 2013 disk2</span><br><span class="line">drwxr-xr-x  3 root root   35 5月  14 2013 disk3</span><br><span class="line">drwxr-xr-x  2 root root 4096 5月  14 2013 lafiles</span><br><span class="line">drwxr-xr-x 10 root root  156 5月  14 2013 readme</span><br><span class="line">drwxr-xr-x  3 root root   43 5月  14 2013 Remote_Installation_Tool_for_IBM_i</span><br><span class="line">-rw-r--r--  1 root root   81 5月  14 2013 repository.config</span><br><span class="line">drwxr-xr-x  3 root root   21 5月  14 2013 responsefiles</span><br></pre></td></tr></table></figure>
+解压完的<code>wasfp</code>下的目录结构<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># ll wasfp</span></span><br><span class="line">总用量 3920</span><br><span class="line">drwxr-xr-x 3 root root     32 2月   9 16:55 atoc</span><br><span class="line">drwxr-xr-x 2 root root 237568 2月   9 16:56 files</span><br><span class="line">drwxr-xr-x 2 root root  65536 7月   9 16:25 native</span><br><span class="line">drwxr-xr-x 2 root root   4096 2月   9 16:56 Offerings</span><br><span class="line">drwxr-xr-x 2 root root   4096 2月   9 16:56 plugins</span><br><span class="line">-rw-r--r-- 1 root root   1284 2月   9 16:56 repository.config</span><br><span class="line">-rw-r--r-- 1 root root 149657 2月   9 16:56 repository.xml</span><br><span class="line">-rw-r--r-- 1 root root 394210 2月   9 16:55 update_com.ibm.websphere.BASETRIAL.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 394676 2月   9 16:55 update_com.ibm.websphere.BASE.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 394218 2月   9 16:56 update_com.ibm.websphere.DEVELOPERSILAN.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 394412 2月   9 16:56 update_com.ibm.websphere.DEVELOPERS.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 394653 2月   9 16:56 update_com.ibm.websphere.EXPRESSTRIAL.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 395131 2月   9 16:56 update_com.ibm.websphere.EXPRESS.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 135101 2月   9 16:56 update_com.ibm.websphere.NDDMZTRIAL.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 135262 2月   9 16:56 update_com.ibm.websphere.NDDMZ.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 411363 2月   9 16:55 update_com.ibm.websphere.NDTRIAL.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br><span class="line">-rw-r--r-- 1 root root 411815 2月   9 16:55 update_com.ibm.websphere.ND.v85_8.5.5017.20200205_1450_from_8.5.0.20120501_1108.xml</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="安装Websphere"><a href="#安装Websphere" class="headerlink" title="安装Websphere"></a>安装Websphere</h3><ol>
+<li>使用<code>Installation Manager</code>安装前面解压的Websphere<br>进入install Manager安装目录<code>cd /opt/IBM/InstallationManager/eclipse/</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 WebSphereInstallPackage]<span class="comment"># cd /opt/IBM/InstallationManager/eclipse/</span></span><br><span class="line">[root@CDH1 eclipse]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+执行<code>./IBMIM</code>，启动Install Manager的界面，使用Install Manager 安装Websphere应用服务器<br><font color='red'>这个启动的时候需要服务器有GUI，也就是有界面，发现使用Xmanager不好使不知道为什么</font></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 eclipse]<span class="comment"># ./IBMIM</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_1.png" class="">
+
+<ol start="2">
+<li>点击“文件-首选项”，添加Websphere产品的各个组件存储库位置，分别选择<code>/opt/WebSphereInstallPackage/wasnd</code>和<code>/opt/WebSphereInstallPackage/wasfp</code>文件夹下面的仓库配置文件<code>repository.config</code><img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_2.png" class=""></li>
+<li>点击“安装”按钮，点击下一步，选择接受协议<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_3.png" class="">
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_4.png" class=""></li>
+<li>点击“下一步”，选择共享目录位置，默认即可<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_5.png" class=""></li>
+<li>点击“下一步”，为对应的软件包Application Server设置安装目录<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_6.png" class=""></li>
+<li>设置好安装目录后，点击“下一步”，如果想在管理控制台显示中文，选择简体中文，再点击“下一步”，如果是测试环境，可勾选”样本应用程序，点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_7.png" class="">
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_8.png" class=""></li>
+<li>显示“摘要信息”，点击“安装”按钮<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_9.png" class=""></li>
+<li>完成后，勾选右侧区域中的“无”，点击“完成”按钮<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_10.png" class=""></li>
+</ol>
+<h2 id="创建Dmgr管理概要文件"><a href="#创建Dmgr管理概要文件" class="headerlink" title="创建Dmgr管理概要文件"></a>创建Dmgr管理概要文件</h2><p>WAS中的概要文件和Weblogic中的domain类似，是WAS中的服务</p>
+<h3 id="使用概要管理工具创建概要文件"><a href="#使用概要管理工具创建概要文件" class="headerlink" title="使用概要管理工具创建概要文件"></a>使用概要管理工具创建概要文件</h3><ol>
+<li>进入目录<code>/opt/IBM/WebSphere/AppServer/bin/ProfileManagement/</code>，启动<code>./wct.sh</code>，选择概要管理工具，点击启动所选工具<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /opt/IBM/WebSphere/AppServer/bin/ProfileManagement/</span><br><span class="line"><span class="comment"># ./wct.sh</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_11.png" class=""></li>
+<li>点击“创建”，选择类型为“管理”即Dmgr管理概要文件，点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_12.png" class=""></li>
+<li>选择“Development Manager”，点击“下一步”，选择“高级概要文件创建”，点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_13.png" class="">
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_14.png" class=""></li>
+<li>选择“部署管理控制台（建议）”（这个必选），点击“下一步”，填写<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_15.png" class=""></li>
+<li>填写单名、主机名和单元名、特别注意此处填写的主机名必须能通过ping解析为相应的ip地址，否则实例将不能启动。节点名和单元名可随便。点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_16.png" class=""></li>
+<li>填写用户名和密码，用来管理Websphere服务器启动豆浆用到，设置好并记住<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_17.png" class=""></li>
+<li>安全证书默认，点击“下一步”，然后再点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_18.png" class="">
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_19.png" class=""></li>
+<li>端口分配，可按照需要选择，点击下一步<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_20.png" class=""></li>
+<li>“Linux服务定义”默认，点击“下一步”<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_21.png" class=""></li>
+<li>“概要文件创建已完成”界面，去掉“启动第一步…”的勾选，点击完成，创建好的概要文件位置在<code>/opt/IBM/Websphere/AppServer/profiles/</code>目录下<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_22.png" class="">
+<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_23.png" class=""></li>
+</ol>
+<h3 id="通过命令行启动概要管理服务器"><a href="#通过命令行启动概要管理服务器" class="headerlink" title="通过命令行启动概要管理服务器"></a>通过命令行启动概要管理服务器</h3><ol>
+<li>进入概要管理文件所在的目录<code>/opt/IBM/WebSphere/AppServer/profiles/Dmgr01/bin</code>，执行<code>./startManager.sh</code>启动管理服务进程，在<code>/opt/IBM/WebSphere/AppServer/profiles/Dmgr01/logs/dmgr/</code>目录下查看对应的日志<code>SystemOut</code>文件，查看启动过程是否正常<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@CDH1 bin]<span class="comment"># cd /opt/IBM/WebSphere/AppServer/profiles/Dmgr01/bin</span></span><br><span class="line">[root@CDH1 bin]<span class="comment"># ./startManager.sh</span></span><br><span class="line">ADMU0116I: 正在文件</span><br><span class="line">           /opt/IBM/WebSphere/AppServer/profiles/Dmgr01/logs/dmgr/startServer.log</span><br><span class="line">           中记录工具信息</span><br><span class="line">ADMU0128I: 正在启动具有 Dmgr01 概要文件的工具</span><br><span class="line">ADMU3100I: 正在从服务器读取配置：dmgr</span><br><span class="line">ADMU3200I: 服务器已启动。正在等待初始化状态。</span><br><span class="line">ADMU3000I: 为电子商务开放服务器 dmgr；进程标识为 82127</span><br></pre></td></tr></table></figure>
+<h3 id="通过浏览器验证Development-Manager启动成功及管理"><a href="#通过浏览器验证Development-Manager启动成功及管理" class="headerlink" title="通过浏览器验证Development Manager启动成功及管理"></a>通过浏览器验证<code>Development Manager</code>启动成功及管理</h3></li>
+<li>在浏览器<a target="_blank" rel="noopener" href="https://192.168.2.201:9043/ibm/console">https://192.168.2.201:9043/ibm/console</a>，应该出现Websphere管理控制台登录页面，输入之前记住的账号和密码<img src="/2020/07/09/CentOS7%E4%B8%ADWebsphereV8-5-5-0%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/screenshot_24.png" class="">
+如果安装完成，就验证完毕了，已经安装完成</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="tag"># 软件安装</a>
+              <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
+              <a href="/tags/Websphere/" rel="tag"># Websphere</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/09/Windows-CentOS%E5%8F%8C%E7%B3%BB%E7%BB%9F%E5%BC%95%E5%AF%BC%E4%BF%AE%E5%A4%8D/" rel="prev" title="Windows-CentOS双系统引导修复">
+                  <i class="fa fa-chevron-left"></i> Windows-CentOS双系统引导修复
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/10/WebSphere-was8-5-5-%E5%AE%89%E8%A3%85%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2/" rel="next" title="WebSphere(was8.5.5)安装应用程序部署">
+                  WebSphere(was8.5.5)安装应用程序部署 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

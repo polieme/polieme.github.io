@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle SQL性能优化">
+<meta property="og:url" content="http://xydcom.cn/2019/02/19/Oracle-SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_28.jpg">
+<meta property="article:published_time" content="2019-02-19T04:56:04.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:06.151Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="Oracle">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="性能优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_28.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/02/19/Oracle-SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Oracle SQL性能优化 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">SQL语句的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E9%80%82%E5%90%88%E7%9A%84Oracle%E4%BC%98%E5%8C%96%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">选择适合的Oracle优化器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BF%E9%97%AETABLE%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">访问TABLE的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB-SQL-%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">共享 SQL 语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%9C%80%E6%9C%89%E6%95%88%E7%8E%87%E7%9A%84%E8%A1%A8%E5%90%8D%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">选择最有效率的表名顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Where%E5%AD%90%E5%8F%A5%E4%B8%AD%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%A1%BA%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">Where子句中的连接顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SELECT%E5%AD%90%E5%8F%A5%E4%B8%AD%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E2%80%9C-%E2%80%9D"><span class="nav-number">7.</span> <span class="nav-text">SELECT子句中避免使用“*”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%8F%E5%B0%91%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%AC%A1%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">减少访问数据库的次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E4%B8%AA%E7%AE%80%E5%8D%95%E6%97%A0%E5%85%B3%E8%81%94%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE"><span class="nav-number">9.</span> <span class="nav-text">整个简单无关联的数据库访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Truncate%E8%80%8C%E9%9D%9EDelete"><span class="nav-number">10.</span> <span class="nav-text">使用Truncate而非Delete</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%BD%E9%87%8F%E5%A4%9A%E4%BD%BF%E7%94%A8COMMIT"><span class="nav-number">11.</span> <span class="nav-text">尽量多使用COMMIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%AE%B0%E5%BD%95%E6%9D%A1%E6%95%B0"><span class="nav-number">12.</span> <span class="nav-text">计算记录条数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Where%E5%AD%90%E5%8F%A5%E6%9B%BF%E6%8D%A2Having%E5%AD%90%E5%8F%A5"><span class="nav-number">13.</span> <span class="nav-text">用Where子句替换Having子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%8F%E5%B0%91%E5%AF%B9%E8%A1%A8%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C"><span class="nav-number">14.</span> <span class="nav-text">减少对表的查询操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A1%A8%E7%9A%84%E5%88%AB%E5%90%8D%EF%BC%88Alias%EF%BC%89"><span class="nav-number">15.</span> <span class="nav-text">使用表的别名（Alias）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8EXISTS%E6%9B%BF%E4%BB%A3IN"><span class="nav-number">16.</span> <span class="nav-text">用EXISTS替代IN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8NOT-EXISTS%E6%9B%BF%E4%BB%A3NOT-IN"><span class="nav-number">17.</span> <span class="nav-text">用NOT EXISTS替代NOT IN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E8%A1%A8%E8%BF%9E%E6%8E%A5%E6%9B%BF%E6%8D%A2EXISTS"><span class="nav-number">18.</span> <span class="nav-text">用表连接替换EXISTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8EXISTS%E6%9B%BF%E6%8D%A2DISTINCT"><span class="nav-number">19.</span> <span class="nav-text">用EXISTS替换DISTINCT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%86%E5%88%AB%E4%BD%8E%E6%95%88%E7%9A%84SQL%E8%AF%AD%E5%8F%A5"><span class="nav-number">20.</span> <span class="nav-text">识别低效的SQL语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Explain-Plan%E5%88%86%E6%9E%90SQL%E8%AF%AD%E5%8F%A5"><span class="nav-number">21.</span> <span class="nav-text">用Explain Plan分析SQL语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL-PLUS%E7%9A%84TRACE"><span class="nav-number">22.</span> <span class="nav-text">SQL PLUS的TRACE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E7%B4%A2%E5%BC%95%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87"><span class="nav-number">23.</span> <span class="nav-text">用索引提高效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Union%E6%9B%BF%E6%8D%A2OR%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E%E7%B4%A2%E5%BC%95%E5%88%97%EF%BC%89"><span class="nav-number">24.</span> <span class="nav-text">用Union替换OR（适用于索引列）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8IN%E6%9B%BF%E6%8D%A2OR"><span class="nav-number">25.</span> <span class="nav-text">用IN替换OR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%9C%A8%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%BD%BF%E7%94%A8IS-NULL-%E5%92%8CIS-NOT-NULL"><span class="nav-number">26.</span> <span class="nav-text">避免在索引上使用IS NULL 和IS NOT NULL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E6%98%AF%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95%E7%9A%84%E7%AC%AC%E4%B8%80%E5%88%97"><span class="nav-number">27.</span> <span class="nav-text">总是使用索引的第一列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8UNION-ALL%E6%9B%BF%E6%8D%A2UNION"><span class="nav-number">28.</span> <span class="nav-text">使用UNION ALL替换UNION</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9UNION%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">29.</span> <span class="nav-text">对UNION的优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E6%94%B9%E5%8F%98%E7%B4%A2%E5%BC%95%E5%88%97%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">30.</span> <span class="nav-text">避免改变索引列的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95%E7%9A%84WHERE%E5%AD%90%E5%8F%A5"><span class="nav-number">31.</span> <span class="nav-text">几种不能使用索引的WHERE子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%A4%9A%E4%B8%AA%E6%89%AB%E6%8F%8F"><span class="nav-number">32.</span> <span class="nav-text">连接多个扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CBO%E4%B8%8B%E4%BD%BF%E7%94%A8%E6%9B%B4%E5%85%B7%E9%80%89%E6%8B%A9%E6%80%A7%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-number">33.</span> <span class="nav-text">CBO下使用更具选择性的索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E8%80%97%E8%B4%B9%E8%B5%84%E6%BA%90%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">34.</span> <span class="nav-text">避免使用耗费资源的操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96GROUP-BY"><span class="nav-number">35.</span> <span class="nav-text">优化GROUP BY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A5%E6%9C%9F"><span class="nav-number">36.</span> <span class="nav-text">使用日期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87%EF%BC%88CURSORS%EF%BC%89"><span class="nav-number">37.</span> <span class="nav-text">使用显示游标（CURSORS）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/02/19/Oracle-SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle SQL性能优化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-19 12:56:04" itemprop="dateCreated datePublished" datetime="2019-02-19T12:56:04+08:00">2019-02-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:06" itemprop="dateModified" datetime="2021-09-07T10:05:06+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_28.jpg"></p>
+<blockquote>
+<p>Oracle SQL查询对于大数据量的查询，通常会因为一些SQL编写上不规范造成效率低的问题，比如在查询中使用START WITH 造成分页的时候，拼接外部，从而改变内部执行策略，本来3S能执行完的SQL，到最后执行了20S+，因此Copy了这篇文章大家看看</p>
+</blockquote>
+<h4 id="SQL语句的执行顺序"><a href="#SQL语句的执行顺序" class="headerlink" title="SQL语句的执行顺序"></a>SQL语句的执行顺序</h4><p>语法分析&gt; 语义分析&gt; 视图转换 &gt;表达式转换&gt; 选择优化器 &gt;选择连接方式 &gt;选择连接顺序 &gt;选择数据的搜索路径 &gt;运行“执行计划”</p>
+<h4 id="选择适合的Oracle优化器"><a href="#选择适合的Oracle优化器" class="headerlink" title="选择适合的Oracle优化器"></a>选择适合的Oracle优化器</h4><p>RULE（基于规则）  COST（基于成本）  CHOOSE（选择性）</p>
+<h4 id="访问TABLE的方式"><a href="#访问TABLE的方式" class="headerlink" title="访问TABLE的方式"></a>访问TABLE的方式</h4><p><strong>全表扫描</strong></p>
+<p>全表扫描就是顺序地访问表中每条记录，ORACLE采用一次读入多个数据块(database block)的方式优化全表扫描</p>
+<p><strong>通过ROWID访问表</strong></p>
+<p>ROWID包含了表中记录的物理位置信息，ORACLE采用索引实现了数据和存放数据的物理位置(ROWID)之间的联系，通常索引提供了快速访问ROWID的方法，因此那些基于索引列的查询就可以得到性能上的提高</p>
+<h4 id="共享-SQL-语句"><a href="#共享-SQL-语句" class="headerlink" title="共享 SQL 语句"></a><strong>共享 SQL 语句</strong></h4><ul>
+<li>Oracle提供对执行过的SQL语句进行高速缓冲的机制。被解析过并且确定了执行路径的SQL语句存放在SGA的共享池中</li>
+<li>Oracle执行一个SQL语句之前每次先从SGA共享池中查找是否有缓冲的SQL语句，如果有则直接执行该SQL语句</li>
+<li>可以通过适当调整SGA共享池大小来达到提高Oracle执行性能的目的</li>
+</ul>
+<h4 id="选择最有效率的表名顺序"><a href="#选择最有效率的表名顺序" class="headerlink" title="选择最有效率的表名顺序"></a><strong><font color='red'>选择最有效率的表名顺序</font></strong></h4><ul>
+<li>ORACLE的解析器按照<font color='red'>从右到左</font>的顺序处理FROM子句中的表名，因此FROM子句中写在最后的表(基础表 driving table)将被最先处理</li>
+<li>当ORACLE处理多个表时，会运用排序及合并的方式连接它们。首先，扫描第一个表(FROM子句中最后的那个表)并对记录进行排序，然后扫描第二个表(FROM子句中最后第二个表)，最后将所有从第二个表中检索出的记录与第一个表中合适记录进行合并</li>
+<li>只在基于规则的优化器中有效</li>
+<li><font color='red'>简单来说，就是把数据多的放在左侧，数据少的放在右侧（描述有待大家考证）</font></li>
+</ul>
+<p>举例：</p>
+<p>表 TAB1 16,384 条记录</p>
+<p>表 TAB2 1 条记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*选择TAB2作为基础表 (最好的方法)*/</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tab1,tab2   执行时间<span class="number">0.96</span>秒</span><br><span class="line"></span><br><span class="line"> <span class="comment">/*选择TAB2作为基础表 (不佳的方法)*/</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tab2,tab1   执行时间<span class="number">26.09</span>秒</span><br></pre></td></tr></table></figure>
+
+<p>如果有3个以上的表连接查询, 那就需要选择交叉表(intersection table)作为基础表, 交叉表是指那个被其他表所引用的表。</p>
+<p>EMP:交叉表，包含LOCATION和CATEGORY的关联关系</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> LOCATION L, CATEGORY C, EMP E</span><br><span class="line"><span class="keyword">WHERE</span> E.EMP_NO <span class="keyword">BETWEEN</span> <span class="number">1000</span> <span class="keyword">AND</span> <span class="number">2000</span></span><br><span class="line">     <span class="keyword">AND</span> E.CAT_NO <span class="operator">=</span> C.CAT_NO</span><br><span class="line">     <span class="keyword">AND</span> E.LOCN <span class="operator">=</span> L.LOCN</span><br></pre></td></tr></table></figure>
+
+<p>将比下列SQL更有效率</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> EMP E, LOCATION L, CATEGORY C</span><br><span class="line"><span class="keyword">WHERE</span> E.CAT_NO <span class="operator">=</span> C.CAT_NO</span><br><span class="line">     <span class="keyword">AND</span> E.LOCN <span class="operator">=</span> L.LOCN</span><br><span class="line">     <span class="keyword">AND</span> E.EMP_NO <span class="keyword">BETWEEN</span> <span class="number">1000</span> <span class="keyword">AND</span> <span class="number">2000</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Where子句中的连接顺序"><a href="#Where子句中的连接顺序" class="headerlink" title="Where子句中的连接顺序"></a><strong>Where子句中的连接顺序</strong></h4><p>Oracle采用<font color='red'>自下而上</font>的顺序解析WHERE子句。 根据这个原理,表之间的连接必须写在其他WHERE条件之前，那些可以过滤掉最大数量记录的条件必须写在WHERE子句的末尾</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效,执行时间156.3秒*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> EMP E</span><br><span class="line"><span class="keyword">WHERE</span>  SAL <span class="operator">&gt;</span> <span class="number">50000</span></span><br><span class="line">     <span class="keyword">AND</span>  JOB <span class="operator">=</span> ‘MANAGER’</span><br><span class="line">     <span class="keyword">AND</span>  <span class="number">25</span> <span class="operator">&lt;</span> (<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">FROM</span> EMP</span><br><span class="line">                         <span class="keyword">WHERE</span> MGR <span class="operator">=</span> E.EMPNO)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效,执行时间10.6秒*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> EMP E</span><br><span class="line"><span class="keyword">WHERE</span> <span class="number">25</span> <span class="operator">&lt;</span> (<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">FROM</span> EMP</span><br><span class="line">                        <span class="keyword">WHERE</span> MGR<span class="operator">=</span>E.EMPNO)</span><br><span class="line">     <span class="keyword">AND</span> SAL <span class="operator">&gt;</span> <span class="number">50000</span></span><br><span class="line">     <span class="keyword">AND</span> JOB <span class="operator">=</span> ‘MANAGER’</span><br></pre></td></tr></table></figure>
+
+<h4 id="SELECT子句中避免使用“-”"><a href="#SELECT子句中避免使用“-”" class="headerlink" title="SELECT子句中避免使用“*”"></a><strong>SELECT子句中避免使用“*”</strong></h4><ul>
+<li>Oracle在解析SQL语句的时候，对于“*”将通过查询数据库字典来将其转换成对应的列名。</li>
+<li>如果在Select子句中需要列出所有的Column时，建议列出所有的Column名称，而不是简单的用“*”来替代，这样可以减少多于的数据库查询开销</li>
+</ul>
+<h4 id="减少访问数据库的次数"><a href="#减少访问数据库的次数" class="headerlink" title="减少访问数据库的次数"></a><strong>减少访问数据库的次数</strong></h4><p>当执行每条SQL语句时, ORACLE在内部执行了许多工作：  解析SQL语句 &gt; 估算索引的利用率 &gt; 绑定变量 &gt; 读数据块等等</p>
+<p>由此可见, 减少访问数据库的次数 , 就能实际上减少ORACLE的工作量</p>
+<h4 id="整个简单无关联的数据库访问"><a href="#整个简单无关联的数据库访问" class="headerlink" title="整个简单无关联的数据库访问"></a><strong>整个简单无关联的数据库访问</strong></h4><p>如果有几个简单的数据库查询语句，你可以把它们整合到一个查询中（即使它们之间没有关系），以减少多于的数据库IO开销。</p>
+<p>虽然采取这种方法，效率得到提高，但是程序的可读性大大降低，所以还是要权衡之间的利弊</p>
+<h4 id="使用Truncate而非Delete"><a href="#使用Truncate而非Delete" class="headerlink" title="使用Truncate而非Delete"></a><strong>使用Truncate而非Delete</strong></h4><ul>
+<li>Delete表中记录的时候，Oracle会在Rollback段中保存删除信息以备恢复。Truncate删除表中记录的时候不保存删除信息，不能恢复。因此Truncate删除记录比Delete快，而且占用资源少</li>
+<li>删除表中记录的时候，如果不需要恢复的情况之下应该尽量使用Truncate而不是Delete</li>
+<li><font color='red'>Truncate仅适用于删除全表的记录</font></li>
+</ul>
+<h4 id="尽量多使用COMMIT"><a href="#尽量多使用COMMIT" class="headerlink" title="尽量多使用COMMIT"></a><strong>尽量多使用COMMIT</strong></h4><p>只要有可能,在程序中尽量多使用COMMIT, 这样程序的性能得到提高,需求也会因为COMMIT所释放的资源而减少</p>
+<p>COMMIT所释放的资源：</p>
+<ul>
+<li>回滚段上用于恢复数据的信息</li>
+<li>被程序语句获得的锁</li>
+<li>redo log buffer 中的空间</li>
+<li>ORACLE为管理上述3种资源中的内部花费</li>
+</ul>
+<h4 id="计算记录条数"><a href="#计算记录条数" class="headerlink" title="计算记录条数"></a><strong>计算记录条数</strong></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tablename;</span><br><span class="line"><span class="keyword">Select</span> <span class="built_in">count</span>(<span class="number">1</span>) <span class="keyword">from</span> tablename;</span><br><span class="line"><span class="keyword">Select</span> <span class="built_in">max</span>(rownum) <span class="keyword">from</span> tablename;</span><br></pre></td></tr></table></figure>
+
+<p>一般认为，在没有索引的情况之下，第一种方式最快。 如果有索引列，使用索引列当然最快</p>
+<h4 id="用Where子句替换Having子句"><a href="#用Where子句替换Having子句" class="headerlink" title="用Where子句替换Having子句"></a><strong>用Where子句替换Having子句</strong></h4><p>避免使用HAVING子句，HAVING 只会在检索出所有记录之后才对结果集进行过滤。这个处理需要排序、总计等操作。 如果能通过WHERE子句限制记录的数目，就能减少这方面的开销</p>
+<h4 id="减少对表的查询操作"><a href="#减少对表的查询操作" class="headerlink" title="减少对表的查询操作"></a><strong>减少对表的查询操作</strong></h4><p>在含有子查询的SQL语句中，要注意减少对表的查询操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效的查询方式*/</span></span><br><span class="line"><span class="keyword">SELECT</span> TAB_NAME  <span class="keyword">FROM</span> TABLES</span><br><span class="line"><span class="keyword">WHERE</span> TAB_NAME <span class="operator">=</span>（<span class="keyword">SELECT</span> TAB_NAME</span><br><span class="line">                           <span class="keyword">FROM</span> TAB_COLUMNS</span><br><span class="line">                         <span class="keyword">WHERE</span> VERSION <span class="operator">=</span> <span class="number">604</span>）</span><br><span class="line">     <span class="keyword">AND</span> DB_VER <span class="operator">=</span>（<span class="keyword">SELECT</span> DB_VER</span><br><span class="line">                           <span class="keyword">FROM</span> TAB_COLUMNS</span><br><span class="line">                         <span class="keyword">WHERE</span> VERSION <span class="operator">=</span> <span class="number">604</span>）</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TAB_NAME  <span class="keyword">FROM</span> TABLES</span><br><span class="line"><span class="keyword">WHERE</span> （TAB_NAME，DB_VER）<span class="operator">=</span></span><br><span class="line">             （<span class="keyword">SELECT</span> TAB_NAME，DB_VER</span><br><span class="line">                  <span class="keyword">FROM</span> TAB_COLUMNS</span><br><span class="line">                <span class="keyword">WHERE</span> VERSION <span class="operator">=</span> <span class="number">604</span>）</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用表的别名（Alias）"><a href="#使用表的别名（Alias）" class="headerlink" title="使用表的别名（Alias）"></a><strong>使用表的别名（Alias）</strong></h4><p>当在SQL语句中连接多个表时, 请使用表的别名并把别名前缀于每个Column上.这样一来,就可以减少解析的时间并减少那些由Column歧义引起的语法错误。</p>
+<p>Column歧义指的是由于SQL中不同的表具有相同的Column名,当SQL语句中出现这个Column时,SQL解析器无法判断这个Column的归属。</p>
+<h4 id="用EXISTS替代IN"><a href="#用EXISTS替代IN" class="headerlink" title="用EXISTS替代IN"></a><strong>用EXISTS替代IN</strong></h4><p>在许多基于基础表的查询中，为了满足一个条件 ，往往需要对另一个表进行联接。在这种情况下，使用EXISTS(或NOT EXISTS)通常将提高查询的效率</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> EMP (基础表)</span><br><span class="line"><span class="keyword">WHERE</span> EMPNO <span class="operator">&gt;</span> <span class="number">0</span></span><br><span class="line">      <span class="keyword">AND</span> DEPTNO <span class="keyword">IN</span> (<span class="keyword">SELECT</span> DEPTNO</span><br><span class="line">                          <span class="keyword">FROM</span> DEPT</span><br><span class="line">                        <span class="keyword">WHERE</span> LOC <span class="operator">=</span> ‘MELB’)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> EMP (基础表)</span><br><span class="line"><span class="keyword">WHERE</span> EMPNO <span class="operator">&gt;</span> <span class="number">0</span></span><br><span class="line">     <span class="keyword">AND</span> <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> ‘X’</span><br><span class="line">                      <span class="keyword">FROM</span> DEPT</span><br><span class="line">                    <span class="keyword">WHERE</span> DEPT.DEPTNO <span class="operator">=</span> EMP.DEPTNO</span><br><span class="line">                                 <span class="keyword">AND</span> LOC <span class="operator">=</span> ‘MELB’)</span><br></pre></td></tr></table></figure>
+
+<h4 id="用NOT-EXISTS替代NOT-IN"><a href="#用NOT-EXISTS替代NOT-IN" class="headerlink" title="用NOT EXISTS替代NOT IN"></a><strong>用NOT EXISTS替代NOT IN</strong></h4><p>在子查询中，NOT IN子句将执行一个内部的排序和合并，对子查询中的表执行一个全表遍历，因此是非常低效的。</p>
+<p>为了避免使用NOT IN，可以把它改写成外连接（Outer Joins）或者NOT EXISTS。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">WHERE</span> DEPT_NO <span class="keyword">NOT</span> <span class="keyword">IN</span> （<span class="keyword">SELECT</span> DEPT_NO</span><br><span class="line">                              <span class="keyword">FROM</span> DEPT</span><br><span class="line">                          <span class="keyword">WHERE</span> DEPT_CAT<span class="operator">=</span>’A’）</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ….</span><br><span class="line">  <span class="keyword">FROM</span> EMP E</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> （<span class="keyword">SELECT</span> ‘X’</span><br><span class="line">                       <span class="keyword">FROM</span> DEPT D</span><br><span class="line">                    <span class="keyword">WHERE</span> D.DEPT_NO <span class="operator">=</span> E.DEPT_NO</span><br><span class="line">                                  <span class="keyword">AND</span> DEPT_CAT <span class="operator">=</span> ‘A’）</span><br></pre></td></tr></table></figure>
+
+<h4 id="用表连接替换EXISTS"><a href="#用表连接替换EXISTS" class="headerlink" title="用表连接替换EXISTS"></a><strong>用表连接替换EXISTS</strong></h4><p>通常来说 ，采用表连接的方式比EXISTS更有效率 。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line">   <span class="keyword">FROM</span> EMP E</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> （<span class="keyword">SELECT</span> ‘X’</span><br><span class="line">                  <span class="keyword">FROM</span> DEPT</span><br><span class="line">              <span class="keyword">WHERE</span> DEPT_NO <span class="operator">=</span> E.DEPT_NO</span><br><span class="line">                           <span class="keyword">AND</span> DEPT_CAT <span class="operator">=</span> ‘A’）</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line">   <span class="keyword">FROM</span> DEPT D，EMP E</span><br><span class="line"><span class="keyword">WHERE</span> E.DEPT_NO <span class="operator">=</span> D.DEPT_NO</span><br><span class="line">     <span class="keyword">AND</span> DEPT_CAT <span class="operator">=</span> ‘A’</span><br></pre></td></tr></table></figure>
+
+<h4 id="用EXISTS替换DISTINCT"><a href="#用EXISTS替换DISTINCT" class="headerlink" title="用EXISTS替换DISTINCT"></a><strong>用EXISTS替换DISTINCT</strong></h4><p>当提交一个包含对多表信息（比如部门表和雇员表）的查询时，避免在SELECT子句中使用DISTINCT。 一般可以考虑用EXIST替换。</p>
+<p>EXISTS 使查询更为迅速，因为RDBMS核心模块将在子查询的条件一旦满足后，立刻返回结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> DEPT_NO，DEPT_NAME</span><br><span class="line">       <span class="keyword">FROM</span> DEPT D，EMP E</span><br><span class="line">    <span class="keyword">WHERE</span> D.DEPT_NO <span class="operator">=</span> E.DEPT_NO</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> DEPT_NO，DEPT_NAME</span><br><span class="line">      <span class="keyword">FROM</span> DEPT D</span><br><span class="line">    <span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> （<span class="keyword">SELECT</span> ‘X’</span><br><span class="line">                  <span class="keyword">FROM</span> EMP E</span><br><span class="line">                <span class="keyword">WHERE</span> E.DEPT_NO <span class="operator">=</span> D.DEPT_NO</span><br></pre></td></tr></table></figure>
+
+<h4 id="识别低效的SQL语句"><a href="#识别低效的SQL语句" class="headerlink" title="识别低效的SQL语句"></a><strong>识别低效的SQL语句</strong></h4><p>下面的SQL工具可以找出低效SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> EXECUTIONS, DISK_READS, BUFFER_GETS,</span><br><span class="line">   ROUND ((BUFFER_GETS<span class="operator">-</span>DISK_READS)<span class="operator">/</span>BUFFER_GETS, <span class="number">2</span>) Hit_radio,</span><br><span class="line">   ROUND (DISK_READS<span class="operator">/</span>EXECUTIONS, <span class="number">2</span>) Reads_per_run,</span><br><span class="line">   SQL_TEXT</span><br><span class="line"><span class="keyword">FROM</span>   V$SQLAREA</span><br><span class="line"><span class="keyword">WHERE</span>  EXECUTIONS<span class="operator">&gt;</span><span class="number">0</span></span><br><span class="line"><span class="keyword">AND</span>     BUFFER_GETS <span class="operator">&gt;</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">AND</span> (BUFFER_GETS<span class="operator">-</span>DISK_READS)<span class="operator">/</span>BUFFER_GETS <span class="operator">&lt;</span> <span class="number">0.8</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="number">4</span> <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+
+<p>另外也可以使用SQL Trace工具来收集正在执行的SQL的性能状态数据，包括解析次数，执行次数，CPU使用时间等</p>
+<h4 id="用Explain-Plan分析SQL语句"><a href="#用Explain-Plan分析SQL语句" class="headerlink" title="用Explain Plan分析SQL语句"></a><strong>用Explain Plan分析SQL语句</strong></h4><p>EXPLAIN PLAN 是一个很好的分析SQL语句的工具, 它甚至可以在不执行SQL的情况下分析语句. 通过分析, 我们就可以知道ORACLE是怎么样连接表, 使用什么方式扫描表(索引扫描或全表扫描)以及使用到的索引名称</p>
+<h4 id="SQL-PLUS的TRACE"><a href="#SQL-PLUS的TRACE" class="headerlink" title="SQL PLUS的TRACE"></a><strong>SQL PLUS的TRACE</strong></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> list</span><br><span class="line"> <span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"> <span class="keyword">FROM</span> dept, emp</span><br><span class="line">  <span class="number">3</span><span class="operator">*</span> <span class="keyword">WHERE</span> emp.deptno <span class="operator">=</span> dept.deptno</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">set</span> autotrace traceonly <span class="comment">/*traceonly 可以不显示执行结果*/</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="operator">/</span></span><br><span class="line"><span class="keyword">rows</span> selected.</span><br><span class="line">Execution Plan</span><br><span class="line"><span class="comment">----------------------------------------------------------</span></span><br><span class="line">     <span class="keyword">SELECT</span> STATEMENT Optimizer<span class="operator">=</span>CHOOSE</span><br><span class="line">   <span class="number">0</span>   NESTED LOOPS</span><br><span class="line">   <span class="number">1</span>     <span class="keyword">TABLE</span> ACCESS (<span class="keyword">FULL</span>) <span class="keyword">OF</span> <span class="string">&#x27;EMP&#x27;</span></span><br><span class="line">   <span class="number">1</span>     <span class="keyword">TABLE</span> ACCESS (<span class="keyword">BY</span> INDEX ROWID) <span class="keyword">OF</span> <span class="string">&#x27;DEPT&#x27;</span></span><br><span class="line">   <span class="number">3</span>       INDEX (<span class="keyword">UNIQUE</span> SCAN) <span class="keyword">OF</span> <span class="string">&#x27;PK_DEPT&#x27;</span> (<span class="keyword">UNIQUE</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="用索引提高效率"><a href="#用索引提高效率" class="headerlink" title="用索引提高效率"></a><strong>用索引提高效率</strong></h4><ul>
+<li><p>特点</p>
+<ul>
+<li>优点：提高效率 主键的唯一性验证</li>
+<li>代价：需要空间存储 定期维护</li>
+</ul>
+<p>重构索引：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> INDEX <span class="operator">&lt;</span>INDEXNAME<span class="operator">&gt;</span> REBUILD <span class="operator">&lt;</span>TABLESPACENAME<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Oracle对索引的两种访问模式</p>
+<ul>
+<li>索引唯一扫描 (Index Unique Scan)</li>
+<li>索引范围扫描 (Index Range Scan)</li>
+</ul>
+</li>
+<li><p>基础表的选择</p>
+<ul>
+<li>基础表(Driving Table)是指被最先访问的表(通常以全表扫描的方式被访问)。 根据优化器的不同，SQL语句中基础表的选择是不一样的</li>
+<li>如果你使用的是CBO (COST BASED OPTIMIZER)，优化器会检查SQL语句中的每个表的物理大小，索引的状态，然后选用花费最低的执行路径</li>
+<li>如果你用RBO (RULE BASED OPTIMIZER)， 并且所有的连接条件都有索引对应，在这种情况下，基础表就是FROM 子句中列在最后的那个表</li>
+</ul>
+</li>
+<li><p>多个平等索引</p>
+<ul>
+<li>当SQL语句的执行路径可以使用分布在多个表上的多个索引时，ORACLE会同时使用多个索引并在运行时对它们的记录进行合并，检索出仅对全部索引有效的记录</li>
+<li>在ORACLE选择执行路径时，唯一性索引的等级高于非唯一性索引。然而这个规则只有当WHERE子句中索引列和常量比较才有效。如果索引列和其他表的索引类相比较。这种子句在优化器中的等级是非常低的</li>
+<li>如果不同表中两个相同等级的索引将被引用，FROM子句中表的顺序将决定哪个会被率先使用。 FROM子句中最后的表的索引将有最高的优先级</li>
+<li>如果相同表中两个相同等级的索引将被引用，WHERE子句中最先被引用的索引将有最高的优先级</li>
+</ul>
+</li>
+<li><p>等式比较优先于范围比较</p>
+</li>
+</ul>
+<p>DEPTNO上有一个非唯一性索引，EMP_CAT也有一个非唯一性索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line">     <span class="keyword">FROM</span> EMP</span><br><span class="line">     <span class="keyword">WHERE</span> DEPTNO <span class="operator">&gt;</span> <span class="number">20</span></span><br><span class="line">     <span class="keyword">AND</span> EMP_CAT <span class="operator">=</span> ‘A’;</span><br></pre></td></tr></table></figure>
+
+<p>这里只有EMP_CAT索引被用到,然后所有的记录将逐条与DEPTNO条件进行比较. 执行路径如下:</p>
+<p>TABLE ACCESS BY ROWID ON EMP</p>
+<p>INDEX RANGE SCAN ON CAT_IDX</p>
+<p>即使是唯一性索引，如果做范围比较，其优先级也低于非唯一性索引的等式比较</p>
+<ul>
+<li>不明确的索引等级</li>
+</ul>
+<p>当ORACLE无法判断索引的等级高低差别，优化器将只使用一个索引,它就是在WHERE子句中被列在最前面的</p>
+<p>DEPTNO上有一个非唯一性索引，EMP_CAT也有一个非唯一性索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line">     <span class="keyword">FROM</span> EMP</span><br><span class="line">     <span class="keyword">WHERE</span> DEPTNO <span class="operator">&gt;</span> <span class="number">20</span></span><br><span class="line">     <span class="keyword">AND</span> EMP_CAT <span class="operator">&gt;</span> ‘A’;</span><br></pre></td></tr></table></figure>
+
+<p>这里, ORACLE只用到了DEPT_NO索引. 执行路径如下:</p>
+<p>TABLE ACCESS BY ROWID ON EMP</p>
+<p>INDEX RANGE SCAN ON DEPT_IDX</p>
+<ul>
+<li>强制索引失效</li>
+</ul>
+<p>如果两个或以上索引具有相同的等级，你可以强制命令ORACLE优化器使用其中的一个(通过它,检索出的记录数量少) 。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line"><span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">WHERE</span> EMPNO <span class="operator">=</span> <span class="number">7935</span>  </span><br><span class="line"><span class="keyword">AND</span> DEPTNO <span class="operator">+</span> <span class="number">0</span> <span class="operator">=</span> <span class="number">10</span>    <span class="comment">/*DEPTNO上的索引将失效*/</span></span><br><span class="line"><span class="keyword">AND</span> EMP_TYPE <span class="operator">||</span> ‘’ <span class="operator">=</span> ‘A’  <span class="comment">/*EMP_TYPE上的索引将失效*/</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>避免在索引上使用计算</li>
+</ul>
+<p>WHERE子句中，如果索引列是函数的一部分。优化器将不使用索引而使用全表扫描</p>
+<ul>
+<li>自动选择索引</li>
+</ul>
+<p>如果表中有两个以上（包括两个）索引，其中有一个唯一性索引，而其他是非唯一性索引。在这种情况下，ORACLE将使用唯一性索引而完全忽略非唯一性索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ENAME</span><br><span class="line">  <span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">WHERE</span> EMPNO <span class="operator">=</span> <span class="number">2326</span>  </span><br><span class="line">     <span class="keyword">AND</span> DEPTNO  <span class="operator">=</span> <span class="number">20</span> ;</span><br></pre></td></tr></table></figure>
+
+<p>这里，只有EMPNO上的索引是唯一性的，所以EMPNO索引将用来检索记录。</p>
+<p>TABLE ACCESS BY ROWID ON EMP</p>
+<p>INDEX UNIQUE SCAN ON EMP_NO_IDX</p>
+<ul>
+<li>避免在索引上使用NOT</li>
+</ul>
+<p>通常，我们要避免在索引列上使用NOT，NOT会产生在和在索引列上使用函数相同的影响。当ORACLE遇到NOT，它就会停止使用索引转而执行全表扫描</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line">  <span class="keyword">SELECT</span> …</span><br><span class="line">     <span class="keyword">FROM</span> DEPT</span><br><span class="line">   <span class="keyword">WHERE</span> <span class="keyword">NOT</span> DEPT_CODE <span class="operator">=</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>用&gt;=代替&gt;</li>
+</ol>
+<p>如果DEPTNO上有一个索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">     <span class="keyword">FROM</span> EMP</span><br><span class="line">   <span class="keyword">WHERE</span> DEPTNO <span class="operator">&gt;=</span><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>两者的区别在于，前者DBMS将直接跳到第一个DEPT等于4的记录，而后者将首先定位到DEPTNO等于3的记录并且向前扫描到第一个DEPT大于3的记录.</p>
+<h4 id="用Union替换OR（适用于索引列）"><a href="#用Union替换OR（适用于索引列）" class="headerlink" title="用Union替换OR（适用于索引列）"></a><strong>用Union替换OR（适用于索引列）</strong></h4><p>通常情况下，用UNION替换WHERE子句中的OR将会起到较好的效果。对索引列使用OR将造成全表扫描。 注意，以上规则只针对多个索引列有效</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> LOC_ID , LOC_DESC , REGION</span><br><span class="line">     <span class="keyword">FROM</span> LOCATION</span><br><span class="line">   <span class="keyword">WHERE</span> LOC_ID <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">   <span class="keyword">UNION</span></span><br><span class="line">   <span class="keyword">SELECT</span> LOC_ID , LOC_DESC , REGION</span><br><span class="line">     <span class="keyword">FROM</span> LOCATION</span><br><span class="line">   <span class="keyword">WHERE</span> REGION <span class="operator">=</span> “MELBOURNE”</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> LOC_ID , LOC_DESC , REGION</span><br><span class="line">     <span class="keyword">FROM</span> LOCATION</span><br><span class="line">   <span class="keyword">WHERE</span> LOC_ID <span class="operator">=</span> <span class="number">10</span> <span class="keyword">OR</span> REGION <span class="operator">=</span> “MELBOURNE”</span><br></pre></td></tr></table></figure>
+
+<h4 id="用IN替换OR"><a href="#用IN替换OR" class="headerlink" title="用IN替换OR"></a>用IN替换OR</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span>….</span><br><span class="line">  <span class="keyword">FROM</span> LOCATION</span><br><span class="line"><span class="keyword">WHERE</span> LOC_ID <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">       <span class="keyword">OR</span>  LOC_ID <span class="operator">=</span> <span class="number">20</span></span><br><span class="line">       <span class="keyword">OR</span>  LOC_ID <span class="operator">=</span> <span class="number">30</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>…</span><br><span class="line">  <span class="keyword">FROM</span> LOCATION</span><br><span class="line"><span class="keyword">WHERE</span> LOC_IN <span class="keyword">IN</span> （<span class="number">10</span>，<span class="number">20</span>，<span class="number">30</span>）</span><br></pre></td></tr></table></figure>
+
+<p>实际的执行效果还须检验，在ORACLE8i下， 两者的执行路径似乎是相同的</p>
+<h4 id="避免在索引上使用IS-NULL-和IS-NOT-NULL"><a href="#避免在索引上使用IS-NULL-和IS-NOT-NULL" class="headerlink" title="避免在索引上使用IS NULL 和IS NOT NULL"></a>避免在索引上使用IS NULL 和IS NOT NULL</h4><p>避免在索引中使用任何可以为空的列，ORACLE将无法使用该索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*低效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> DEPARTMENT</span><br><span class="line"><span class="keyword">WHERE</span> DEPT_CODE <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> DEPARTMENT</span><br><span class="line"><span class="keyword">WHERE</span> DEPT_CODE <span class="operator">&gt;=</span><span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="总是使用索引的第一列"><a href="#总是使用索引的第一列" class="headerlink" title="总是使用索引的第一列"></a>总是使用索引的第一列</h4><p>如果索引是建立在多个列上， 只有在它的第一个列(leading column)被where子句引用时， 优化器才会选择使用该索引。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">create</span> index multindex <span class="keyword">on</span> multiindexusage(inda,indb);</span><br><span class="line">Index created.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>  multiindexusage <span class="keyword">where</span> indb <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">Execution Plan</span><br><span class="line"><span class="comment">----------------------------------------------------------</span></span><br><span class="line">     <span class="keyword">SELECT</span> STATEMENT Optimizer<span class="operator">=</span>CHOOSE</span><br><span class="line">   <span class="number">0</span>   <span class="keyword">TABLE</span> ACCESS (<span class="keyword">FULL</span>) <span class="keyword">OF</span> <span class="string">&#x27;MULTIINDEXUSAGE&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>很明显, 当仅引用索引的第二个列时,优化器使用了全表扫描而忽略了索引。</p>
+<h4 id="使用UNION-ALL替换UNION"><a href="#使用UNION-ALL替换UNION" class="headerlink" title="使用UNION ALL替换UNION"></a>使用UNION ALL替换UNION</h4><p>当SQL语句需要UNION两个查询结果集合时，这两个结果集合会以UNION-ALL的方式被合并，然后在输出最终结果前进行排序。如果用UNION ALL替代UNION，这样排序就不是必要了，效率就会因此得到提高。</p>
+<p>由于UNION ALL的结果没有经过排序，而且不过滤重复的记录，因此是否进行替换需要根据业务需求而定。</p>
+<h4 id="对UNION的优化"><a href="#对UNION的优化" class="headerlink" title="对UNION的优化"></a>对UNION的优化</h4><p>由于UNION会对查询结果进行排序，而且过滤重复记录，因此其执行效率没有UNION ALL高。 UNION操作会使用到SORT_AREA_SIZE内存块，因此对这块内存的优化也非常重要。</p>
+<p>可以使用下面的SQL来查询排序的消耗量 ：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> substr（name，<span class="number">1</span>，<span class="number">25</span>）  &quot;Sort Area Name&quot;，</span><br><span class="line">       substr（<span class="keyword">value</span>，<span class="number">1</span>，<span class="number">15</span>）   &quot;Value&quot;</span><br><span class="line"><span class="keyword">from</span> v$sysstat</span><br><span class="line"><span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;sort%&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="避免改变索引列的类型"><a href="#避免改变索引列的类型" class="headerlink" title="避免改变索引列的类型"></a>避免改变索引列的类型</h4><p>当比较不同数据类型的数据时， ORACLE自动对列进行简单的类型转换。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*假设EMP_TYPE是一个字符类型的索引列.*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> EMP</span><br><span class="line"> <span class="keyword">WHERE</span> EMP_TYPE <span class="operator">=</span> <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*这个语句被ORACLE转换为:*/</span></span><br><span class="line"><span class="keyword">SELECT</span> …</span><br><span class="line">  <span class="keyword">FROM</span> EMP</span><br><span class="line"> <span class="keyword">WHERE</span> TO_NUMBER(EMP_TYPE)<span class="operator">=</span><span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>因为内部发生的类型转换，这个索引将不会被用到</p>
+<p>几点注意：</p>
+<ul>
+<li>当比较不同数据类型的数据时，ORACLE自动对列进行简单的类型转换</li>
+<li><font color='red'>如果在索引列上面进行了隐式类型转换，在查询的时候将不会用到索引</font></li>
+<li>注意当字符和数值比较时，ORACLE会优先转换数值类型到字符类型</li>
+<li>为了避免ORACLE对SQL进行隐式的类型转换，最好把类型转换用显式表现出来</li>
+</ul>
+<h4 id="几种不能使用索引的WHERE子句"><a href="#几种不能使用索引的WHERE子句" class="headerlink" title="几种不能使用索引的WHERE子句"></a>几种不能使用索引的WHERE子句</h4><ul>
+<li>下面的例子中，‘!=’ 将不使用索引 ，索引只能告诉你什么存在于表中，而不能告诉你什么不存在于表中</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*不使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME</span><br><span class="line">      <span class="keyword">FROM</span> TRANSACTION</span><br><span class="line">   <span class="keyword">WHERE</span> AMOUNT <span class="operator">!=</span><span class="number">0</span>；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME</span><br><span class="line">      <span class="keyword">FROM</span> TRANSACTION</span><br><span class="line">    <span class="keyword">WHERE</span> AMOUNT <span class="operator">&gt;</span> <span class="number">0</span>；</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下面的例子中，‘||’是字符连接函数。就象其他函数那样，停用了索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*不使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME，AMOUNT</span><br><span class="line">  <span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> ACCOUNT_NAME<span class="operator">||</span>ACCOUNT_TYPE<span class="operator">=</span>’AMEXA’；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME，AMOUNT</span><br><span class="line">  <span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> ACCOUNT_NAME <span class="operator">=</span> ‘AMEX’</span><br><span class="line">     <span class="keyword">AND</span> ACCOUNT_TYPE<span class="operator">=</span>’ A’；</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下面的例子中，‘+’是数学函数。就象其他数学函数那样，停用了索引。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*不使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME，AMOUNT</span><br><span class="line">  <span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> AMOUNT <span class="operator">+</span> <span class="number">3000</span> <span class="operator">&gt;</span><span class="number">5000</span>；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME，AMOUNT</span><br><span class="line"><span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> AMOUNT <span class="operator">&gt;</span> <span class="number">2000</span> ；</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下面的例子中，相同的索引列不能互相比较，这将会启用全表扫描</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*不使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME, AMOUNT</span><br><span class="line"><span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> ACCOUNT_NAME <span class="operator">=</span> NVL(:ACC_NAME, ACCOUNT_NAME)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*使用索引*/</span></span><br><span class="line"><span class="keyword">SELECT</span> ACCOUNT_NAME，AMOUNT</span><br><span class="line"><span class="keyword">FROM</span> TRANSACTION</span><br><span class="line"><span class="keyword">WHERE</span> ACCOUNT_NAME <span class="keyword">LIKE</span> NVL(:ACC_NAME, ’<span class="operator">%</span>’)</span><br></pre></td></tr></table></figure>
+
+<h4 id="连接多个扫描"><a href="#连接多个扫描" class="headerlink" title="连接多个扫描"></a>连接多个扫描</h4><p>如果对一个列和一组有限的值进行比较，优化器可能执行多次扫描并对结果进行合并连接</p>
+<p>举例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">      <span class="keyword">FROM</span> LODGING</span><br><span class="line">    <span class="keyword">WHERE</span> MANAGER <span class="keyword">IN</span> (‘BILL GATES’, ’KEN MULLER’)</span><br></pre></td></tr></table></figure>
+
+<p>优化器可能将它转换成以下形式：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">    <span class="keyword">FROM</span> LODGING</span><br><span class="line">  <span class="keyword">WHERE</span> MANAGER <span class="operator">=</span> ‘BILL GATES’</span><br><span class="line">         <span class="keyword">OR</span> MANAGER <span class="operator">=</span> ’KEN MULLER’</span><br></pre></td></tr></table></figure>
+
+<h4 id="CBO下使用更具选择性的索引"><a href="#CBO下使用更具选择性的索引" class="headerlink" title="CBO下使用更具选择性的索引"></a>CBO下使用更具选择性的索引</h4><ul>
+<li>基于成本的优化器（CBO，Cost-Based Optimizer）对索引的选择性进行判断来决定索引的使用是否能提高效率</li>
+<li>如果检索数据量超过30%的表中记录数，使用索引将没有显著的效率提高</li>
+<li>在特定情况下，使用索引也许会比全表扫描慢。而通常情况下，使用索引比全表扫描要块几倍乃至几千倍</li>
+</ul>
+<h4 id="避免使用耗费资源的操作"><a href="#避免使用耗费资源的操作" class="headerlink" title="避免使用耗费资源的操作"></a>避免使用耗费资源的操作</h4><ul>
+<li><p>带有DISTINCT，UNION，MINUS，INTERSECT，ORDER BY的SQL语句会启动SQL引擎执行耗费资源的排序（SORT）功能。DISTINCT需要一次排序操作，而其他的至少需要执行两次排序</p>
+</li>
+<li><p>通常，带有UNION，MINUS，INTERSECT的SQL语句都可以用其他方式重写</p>
+</li>
+</ul>
+<h4 id="优化GROUP-BY"><a href="#优化GROUP-BY" class="headerlink" title="优化GROUP BY"></a><strong>优化GROUP BY</strong></h4><p>提高GROUP BY语句的效率，可以通过将不需要的记录在GROUP BY之前过滤掉</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*低效*/</span></span><br><span class="line"> <span class="keyword">SELECT</span> JOB ，AVG（SAL）</span><br><span class="line">    <span class="keyword">FROM</span> EMP</span><br><span class="line">  <span class="keyword">GROUP</span> <span class="keyword">BY</span> JOB</span><br><span class="line"><span class="keyword">HAVING</span> JOB <span class="operator">=</span> ‘PRESIDENT’</span><br><span class="line">         <span class="keyword">OR</span> JOB <span class="operator">=</span> ‘MANAGER’</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*高效*/</span></span><br><span class="line"><span class="keyword">SELECT</span> JOB，AVG（SAL）</span><br><span class="line">   <span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">WHERE</span> JOB <span class="operator">=</span> ‘PRESIDENT’</span><br><span class="line">        <span class="keyword">OR</span> JOB <span class="operator">=</span> ‘MANAGER’</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> JOB</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用日期"><a href="#使用日期" class="headerlink" title="使用日期"></a>使用日期</h4><p>当使用日期时，需要注意如果有超过5位小数加到日期上，这个日期会进到下一天</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TO_DATE（‘<span class="number">01</span><span class="operator">-</span>JAN<span class="number">-93</span>’<span class="operator">+</span><span class="number">.99999</span>）</span><br><span class="line">  <span class="keyword">FROM</span> DUAL</span><br><span class="line"><span class="keyword">Returns</span>：</span><br><span class="line">’<span class="number">01</span><span class="operator">-</span>JAN<span class="number">-93</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>’</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> TO_DATE（‘<span class="number">01</span><span class="operator">-</span>JAN<span class="number">-93</span>’<span class="operator">+</span><span class="number">.999999</span>）</span><br><span class="line">  <span class="keyword">FROM</span> DUAL</span><br><span class="line"><span class="keyword">Returns</span>：</span><br><span class="line">’<span class="number">02</span><span class="operator">-</span>JAN<span class="number">-93</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>’</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用显示游标（CURSORS）"><a href="#使用显示游标（CURSORS）" class="headerlink" title="使用显示游标（CURSORS）"></a>使用显示游标（CURSORS）</h4><p>使用隐式的游标，将会执行两次操作。第一次检索记录，第二次检查TOO MANY ROWS 这个exception。而显式游标不执行第二次操作。</p>
+<ol>
+<li>分离表和索引</li>
+</ol>
+<ul>
+<li>总是将你的表和索引建立在不同的表空间内（TABLESPACES）</li>
+<li>决不要将不属于ORACLE内部系统的对象存放到SYSTEM表空间里</li>
+<li>确保数据表空间和索引表空间置于不同的硬盘上</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag"># 性能优化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/19/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="prev" title="Oracle知识点">
+                  <i class="fa fa-chevron-left"></i> Oracle知识点
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/19/SQLServer%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="SQLServer知识点">
+                  SQLServer知识点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

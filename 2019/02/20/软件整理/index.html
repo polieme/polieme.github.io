@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xydcom.cn","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件整理">
+<meta property="og:url" content="http://xydcom.cn/2019/02/20/%E8%BD%AF%E4%BB%B6%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Daniel&#39;s Blog技术存放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xydcom.cn/images/banner/banner_37.jpg">
+<meta property="article:published_time" content="2019-02-20T00:50:12.000Z">
+<meta property="article:modified_time" content="2021-09-07T02:05:07.516Z">
+<meta property="article:author" content="Daniel">
+<meta property="article:tag" content="软件整理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xydcom.cn/images/banner/banner_37.jpg">
+
+
+<link rel="canonical" href="http://xydcom.cn/2019/02/20/%E8%BD%AF%E4%BB%B6%E6%95%B4%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>软件整理 | Daniel's Blog技术存放</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?54f260792b0ce4401620db3ee3bb5b52";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Daniel's Blog技术存放</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">生死看淡，不服就干</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-java"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Java/" rel="section"><i class="fa fa-bug fa-fw"></i>Java</a></li>
+        <li class="menu-item menu-item-javascript"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/Javascript/" rel="section"><i class="fab fa-xing fa-fw"></i>Javascript</a></li>
+        <li class="menu-item menu-item-jquery"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/JQuery/" rel="section"><i class="fa fa-bolt fa-fw"></i>JQuery</a></li>
+        <li class="menu-item menu-item-css"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/CSS/" rel="section"><i class="fab fa-css3 fa-fw"></i>CSS</a></li>
+        <li class="menu-item menu-item-android"><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Android/" rel="section"><i class="fab fa-android fa-fw"></i>Android</a></li>
+        <li class="menu-item menu-item-后端框架"><a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fab fa-modx fa-fw"></i>后端框架</a></li>
+        <li class="menu-item menu-item-后端插件"><a href="/categories/%E5%90%8E%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fab fa-opera fa-fw"></i>后端插件</a></li>
+        <li class="menu-item menu-item-前端框架"><a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="section"><i class="fa fa-gem fa-fw"></i>前端框架</a></li>
+        <li class="menu-item menu-item-前端插件"><a href="/categories/%E5%89%8D%E7%AB%AF%E6%8F%92%E4%BB%B6/" rel="section"><i class="fa fa-crop fa-fw"></i>前端插件</a></li>
+        <li class="menu-item menu-item-安全测评"><a href="/categories/%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%84/" rel="section"><i class="fa fa-lock fa-fw"></i>安全测评</a></li>
+        <li class="menu-item menu-item-办公知识"><a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" rel="section"><i class="fa fa-dot-circle fa-fw"></i>办公知识</a></li>
+        <li class="menu-item menu-item-服务器"><a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="section"><i class="fa fa-server fa-fw"></i>服务器</a></li>
+        <li class="menu-item menu-item-中间件"><a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="section"><i class="fa fa-arrows-alt fa-fw"></i>中间件</a></li>
+        <li class="menu-item menu-item-数据库"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="section"><i class="fa fa-database fa-fw"></i>数据库</a></li>
+        <li class="menu-item menu-item-物联网"><a href="/categories/%E7%89%A9%E8%81%94%E7%BD%91/" rel="section"><i class="fa fa-link fa-fw"></i>物联网</a></li>
+        <li class="menu-item menu-item-软件安装"><a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="section"><i class="fa fa-th-large fa-fw"></i>软件安装</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">222</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">191</span></a></li>
+        <li class="menu-item menu-item-待完善"><a href="/todo/" rel="section"><i class="fa fa-paper-plane fa-fw"></i>待完善</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%BD%AF%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">应用软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E7%9A%84%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">开发使用的常用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">开发框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">相关软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E3%80%81%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB"><span class="nav-number">5.</span> <span class="nav-text">人工智能、人脸识别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E3%80%81BBS%E8%AE%BA%E5%9D%9B"><span class="nav-number">6.</span> <span class="nav-text">博客、BBS论坛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E7%BD%91%E7%AB%99"><span class="nav-number">7.</span> <span class="nav-text">推荐网站</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Daniel"
+      src="/images/head/head_pic.jpg#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Daniel</p>
+  <div class="site-description" itemprop="description">生死看淡，不服就干</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">222</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/polieme" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;polieme" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/polieme@126.com" title="E-Mail → polieme@126.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/polieme" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xydcom.cn/2019/02/20/%E8%BD%AF%E4%BB%B6%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head/head_pic.jpg#/images/avatar.gif">
+      <meta itemprop="name" content="Daniel">
+      <meta itemprop="description" content="生死看淡，不服就干">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daniel's Blog技术存放">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          软件整理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-20 08:50:12" itemprop="dateCreated datePublished" datetime="2019-02-20T08:50:12+08:00">2019-02-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-07 10:05:07" itemprop="dateModified" datetime="2021-09-07T10:05:07+08:00">2021-09-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">办公知识</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%9E%E5%85%AC%E7%9F%A5%E8%AF%86/%E8%BD%AF%E4%BB%B6%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">软件整理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/images/banner/banner_37.jpg"></p>
+<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><blockquote>
+<ul>
+<li>Python开发工具<br>JetBrains PyCharm 2017.1.2 x64</li>
+<li>原型工具<br>Axure RP Pro 7.0（PC端）、墨刀（手机端）</li>
+<li>C++开发<br>CodeBlocks</li>
+<li>Mysql存储过程调试<br>dbForge Studio for MySQL</li>
+<li>截取手机APP请求信息软件<br>Fiddler 4</li>
+<li>文本编辑器<br>NodePad++、UltraEdit32、EditPlus</li>
+<li>数据库前端软件<br>Navicat Premium、PLSQL、Studio 3T（Mongodb）</li>
+<li>大数据分析<br>Tableau、Qlik</li>
+<li>邮箱客户端<br>FoxMail、Gmail  </li>
+<li>SDCard格式化（树莓派镜像会出现Windows无法格式化情况）<br>SDFormatter</li>
+<li>数模设计软件（能够快速导出已完成数据库的数模）<br>PowerDesigner</li>
+<li>远程Linux系统<br>Xshell、Xftp</li>
+<li>视频播放器、听歌、视频格式化、Win10扫雷<br>完美解码、Potplayer、网易云音乐、格式工厂、MineSweeper</li>
+<li>云笔记<br>有道云、Evernote（印象笔记）</li>
+<li>安卓开发、IOS开发<br>AndroidStudio、apicloud-studio-2.exe</li>
+<li>CAD看图软件<br>CAD迷你看图</li>
+<li>Json格式化、XML格式化<br>JsonView、XMLFormat</li>
+<li>翻墙软件（需要国外搭建服务器，简单的VPS配置操作，可在搬瓦工上买服务器，相对稳定，不会封杀）<br>Shadowsocks、蓝灯Lantern</li>
+<li>Windows内存分析<br>RAMMap.1.50.chs</li>
+<li>端口开放情况<br>PortScan</li>
+<li>Java反编译工具<br>jd-gui反编译</li>
+<li>C#反编译<br>dnSpy</li>
+<li>截图软件，这个可以录视频幺<br>FSCapture</li>
+<li>接口测试HTTP<br>Postman可自动生成接口调用代码</li>
+<li>SQL文件分割工具<br>SQLDumpSplitter</li>
+<li>取色工具<br>TakeColor、抓色小猫、Chrome和IE里面也有取色工具</li>
+<li>流程在线制作软件<br>Processon</li>
+<li>脑图<br>百度脑图、Xmind</li>
+<li>关于我们或者推广在线H5展页<br>兔展、人人秀、企业秀</li>
+<li>图标下载、GIF图标下载<br><a target="_blank" rel="noopener" href="https://preloaders.net/en/free">https://preloaders.net/en/free</a>  GIF图标下载地址，包含等待之类的<br><a target="_blank" rel="noopener" href="http://www.iconfont.cn/">http://www.iconfont.cn/</a>   阿里图标下载，各种图标<br><a target="_blank" rel="noopener" href="http://www.easyicon.net/">http://www.easyicon.net</a> 国外的一个图标下载的网址</li>
+<li>MarkDown编写工具<br>Typora：（目前免费，样式好看而且可以切换多种样式皮肤，喜欢Github和Vue风格的，适合于本地写文档，可以使用Github同步自己的文档到云端，而且Github是免费的幺，导出功能免费）<br>Atom<br>Cmd Markdown：（写出来的文档好看，文件管理不是很好，导出PDF、带样式HTML收费）  </li>
+<li>GIF截屏工具<br>GifCam</li>
+<li>鼠标键盘多电脑共享<br>Synergy、MouseWithOutBorder（Windows自带，免费，但是得在同一个WIFI下）、Barrier（免费、开源、跨平台能够Linux和Win使用同一套键鼠）</li>
+<li>文件搜索，启动器<br>Listary(推荐，切换窗口能自动跳转路径)或Wox+Everything；<br>Clover：多窗口文件管理软件<br>Everything</li>
+<li>卸载软件工具<br>Geek无广告、界面简洁、免费<br>CCleaner 垃圾清理工具（经常提示升级Pro版本）  </li>
+<li>内网映射工具<br>frp可以自己搭建服务器进行域名的映射，很简单<br>ngrok(免费,前提是自己有服务器和域名，也可以使用公共的，比较慢) 花生壳（部分功能收费，特别是80端口）</li>
+<li>日志查看工具<br>emeditor<br>LogViewer</li>
+<li>Redis可视化管理工具<br>Redis Desktop Manager</li>
+<li>下载软件<br>Free DownLoad Manager<br>Internet Download Manager简称IDM（30天试用）</li>
+</ul>
+</blockquote>
+<h2 id="开发使用的常用插件"><a href="#开发使用的常用插件" class="headerlink" title="开发使用的常用插件"></a>开发使用的常用插件</h2><blockquote>
+<ul>
+<li>地图<br>百度地图（SDK jsAPI）等等，使用很方便</li>
+<li>图表(柱状、饼状、折线、雷达、地图、仪表盘、漏斗、热力图、混搭配合多种主题组合)<br>Echarts（界面比较美观，可以使用上面JSONview进行分析）</li>
+<li>富文本编辑<br>UEditor(本地化保存)</li>
+<li>接口管理工具（前后端协作）<br>Swagger apizza  Insomnia</li>
+<li>网页打印工具<br>C-lodop</li>
+<li>图片剪切上传<br>Cropper</li>
+<li>文件上传<br>WebUploader</li>
+<li>Word文档文本搜索和数据存储<br>ES</li>
+<li>Java后台图片处理（缩放、旋转、水印、剪裁、格式转换、输出到OutputStream、输出到BufferedImage）<br><a target="_blank" rel="noopener" href="https://github.com/coobird/thumbnailator">thumbnailator</a></li>
+<li>Java工作流开发（流程相关）<br><a target="_blank" rel="noopener" href="https://www.activiti.org/">Activiti</a>  </li>
+<li>跨服务器跨不同数据库不同业务表不同业务字段数据库同步<br>ETL kettle</li>
+<li>Oracle修改导出版本<br>AlxcTools</li>
+<li>Web中使用Word、Excel<br>LibreOffice、openoffice、pageOffice</li>
+<li>前端RSA加密<br>JSEncrypt</li>
+<li>规则引擎<br>Drools</li>
+<li>Mock工具<br>RAP2</li>
+<li>网站搜索插件<br>Solr</li>
+<li>内容管理系统：管理网站的后台和前端页面<br>OpenCMS</li>
+<li>BI大屏数据框架<br>AntV、DataV</li>
+<li>报表平台<br><a target="_blank" rel="noopener" href="https://github.com/zhangdaiscott/JimuReport/issues/new">积木报表：免费开源</a><br><a target="_blank" rel="noopener" href="https://gitee.com/youseries/ureport">UReport2</a><br><a target="_blank" rel="noopener" href="https://gitee.com/xianrendzw/EasyReport">EasyReport</a><br><a target="_blank" rel="noopener" href="https://gitee.com/luob/reportico">报表设计工具 Reportico</a>  </li>
+</ul>
+</blockquote>
+<h2 id="开发框架"><a href="#开发框架" class="headerlink" title="开发框架"></a>开发框架</h2><blockquote>
+<ul>
+<li>手机APP开发框架<br>afinal、ThinkAndroid、andBase、KJFrameForAndroid、SmartAndroid、dhroid<br>QMUI（手机APP开发布局框架）、ButterKnife（个人理解是减少findViewById）、OkHttp框架（网络请求框架）</li>
+<li>JAVA 开发框架<br>SSM(Spring+SpringMVC+MyBatis)，阿里数据库连接池durid</li>
+<li>权限管理框架<br>Apache shiro<br>Spring Security</li>
+<li>PC前端开发框架<br>Bootstrap、LayUI(Layer)（PC端管理后台）、Ant Designer、Element UI</li>
+<li>手机前端框架<br>uni-app<br><a target="_blank" rel="noopener" href="http://framework7.taobao.org/">Framework7</a>(阿里手机前端框架)<br><a target="_blank" rel="noopener" href="http://dev.dcloud.net.cn/mui/">MUI</a>(HBuilder)<br>SUI、MUI、WEUI（手机端）GMU(百度) Frozen UI（QQ）</li>
+<li>中后台框架<br><a target="_blank" rel="noopener" href="https://github.com/zhangdaiscott/jeecg-boot">jeecg-boot</a></li>
+</ul>
+</blockquote>
+<h2 id="相关软件"><a href="#相关软件" class="headerlink" title="相关软件"></a>相关软件</h2><blockquote>
+<ul>
+<li>Kali Linux （还在研究各种渗透，里面有很多渗透用的工具）</li>
+</ul>
+</blockquote>
+<h2 id="人工智能、人脸识别"><a href="#人工智能、人脸识别" class="headerlink" title="人工智能、人脸识别"></a>人工智能、人脸识别</h2><blockquote>
+<ul>
+<li>人脸识别<br>OpenCV</li>
+</ul>
+</blockquote>
+<h2 id="博客、BBS论坛"><a href="#博客、BBS论坛" class="headerlink" title="博客、BBS论坛"></a>博客、BBS论坛</h2><blockquote>
+<ul>
+<li>博客<br>HEXO、WordPress</li>
+<li>论坛<br>Xiuno、<a target="_blank" rel="noopener" href="https://discuz.com/">Discuz Q</a></li>
+</ul>
+</blockquote>
+<h2 id="推荐网站"><a href="#推荐网站" class="headerlink" title="推荐网站"></a>推荐网站</h2><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://alternativeto.net/software/winmerge/">Alternativeto</a><br>这个网站能够查找一些收费软件的替代方案，会给出一些开源免费软件的建议</li>
+</ul>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%95%B4%E7%90%86/" rel="tag"># 软件整理</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/20/SVN%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85%E8%AE%BE%E7%BD%AE%EF%BC%88Windows%E7%89%88%E6%9C%AC%EF%BC%89/" rel="prev" title="SVN服务端安装设置（Windows版本）">
+                  <i class="fa fa-chevron-left"></i> SVN服务端安装设置（Windows版本）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/20/Kaa-CentOS7%E5%AE%89%E8%A3%85-%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Kaa CentOS7安装 启动命令">
+                  Kaa CentOS7安装 启动命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备19005853号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniel</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
